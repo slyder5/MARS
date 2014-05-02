@@ -1,0 +1,12 @@
+{
+	["prod_subreddit"] = "",
+	["prod_username"] = "",
+	["prod_password"] = "",
+	["test_subreddit"] = "",
+	["test_username"] = "",
+	["test_password"] = "",
+	["running_subreddit"] = "",
+	["running_username"] = "",
+	["running_password"] = ""
+}
+
