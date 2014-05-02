@@ -67,6 +67,7 @@ def search_line(data_token,lines):
 					logging.info("Found Delta - Starting Checks")
 					return token
 
+
 # Check to make sure I haven't already replied
 def check_already_replied(msg_confirmation,replies,running_username):
 	for reply in replies:
@@ -83,7 +84,7 @@ def optional_checks(data,r,parent_comment,comment,token_found):
 								comment.submission.author,
 								parent_comment.author):
 		print("\nBad recipient\n")
-	elif check_awarder_to_awardee_history(data,r,parent_comment):
+	elif check_awarder_to_awardee_history(data,r,parent_comment,comment):
 		print("\nAlready awarded this thread\n")
 	elif check_length(data,comment.body,token_found):
 		print("\nInsufficient length\n")
@@ -97,12 +98,14 @@ def check_awardee_not_author(check_ana,sub_author,parent_author):
 		logging.debug("Check recipient not author is disabled.")
 
 # Checks to see if the awarder has already awarded the awardee in this thread
-def check_awarder_to_awardee_history(data,r,root):
+def check_awarder_to_awardee_history(data,r,parent_comment,comment):
 	if data["check_history"] == "1":
 		logging.debug("Checking awarder to awardee history - TREE")
-		while not root.is_root:
-			root = r.get_info(thing_id=root.parent_id)
-		iterate_replies(data,r,root)
+		comment_author = str(comment.author.name).lower()
+		while not parent_comment.is_root:
+			parent_comment = r.get_info(thing_id=parent_comment.parent_id)
+		if iterate_replies(data,r,parent_comment,comment_author):
+			print("Delta awarded elsewhere in tree")
 	elif data["check_history"] == "2":
 		logging.debug("Checking awarder to awardee history - FOREST")
 		print("\nCheck entire submission\n")
@@ -110,17 +113,24 @@ def check_awarder_to_awardee_history(data,r,root):
 		logging.debug("Check awarder to awardee history is disabled.")
 
 # Iterates through the comment tree - VERY expensive
-def iterate_replies(data,r,comment):
+def iterate_replies(data,r,comment,comment_author):
 	msg_confirmation = data["msg_confirmation"]
 	running_username = str(data["running_username"]).lower()
 	comments = r.get_submission(comment.permalink).comments
 	for comment in comments:
 		if check_already_replied(msg_confirmation,comment.replies,
 								 running_username):
-			print("Already awarded elsewhere in chain.")
+			if check_parent(r,comment,comment_author):
+				return True
+			#print("Already awarded elsewhere in chain.")
 		for reply in comment.replies:
-			iterate_replies(data,r,reply)
+			iterate_replies(data,r,reply,comment_author)
 
+def check_parent(r,comment,comment_author):
+	parent_comment = r.get_info(thing_id=comment.parent_id)
+	parent_author = str(parent_comment.author.name).lower()
+	if parent_author == comment_author:
+		return True
 # Check length of comment against minimum requirement
 def check_length(data,body,token_found):
 		if data["check_length"] == "1":
