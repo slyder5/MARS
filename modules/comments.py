@@ -28,7 +28,7 @@ def get_sub(r,sub_name):
 # Gets the newest comments from the subreddit
 def sub_get_comments(subreddit):
 	logging.debug("Getting comments")
-	return subreddit.get_comments(limit=6) # Limits comments retrieved
+	return subreddit.get_comments(limit=3) # Limits comments retrieved
 
 # Comment processing
 def process_comments(data,r,sub_comments):
@@ -70,6 +70,8 @@ def search_line(data_token,lines):
 # Check to make sure I haven't already replied
 def check_already_replied(msg_confirmation,replies,running_username):
 	for reply in replies:
+		#print(vars(reply))
+		print(reply)
 		if reply.author:
 			if str(reply.author.name).lower() == running_username:
 				if str(reply.body).lower() == str(msg_confirmation).lower():
@@ -81,7 +83,7 @@ def optional_checks(data,r,parent_comment,comment,token_found):
 								comment.submission.author,
 								parent_comment.author):
 		print("\nBad recipient\n")
-	elif check_awarder_to_awardee_history(data,r,comment,parent_comment):
+	elif check_awarder_to_awardee_history(data,r,parent_comment):
 		print("\nAlready awarded this thread\n")
 	elif check_length(data,comment.body,token_found):
 		print("\nInsufficient length\n")
@@ -95,19 +97,29 @@ def check_awardee_not_author(check_ana,sub_author,parent_author):
 		logging.debug("Check recipient not author is disabled.")
 
 # Checks to see if the awarder has already awarded the awardee in this thread
-def check_awarder_to_awardee_history(data,r,comment,root):
+def check_awarder_to_awardee_history(data,r,root):
 	if data["check_history"] == "1":
 		logging.debug("Checking awarder to awardee history - TREE")
 		while not root.is_root:
 			root = r.get_info(thing_id=root.parent_id)
-		print root
-		print root.replies
-		
+		iterate_replies(data,r,root)
 	elif data["check_history"] == "2":
-		logging.debug("Checking awarder to awardee history - SUBMISSION")
+		logging.debug("Checking awarder to awardee history - FOREST")
 		print("\nCheck entire submission\n")
 	elif data["check_history"] == "0":
 		logging.debug("Check awarder to awardee history is disabled.")
+
+# Iterates through the comment tree - VERY expensive
+def iterate_replies(data,r,comment):
+	msg_confirmation = data["msg_confirmation"]
+	running_username = str(data["running_username"]).lower()
+	comments = r.get_submission(comment.permalink).comments
+	for comment in comments:
+		if check_already_replied(msg_confirmation,comment.replies,
+								 running_username):
+			print("Already awarded elsewhere in chain.")
+		for reply in comment.replies:
+			iterate_replies(data,r,reply)
 
 # Check length of comment against minimum requirement
 def check_length(data,body,token_found):
