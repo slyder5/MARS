@@ -22,7 +22,7 @@ data = config.check_environment(data)
 ###########
 
 logging.basicConfig(filename="mars.log",level=logging.DEBUG,
-					format="%(asctime)s %(levelname)s - %(message)s",
+					format="%(asctime)s %(levelname)s\t- %(message)s",
 					datefmt="%I:%M:%S %p")
 console = logging.StreamHandler()
 if data["loglevel"] == "debug":

@@ -13,14 +13,10 @@ import logging
 
 def start(data):
 	logging.debug("Starting Module: Account")
-	try:
-		if data["m_account"] == "1":
-			return login(data)
-		elif data["m_account"] == "0":
-			return readonly(data)
-	except:
-		logging.warning("Configuration failed - Please run setup")
-		raise SystemExit(0)
+	if data["m_account"] == "1":
+		return login(data)
+	elif data["m_account"] == "0":
+		return readonly(data)
 
 def login(data):
 	r = praw.Reddit(user_agent = data["running_username"])
@@ -29,7 +25,7 @@ def login(data):
 		r.login(data["running_username"],data["running_password"])
 		logging.info("Login Successful")
 	except:
-		logigng.info("Login Failed")
+		logging.info("Login Failed")
 		raise SystemExit(0)
 	return r
 
