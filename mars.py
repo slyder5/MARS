@@ -8,6 +8,7 @@ import os
 from settings import *
 from modules import *
 import logging
+from logging.handlers import TimedRotatingFileHandler
 
 # Variables #
 #############
@@ -21,19 +22,25 @@ data = config.check_environment(data)
 # Logging #
 ###########
 
-logging.basicConfig(filename="mars.log",level=logging.DEBUG,
-					format="%(asctime)s %(levelname)s\t- %(message)s",
-					datefmt="%I:%M:%S %p")
-console = logging.StreamHandler()
+consoleFormatter = logging.Formatter("%(asctime)s: %(message)s",
+										datefmt="%I:%M:%S %p")
+fileFormatter = logging.Formatter("%(asctime)s %(levelname)s - %(message)s",
+									datefmt="%I:%M:%S %p")
+rootLogger = logging.getLogger()
+rootLogger.setLevel(logging.DEBUG)
+fileHandler = TimedRotatingFileHandler("mars.log",when="midnight",
+										backupCount=14)
+fileHandler.setFormatter(fileFormatter)
+rootLogger.addHandler(fileHandler)
+consoleHandler = logging.StreamHandler()
 if data["loglevel"] == "debug":
-	console.setLevel(logging.DEBUG)
+	consoleHandler.setLevel(logging.DEBUG)
 elif data["loglevel"] == "info":
-	console.setLevel(logging.INFO)
+	consoleHandler.setLevel(logging.INFO)
 else:
-	console.setLevel(logging.WARNING)
-formatter = logging.Formatter("%(asctime)s: %(message)s",datefmt="%I:%M:%S %p")
-console.setFormatter(formatter)
-logging.getLogger('').addHandler(console)
+	consoleHandler.setLevel(logging.WARNING)
+consoleHandler.setFormatter(consoleFormatter)
+rootLogger.addHandler(consoleHandler)
 
 # Functions #
 #############
@@ -46,13 +53,20 @@ def mars():
 	# Account Module
 
 	r = account.start(data)
+	
+	# Commands Module
+	
+	if data["m_commands"] == "1":
+		commands.start(data,r)
+	elif data["m_commands"] == "0":
+		print "This feature not yet implemented."
 
 	# Comments Module
 
 	if data["m_comments"] == "1":
 		comments.start(data,r)
 	elif data["m_comments"] == "0":
-		print "This feature not yet implemented"
+		print "This feature not yet implemented."
 
 # Run #
 #######

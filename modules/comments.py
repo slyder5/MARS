@@ -1,4 +1,4 @@
-# Comemnts #
+# Comments #
 ############
 
 # Import #
@@ -6,9 +6,6 @@
 
 import re
 import logging
-
-# Variables #
-#############
 
 # Functions #
 #############
@@ -48,18 +45,23 @@ def process_comments(data,r,sub_comments):
 				awarder = comment_author # Recognized as awarder
 				logging.debug("A token was found.")
 				awardee_comment = r.get_info(thing_id=token_comment.parent_id)
-				awardee = str(awardee_comment.author.name).lower()
-				if awardee == running_username: # Prevents reply to bot
-					logging.info("User replied to me")
-				elif awardee == comment_author: # Prevents reply to self
-					logging.info("User replied to self")
-				elif check_already_replied(data["msg_confirmation"],
-										   token_comment.replies,
-										   running_username):
-					logging.info("Already Confirmed")
+				if awardee_comment.author:
+					awardee = str(awardee_comment.author.name).lower()
+					if awardee == running_username: # Prevents reply to bot
+						logging.info("User replied to me")
+					elif awardee == comment_author: # Prevents reply to self
+						logging.info("User replied to self")
+					elif check_already_replied(data["msg_confirmation"],
+											token_comment.replies,
+											running_username):
+						logging.info("Already Confirmed")
+					else:
+						optional_checks(data,r,awardee_comment,awardee,
+										token_comment,awarder,token_found)
 				else:
-					optional_checks(data,r,awardee_comment,awardee,
-									token_comment,awarder,token_found)
+					logging.info("Unabled to award delta to deleted comment")
+			else:
+				logging.info("No token found.")
 
 # Splits comments into lines for more thorough processing
 def split_comment(body):
@@ -98,6 +100,8 @@ def optional_checks(data,r,awardee_comment,awardee,token_comment,awarder,
 		print("\nAlready awarded this thread\n")
 	elif check_length(data,token_comment.body,token_found):
 		print("\nInsufficient length\n")
+	else:
+		print("Award Delta")
 
 # Check to ensure submission author is not receiving a delta
 def check_awardee_not_author(check_ana,sub_author,awardee):
@@ -153,7 +157,10 @@ def iterate_replies(data,r,comment,awardee,awarder):
 # Checks original awarder against recently found awarder
 def check_awarder(r,comment,orig_awarder):
 	logging.debug("Checking Awarder")
-	awarder = str(comment.author.name).lower()
+	if comment.author:
+		awarder = str(comment.author.name).lower()
+	else:
+		awarder = "[deleted]"
 	logging.debug("Awarder: %s" % awarder)
 	logging.debug("Original Awarder: %s" % orig_awarder)
 	if awarder == orig_awarder:
@@ -163,7 +170,10 @@ def check_awarder(r,comment,orig_awarder):
 def check_awardee(r,comment,orig_awardee):
 	logging.debug("Checking Awardee")
 	awardee_comment = r.get_info(thing_id=comment.parent_id)
-	awardee = str(awardee_comment.author.name).lower()
+	if awardee_comment.author:
+		awardee = str(awardee_comment.author.name).lower()
+	else:
+		awardee = "[deleted]"
 	logging.debug("Awardee: %s" % awardee)
 	logging.debug("Comment Author: %s" % awardee)
 	if awardee == orig_awardee:
