@@ -6,6 +6,7 @@
 
 import re
 import logging
+from pprint import pprint 
 
 # Functions #
 #############
@@ -27,41 +28,48 @@ def sub_get_comments(subreddit):
 	logging.debug("Getting Comments")
 	return subreddit.get_comments(limit=1) # Limits comments retrieved
 
-# Comment processing
+# Comment Processing
 def process_comments(data,r,sub_comments):
 	logging.debug("Processing Comments")
 	running_username = str(data["running_username"]).lower()
 	logging.debug("Running username is: %s" % running_username)
 	for comment in sub_comments: # for each comment in batch
-		comment_author = str(comment.author.name).lower()
-		if comment_author != running_username: # ignore my own comments
-			logging.info("Searching comment by: %s\n%s" % (
-				comment.author.name	if comment.author else "[deleted]",
-				comment.permalink)) # Shows redditor and permalink
-			lines = split_comment(comment.body) # Gets comment lines
-			token_found = search_line(data["token"],lines) # Checks for match
-			if token_found: # Starts checks when a token is found
-				token_comment = comment # Recognized as awarder comment
-				awarder = comment_author # Recognized as awarder
-				logging.debug("A token was found.")
-				awardee_comment = r.get_info(thing_id=token_comment.parent_id)
-				if awardee_comment.author:
-					awardee = str(awardee_comment.author.name).lower()
-					if awardee == running_username: # Prevents reply to bot
-						logging.info("User replied to me")
-					elif awardee == comment_author: # Prevents reply to self
-						logging.info("User replied to self")
-					elif check_already_replied(data["msg_confirmation"],
-											token_comment.replies,
-											running_username):
-						logging.info("Already Confirmed")
-					else:
-						optional_checks(data,r,awardee_comment,awardee,
-										token_comment,awarder,token_found)
+		if not comment.banned_by: # Ignores removed comments
+			comment_author = str(comment.author.name).lower()
+			if comment_author != running_username: # Ignore my own comments
+				logging.info("Searching comment by: %s\n%s" % (
+					comment.author.name	if comment.author else "[deleted]",
+					comment.permalink)) # Shows redditor and permalink
+				lines = split_comment(comment.body) # Gets comment lines
+				token_found = search_line(data["token"],lines) # Checks for match
+				if token_found: # Starts checks when a token is found
+					logging.debug("A token was found.")
+					start_checks(data,r,comment,token_found)
 				else:
-					logging.info("Unabled to award delta to deleted comment")
-			else:
-				logging.info("No token found.")
+					logging.info("No token found.")
+			if comment_author == str(comment.submission.author).lower():
+				print("Change Flair")
+
+# Starts Checks
+def start_checks(data,r,token_comment,token_found):
+	logging.debug("Starting Checks")
+	running_username = str(data["running_username"]).lower()
+	awarder = str(token_comment.author.name).lower()
+	awardee_comment = r.get_info(thing_id=token_comment.parent_id)
+	if awardee_comment.author:
+		awardee = str(awardee_comment.author.name).lower()
+		if awardee == running_username: # Prevents reply to bot
+			logging.info("User replied to me")
+		elif awardee == awarder: # Prevents reply to self
+			logging.info("User replied to self")
+		elif check_already_replied(data["msg_confirmation"],
+									token_comment.replies,running_username):
+			logging.info("Already Confirmed")
+		else:
+			optional_checks(data,r,token_comment,awarder,awardee_comment,
+							awardee,token_found)
+	else:
+		logging.info("Unabled to award token to deleted comment")
 
 # Splits comments into lines for more thorough processing
 def split_comment(body):
@@ -75,20 +83,20 @@ def search_line(data_token,lines):
 		if re.match("(    |&gt;)",line) is None: # Don't look in code or quotes
 			for token in data_token: # Check each type of token
 				if token in line:
-					logging.info("Found Delta - Starting Checks")
+					logging.info("Found Token - Starting Checks")
 					return token
 
 # Check to make sure I haven't already replied
-def check_already_replied(msg_confirmation,replies,running_username):
+def check_already_replied(msg,replies,running_username):
 	logging.debug("Checking Already Replied")
 	for reply in replies:
 		if reply.author:
 			if str(reply.author.name).lower() == running_username:
-				if str(reply.body).lower() == str(msg_confirmation).lower():
+				if str(reply.body).lower() == str(msg).lower():
 					return True
 
 # Optional checks based on configuration
-def optional_checks(data,r,awardee_comment,awardee,token_comment,awarder,
+def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,
 					token_found):
 	logging.debug("Optional Checks")
 	if check_awardee_not_author(data["check_ana"],
@@ -101,9 +109,9 @@ def optional_checks(data,r,awardee_comment,awardee,token_comment,awarder,
 	elif check_length(data,token_comment.body,token_found):
 		print("\nInsufficient length\n")
 	else:
-		print("Award Delta")
+		print("Award Token")
 
-# Check to ensure submission author is not receiving a delta
+# Check to ensure submission author is not receiving a token
 def check_awardee_not_author(check_ana,sub_author,awardee):
 	if check_ana == "1":
 		logging.debug("Checking Awardee Not Author")
@@ -121,7 +129,7 @@ def check_awarder_to_awardee_history(data,r,awardee_comment,awardee,
 		while not root.is_root: # Move to the top comment
 			root = r.get_info(thing_id=root.parent_id)
 		if iterate_replies(data,r,root,awardee,awarder):
-			logging.info("Delta awarded elsewhere in tree")
+			logging.info("Token awarded elsewhere in tree")
 			return True
 	elif data["check_history"] == "2":
 		# FOREST means it will search the entire submission
@@ -183,7 +191,8 @@ def check_awardee(r,comment,orig_awardee):
 def check_length(data,body,token_found):
 		if data["check_length"] == "1":
 			logging.debug("Checking Comment Length")
-			return len(body) < int(data["min_length"]) + len(token_found)
+			if token_found != "strict":
+				return len(body) < int(data["min_length"]) + len(token_found)
 		elif data["check_length"] == "0":
 			logging.debug("Check Comment Length is disabled.")
 
