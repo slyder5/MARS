@@ -47,8 +47,12 @@ def process_comments(data,r,sub_comments):
 					start_checks(data,r,comment,token_found)
 				else:
 					logging.info("No token found.")
+			else:
+				logging.debug("Comment found was my own.")
 			if comment_author == str(comment.submission.author).lower():
-				print("Change Flair")
+				print("Placeholder: Change Submission Flair")
+		else:
+			logging.debug("This comment was removed by a mod and has not been scanned.")
 
 # Starts Checks
 def start_checks(data,r,token_comment,token_found):
@@ -62,14 +66,12 @@ def start_checks(data,r,token_comment,token_found):
 			logging.info("User replied to me")
 		elif awardee == awarder: # Prevents reply to self
 			logging.info("User replied to self")
-		elif check_already_replied(data["msg_confirmation"],
-									token_comment.replies,running_username):
+		elif check_already_replied(data["msg_confirmation"],token_comment.replies,running_username):
 			logging.info("Already Confirmed")
 		else:
-			optional_checks(data,r,token_comment,awarder,awardee_comment,
-							awardee,token_found)
+			optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found)
 	else:
-		logging.info("Unabled to award token to deleted comment")
+		logging.info("Unable to award token to deleted comment")
 
 # Splits comments into lines for more thorough processing
 def split_comment(body):
@@ -96,20 +98,16 @@ def check_already_replied(msg,replies,running_username):
 					return True
 
 # Optional checks based on configuration
-def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,
-					token_found):
+def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found):
 	logging.debug("Optional Checks")
-	if check_awardee_not_author(data["check_ana"],
-								token_comment.submission.author,
-								awardee):
+	if check_awardee_not_author(data["check_ana"],token_comment.submission.author,awardee):
 		print("\nBad recipient\n")
-	elif check_awarder_to_awardee_history(data,r,awardee_comment,awardee,
-										  token_comment,awarder):
+	elif check_awarder_to_awardee_history(data,r,awardee_comment,awardee,token_comment,awarder):
 		print("\nAlready awarded this thread\n")
 	elif check_length(data,token_comment.body,token_found):
 		print("\nInsufficient length\n")
 	else:
-		print("Award Token")
+		print("Placeholder: Award Token")
 
 # Check to ensure submission author is not receiving a token
 def check_awardee_not_author(check_ana,sub_author,awardee):
@@ -120,8 +118,7 @@ def check_awardee_not_author(check_ana,sub_author,awardee):
 		logging.debug("Check Recipient Not Author is disabled.")
 
 # Checks to see if the awarder has already awarded the awardee in this thread
-def check_awarder_to_awardee_history(data,r,awardee_comment,awardee,
-									 token_comment,awarder):
+def check_awarder_to_awardee_history(data,r,awardee_comment,awardee,token_comment,awarder):
 	if data["check_history"] == "1":
 		# TREE means it will only search the root comment and all replies
 		logging.debug("Checking Awarder to Awardee History - TREE")
@@ -134,21 +131,20 @@ def check_awarder_to_awardee_history(data,r,awardee_comment,awardee,
 	elif data["check_history"] == "2":
 		# FOREST means it will search the entire submission
 		logging.debug("Checking Awarder to Awardee History - FOREST")
-		print("\nCheck entire submission\n")
+		print("\nPlaceholder: Check entire submission\n")
 	elif data["check_history"] == "0":
 		logging.debug("Check Awarder to Awardee History is disabled.")
 
 # Iterates through the comment tree - VERY expensive
 def iterate_replies(data,r,comment,awardee,awarder):
-	iterate = "Yes"
 	logging.debug("Iterating Replies")
+	iterate = "Yes"
 	msg_confirmation = data["msg_confirmation"]
 	running_username = str(data["running_username"]).lower()
 	comments = r.get_submission(comment.permalink).comments
 	for comment in comments:
 		if iterate == "Yes":
-			if check_already_replied(msg_confirmation,comment.replies,
-									 running_username):
+			if check_already_replied(msg_confirmation,comment.replies,running_username):
 				if check_awarder(r,comment,awarder):
 					if check_awardee(r,comment,awardee):
 						iterate = "No"
@@ -169,8 +165,6 @@ def check_awarder(r,comment,orig_awarder):
 		awarder = str(comment.author.name).lower()
 	else:
 		awarder = "[deleted]"
-	logging.debug("Awarder: %s" % awarder)
-	logging.debug("Original Awarder: %s" % orig_awarder)
 	if awarder == orig_awarder:
 		return True
 
@@ -182,18 +176,16 @@ def check_awardee(r,comment,orig_awardee):
 		awardee = str(awardee_comment.author.name).lower()
 	else:
 		awardee = "[deleted]"
-	logging.debug("Awardee: %s" % awardee)
-	logging.debug("Comment Author: %s" % awardee)
 	if awardee == orig_awardee:
 		return True
 
 # Check length of comment against minimum requirement
 def check_length(data,body,token_found):
-		if data["check_length"] == "1":
-			logging.debug("Checking Comment Length")
-			if token_found != "strict":
-				return len(body) < int(data["min_length"]) + len(token_found)
-		elif data["check_length"] == "0":
-			logging.debug("Check Comment Length is disabled.")
+	if data["check_length"] == "1":
+		logging.debug("Checking Comment Length")
+		if token_found != "strict":
+			return len(body) < int(data["min_length"]) + len(token_found)
+	elif data["check_length"] == "0":
+		logging.debug("Check Comment Length is disabled.")
 
 # EOF
