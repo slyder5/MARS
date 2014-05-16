@@ -66,7 +66,7 @@ def start_checks(data,r,token_comment,token_found):
 			logging.info("User replied to me")
 		elif awardee == awarder: # Prevents reply to self
 			logging.info("User replied to self")
-		elif check_already_replied(data["msg_confirmation"],token_comment.replies,running_username):
+		elif check_already_replied(data,data["msg_confirmation"],token_comment.replies,running_username):
 			logging.info("Already Confirmed")
 		else:
 			optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found)
@@ -89,13 +89,22 @@ def search_line(data_token,lines):
 					return token
 
 # Check to make sure I haven't already replied
-def check_already_replied(msg,replies,running_username):
+def check_already_replied(data,msg,replies,running_username):
 	logging.debug("Checking Already Replied")
 	for reply in replies:
 		if reply.author:
 			if str(reply.author.name).lower() == running_username:
-				if str(reply.body).lower() == str(msg).lower():
+				body = str(reply.body).lower()
+				if body == str(msg).lower():
 					return True
+				elif body == str(data["msg_confirmation"]).lower():
+					return "confirm"
+				elif body == str(data["error_bad_recipient"]).lower():
+					return "error"
+				elif body == str(data["error_submission_history"]).lower():
+					return "error"
+				else:
+					return reply
 
 # Optional checks based on configuration
 def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found):
@@ -131,7 +140,7 @@ def check_awarder_to_awardee_history(data,r,awardee_comment,awardee,token_commen
 	elif data["check_history"] == "2":
 		# FOREST means it will search the entire submission
 		logging.debug("Checking Awarder to Awardee History - FOREST")
-		print("\nPlaceholder: Check entire submission\n")
+		print("Placeholder: Check entire submission")
 	elif data["check_history"] == "0":
 		logging.debug("Check Awarder to Awardee History is disabled.")
 
@@ -144,7 +153,7 @@ def iterate_replies(data,r,comment,awardee,awarder):
 	comments = r.get_submission(comment.permalink).comments
 	for comment in comments:
 		if iterate == "Yes":
-			if check_already_replied(msg_confirmation,comment.replies,running_username):
+			if check_already_replied(data,msg_confirmation,comment.replies,running_username):
 				if check_awarder(r,comment,awarder):
 					if check_awardee(r,comment,awardee):
 						iterate = "No"

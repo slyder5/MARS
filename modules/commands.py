@@ -61,16 +61,31 @@ def remind(data,r,mail):
 	reminder = True
 	lines = separate_mail(mail.body)
 	for line in lines:
-		print line
 		links = r.get_submission(line).comments
 		for comment in links:
-			if comments.check_already_replied(data["msg_remind"],comment.replies,str(data["running_username"]).lower()):
+			is_reply = comments.check_already_replied(data,data["msg_remind"],comment.replies,str(data["running_username"]).lower())
+			if is_reply == True:
 				logging.info("Reminder found: Ignoring request.")
 				reminder = False
+			elif is_reply == "confirm":
+				logging.info("Found a confirmation. Reminder not needed.")
+				reminder = False
+			elif is_reply == "error":
+				logging.info("Found an error. Reminder not needed.")
+				reminder = False
+			elif is_reply:
+				logging.info("Found an old comment I can edit.")
+				reminder = False
+				is_reply.edit(data["msg_remind"])
+				logging.info("Edited comment and left the reminder.")
 	if reminder:
 		for comment in links:
-			comment.reply(data["msg_remind"])
-			logging.info("User has been sent a reminder.")
+			if comment.author:
+				if str(comment.author.name).lower() != str(data["running_username"]).lower():
+					logging.info("User has been sent a reminder.")
+					comment.reply(data["msg_remind"])
+				else:
+					logging.info("Silly person tried to remind me how to do my job.")
 
 # Checks comment for token - Same functionality as if bot found the token itself
 def add(data,r,mail):
@@ -109,22 +124,27 @@ def reset(data):
 # Removes token from flair, wiki, scoreboard, and removes confirmation comment
 def delete(data,r,mail):
 	logging.warning("Delete Command")
-	print("Placeholder: Delete token from user")
+	lines = separate_mail(mail.body)
+	for line in lines:
+		links = r.get_submission(line).comments
+		
+	comments.check_already_replied(data,data["msg_confirmation"],
 
 # Stops bot
 def stop(data,r,mail):
-	logging.warning(data["msg_stop_warning"])
-	r.send_message("/r/" + data["running_subreddit"],data["msg_stop_subject"],data["msg_stop_body"])
+	logging.warning(data["stop_warning"])
+	r.send_message("/r/" + data["running_subreddit"],data["stop_subject"],data["stop_body"])
 	mail.mark_as_read()
 	raise SystemExit(0)
 
-# Seperates the mail for processing
+# Separates the mail for processing
 def separate_mail(body):
 	logging.debug("Separating Mail")
 	return body.split("\n")
 
 # Reads the comment replies
 def read_comment_reply(data,r,mail):
+	logging.debug("Reading the reply to my comment.")
 	print("Placeholder: Read comment reply")
 
 # EOF
