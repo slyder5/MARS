@@ -96,15 +96,15 @@ def check_already_replied(data,msg,replies,running_username):
 			if str(reply.author.name).lower() == running_username:
 				body = str(reply.body).lower()
 				if body == str(msg).lower():
-					return True
+					return ("match",reply)
 				elif body == str(data["msg_confirmation"]).lower():
-					return "confirm"
+					return ("confirm",reply)
 				elif body == str(data["error_bad_recipient"]).lower():
-					return "error"
+					return ("error",reply)
 				elif body == str(data["error_submission_history"]).lower():
-					return "error"
+					return ("error",reply)
 				else:
-					return reply
+					return ("other",reply)
 
 # Optional checks based on configuration
 def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found):

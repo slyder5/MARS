@@ -63,17 +63,18 @@ def remind(data,r,mail):
 	for line in lines:
 		links = r.get_submission(line).comments
 		for comment in links:
-			is_reply = comments.check_already_replied(data,data["msg_remind"],comment.replies,str(data["running_username"]).lower())
-			if is_reply == True:
+			is_match,is_reply = comments.check_already_replied(data,data["msg_remind"],comment.replies,
+					str(data["running_username"]).lower())
+			if is_match == "match":
 				logging.info("Reminder found: Ignoring request.")
 				reminder = False
-			elif is_reply == "confirm":
+			elif is_match == "confirm":
 				logging.info("Found a confirmation. Reminder not needed.")
 				reminder = False
-			elif is_reply == "error":
+			elif is_match == "error":
 				logging.info("Found an error. Reminder not needed.")
 				reminder = False
-			elif is_reply:
+			elif is_match:
 				logging.info("Found an old comment I can edit.")
 				reminder = False
 				is_reply.edit(data["msg_remind"])
@@ -124,11 +125,17 @@ def reset(data):
 # Removes token from flair, wiki, scoreboard, and removes confirmation comment
 def delete(data,r,mail):
 	logging.warning("Delete Command")
+	match_options = ["match","confirm"]
 	lines = separate_mail(mail.body)
 	for line in lines:
 		links = r.get_submission(line).comments
-		
-	comments.check_already_replied(data,data["msg_confirmation"],
+		for comment in links:
+			is_match,is_reply = comments.check_already_replied(data,data["msg_confirmation"],comment.replies,
+					str(data["running_username"]).lower())
+			if is_match in match_options:
+				is_reply.delete()
+			else:
+				logging.warning("No token to delete.")
 
 # Stops bot
 def stop(data,r,mail):
