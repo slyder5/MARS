@@ -115,7 +115,10 @@ def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_f
 	elif check_length(data,token_comment.body,token_found):
 		print("\nInsufficient length\n")
 	else:
-		print("Placeholder: Award Token")
+		logging.debug("Token Valid - Beginning Award Process")
+		token_comment.reply(data["msg_confirmation"] % (awardee,data["running_subreddit"],awardee))
+		logging.info("Confirmation Message Sent")
+		print("Placeholder: Trigger flair increment")
 
 # Check to ensure submission author is not receiving a token
 def check_awardee_not_author(check_ana,sub_author,awardee):
