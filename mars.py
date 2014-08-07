@@ -16,6 +16,11 @@ from logging.handlers import TimedRotatingFileHandler
 # Reads in configuration file
 data = config.read_json()
 
+# First Time Setup
+if data["initialize"]:
+	if data["initialize"] == 0:
+		UI.start(data)
+
 # Checks environment settings
 data = config.check_environment(data)
 
