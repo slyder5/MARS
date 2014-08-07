@@ -134,6 +134,7 @@ def delete(data,r,mail):
 									str(data["running_username"]).lower())
 			if is_match in match_options:
 				is_reply.delete()
+				print("Placeholder: Remove Token")
 			else:
 				logging.warning("No token to delete.")
 
