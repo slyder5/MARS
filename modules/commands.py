@@ -113,7 +113,7 @@ def force_add(data,r,mail):
 	for line in lines:
 		links = r.get_submission(line).comments
 		for comment in links:
-			token_found = "strict"
+			token_found = "force"
 			comments.start_checks(data,r,comment,token_found)
 
 # Resets last scanned comment
