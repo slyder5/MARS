@@ -37,9 +37,8 @@ def process_comments(data,r,sub_comments):
 		if not comment.banned_by: # Ignores removed comments
 			comment_author = str(comment.author.name).lower()
 			if comment_author != running_username: # Ignore my own comments
-				logging.info("Searching comment by: %s\n%s" % (
-					comment.author.name	if comment.author else "[deleted]",
-					comment.permalink)) # Shows redditor and permalink
+				logging.info("Searching comment by: %s\n%s" % (comment.author.name
+					if comment.author else "[deleted]",comment.permalink)) # Shows redditor and permalink
 				lines = split_comment(comment.body) # Gets comment lines
 				token_found = search_line(data["token"],lines) # Checks for match
 				if token_found: # Starts checks when a token is found
@@ -192,7 +191,7 @@ def check_awardee(r,comment,orig_awardee):
 def check_length(data,body,token_found):
 	if data["check_length"] == "1":
 		logging.debug("Checking Comment Length")
-		if token_found != "strict":
+		if token_found != "force":
 			return len(body) < int(data["min_length"]) + len(token_found)
 	elif data["check_length"] == "0":
 		logging.debug("Check Comment Length is disabled.")
