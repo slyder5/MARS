@@ -48,22 +48,13 @@ def mars():
 	print "MARS - Modular Automated Reddit Script\n"
 
 	# Account Module
-
 	r = account.start(data)
 	
 	# Commands Module
-	
-	if data["m_commands"] == "1":
-		commands.start(data,r)
-	elif data["m_commands"] == "0":
-		print "This feature not yet implemented."
+	commands.start(data,r)
 
 	# Comments Module
-
-	if data["m_comments"] == "1":
-		comments.start(data,r)
-	elif data["m_comments"] == "0":
-		print "This feature not yet implemented."
+	comments.start(data,r)
 
 # Run #
 #######
