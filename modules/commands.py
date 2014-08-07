@@ -64,7 +64,7 @@ def remind(data,r,mail):
 		links = r.get_submission(line).comments
 		for comment in links:
 			is_match,is_reply = comments.check_already_replied(data,data["msg_remind"],comment.replies,
-					str(data["running_username"]).lower())
+																str(data["running_username"]).lower())
 			if is_match == "match":
 				logging.info("Reminder found: Ignoring request.")
 				reminder = False
@@ -131,7 +131,7 @@ def delete(data,r,mail):
 		links = r.get_submission(line).comments
 		for comment in links:
 			is_match,is_reply = comments.check_already_replied(data,data["msg_confirmation"],comment.replies,
-					str(data["running_username"]).lower())
+																str(data["running_username"]).lower())
 			if is_match in match_options:
 				is_reply.delete()
 			else:
