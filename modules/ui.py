@@ -9,7 +9,7 @@ from settings import *
 # Functions
 
 def start(data):
-	print("Welcome to MARS!\n\nThis appears to be your first time running MARS. If this is incorrect or if you have already configured your config.json file, please change the initialize variable to 1 and restart MARS.\n\n")
+	print("\nWelcome to MARS!\n\nThis appears to be your first time running MARS. If this is incorrect or if you have already configured your config.json file, please change the initialize variable to 1 and restart MARS.\n\n")
 	prod_setup(data)
 	data["initialize"] = "1"
 	condition = True
