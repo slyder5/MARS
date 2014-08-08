@@ -20,6 +20,16 @@ data = config.read_json()
 if data["initialize"]:
 	if data["initialize"] == 0:
 		ui.start(data)
+	else:
+		condition = True
+		while condition:
+			reset = raw_input("Do you wish to run setup (yes/no)? ")
+			if reset == "yes":
+				ui.start(data)
+			elif reset == "no":
+				pass
+			else:
+				print("Please type yes or no.\n")
 else:
 	ui.start(data)
 
