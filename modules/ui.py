@@ -2,6 +2,7 @@
 ##################
 
 # Import
+import * from settings
 
 # Variables
 
@@ -54,4 +55,18 @@ def test_setup(data):
 				data["test_password"] = raw_input("What is the test password? ")
 			else:
 				print("You did not enter a valid answer.\n")
-		
+		print("Test Subreddit: " + data["test_subreddit"])
+		print("Test Username: " + data["test_username"])
+		print("Test Password: " + data["test_password"])
+		condition = True
+		while condition:
+			verify = raw_input("Does the above information look correct (yes/no)? ")
+			if verify == "yes":
+				condition = False
+				return
+			elif verify == "no":
+				condition = False
+				test_setup(data)
+			else:
+				print("You did not enter a valid answer.\n")
+		config.write_json(data)
