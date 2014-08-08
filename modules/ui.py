@@ -41,7 +41,7 @@ def prod_setup(data):
 			condition = False
 			prod_setup(data)
 		else:
-			print("Please type yes or no.\n")
+			print("Please type yes or no.")
 	config.write_json(data)
 
 def test_setup(data):
@@ -58,7 +58,7 @@ def test_setup(data):
 				data["test_password"] = raw_input("What is the test password? ")
 				condition = False
 			else:
-				print("You did not enter a valid answer.\n")
+				print("Please type yes or no.")
 		print("\nTest Subreddit: " + data["test_subreddit"])
 		print("Test Username: " + data["test_username"])
 		print("Test Password: " + data["test_password"])
@@ -72,4 +72,4 @@ def test_setup(data):
 				condition = False
 				test_setup(data)
 			else:
-				print("Please type yes or no.\n")
+				print("Please type yes or no.")
