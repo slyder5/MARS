@@ -19,7 +19,9 @@ data = config.read_json()
 # First Time Setup
 if data["initialize"]:
 	if data["initialize"] == 0:
-		UI.start(data)
+		ui.start(data)
+else:
+	ui.start(data)
 
 # Checks environment settings
 data = config.check_environment(data)
