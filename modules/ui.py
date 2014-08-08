@@ -2,7 +2,7 @@
 ##################
 
 # Import
-import * from settings
+from settings import *
 
 # Variables
 
