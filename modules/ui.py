@@ -22,7 +22,7 @@ def start(data):
 			print("Alright.")
 			condition = False
 		else:
-			print("Please type yes or no.\n")
+			print("Please type yes or no.")
 
 def prod_setup(data):
 	data["prod_subreddit"] = raw_input("On what subreddit will MARS run? ")
