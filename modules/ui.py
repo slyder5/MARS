@@ -11,6 +11,7 @@ from settings import *
 def start(data):
 	print("Welcome to MARS!\n\nThis appears to be your first time running MARS. If this is incorrect or if you have already configured your config.json file, please change the initialize variable to 1 and restart MARS.\n\n")
 	prod_setup(data)
+	data["initialize"] = "1"
 	condition = True
 	while condition:
 		test = raw_input("Do you have a test environment you wish to run MARS in (yes/no)? ")
@@ -21,7 +22,7 @@ def start(data):
 			print("Alright.")
 			condition = False
 		else:
-			print("You did not enter a valid answer.\n")
+			print("Please type yes or no.\n")
 
 def prod_setup(data):
 	data["prod_subreddit"] = raw_input("On what subreddit will MARS run? ")
@@ -40,7 +41,8 @@ def prod_setup(data):
 			condition = False
 			prod_setup(data)
 		else:
-			print("You did not enter a valid answer.\n")
+			print("Please type yes or no.\n")
+	config.write_json(data)
 
 def test_setup(data):
 		data["test_subreddit"] = raw_input("What is the test subreddit's name? ")
@@ -70,5 +72,4 @@ def test_setup(data):
 				condition = False
 				test_setup(data)
 			else:
-				print("You did not enter a valid answer.\n")
-		config.write_json(data)
+				print("Please type yes or no.\n")
