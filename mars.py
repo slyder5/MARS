@@ -67,7 +67,7 @@ def mars(data):
 	# Checks environment settings
 	condition = True
 	while condition:
-		env = raw_input("Do you wish to run the script in prod or test?")
+		env = raw_input("Do you wish to run the script in prod or test? ")
 		if env == "prod" or env == "test":
 			data["environment"] = env
 			condition = False
