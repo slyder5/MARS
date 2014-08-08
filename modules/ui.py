@@ -9,11 +9,11 @@ from settings import *
 # Functions
 
 def start(data):
-	print("Welcome to MARS! This appears to be your first time running MARS. If this is incorrect or if you have already configured your config.json file, please change the initialize variable to 1 and restart MARS.\n\n")
+	print("Welcome to MARS!\n\nThis appears to be your first time running MARS. If this is incorrect or if you have already configured your config.json file, please change the initialize variable to 1 and restart MARS.\n\n")
 	prod_setup(data)
 	condition = True
 	while condition:
-		test = raw_input("Do you have a test environment you wish to run MARS in (yes/no) ?")
+		test = raw_input("Do you have a test environment you wish to run MARS in (yes/no)? ")
 		if test == "yes":
 			test_setup(data)
 			condition = False
@@ -50,9 +50,11 @@ def test_setup(data):
 			if prod2test == "yes":
 				data["test_username"] == data["prod_username"]
 				data["test_password"] == data["prod_password"]
+				condition = False
 			elif prod2test == "no":
 				data["test_username"] = raw_input("What is the test username? ")
 				data["test_password"] = raw_input("What is the test password? ")
+				condition = False
 			else:
 				print("You did not enter a valid answer.\n")
 		print("Test Subreddit: " + data["test_subreddit"])
