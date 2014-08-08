@@ -25,9 +25,10 @@ if data["initialize"]:
 		while condition:
 			reset = raw_input("Do you wish to run setup (yes/no)? ")
 			if reset == "yes":
+				condition = False
 				ui.start(data)
 			elif reset == "no":
-				pass
+				condition = False
 			else:
 				print("Please type yes or no.\n")
 else:
