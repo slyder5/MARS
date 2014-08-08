@@ -41,7 +41,7 @@ rootLogger.addHandler(consoleHandler)
 # Functions #
 #############
 
-def mars():
+def mars(data):
 	# Screen Formatting
 	os.system("cls" if os.name == "nt" else "clear")
 	print "MARS - Modular Automated Reddit Script\n"
@@ -87,6 +87,6 @@ def mars():
 # Run #
 #######
 
-mars()
+mars(data)
 
 # EOF
