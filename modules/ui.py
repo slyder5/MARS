@@ -19,7 +19,9 @@ def start(data):
 			test_setup(data)
 			condition = False
 		elif test == "no":
-			print("Alright.")
+			data["test_subreddit"] = data["prod_subreddit"]
+			data["test_username"] = data["prod_username"]
+			data["test_password"] = data["prod_password"]
 			condition = False
 		else:
 			print("Please type yes or no.")
