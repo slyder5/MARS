@@ -19,7 +19,7 @@ def get_flair(data,r,awardee):
   logging.debug("Getting the awardee's flair")
   awardee_flair = r.get_flair(data["running_subreddit"],awardee)
   if awardee_flair["flair_text"] == None:
-    awardee_flair["flair_text"] = "1∆"
+    awardee_flair["flair_text"] = "1" + u'\2206'
     print awardee_flair["flair_text"]
     return awardee_flair
 
