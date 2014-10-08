@@ -8,6 +8,7 @@
 
 import praw
 import logging
+import re
 
 # Functions #
 #############
