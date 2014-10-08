@@ -67,7 +67,8 @@ def start_checks(data,r,token_comment,token_found):
 		elif awardee == awarder: # Prevents reply to self
 			logging.info("User replied to self")
 		elif check_already_replied(data,data["msg_confirmation"],token_comment.replies,running_username):
-			logging.info("Already Confirmed - Test")
+			logging.debug(data["msg_confirmation"],
+			logging.info("Already Confirmed")
 		else:
 			optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found)
 	else:
@@ -96,18 +97,19 @@ def check_already_replied(data,msg,replies,running_username):
 			if str(reply.author.name).lower() == running_username:
 				body = str(reply.body).lower()
 				if body == str(msg).lower():
-					logging.debug(body)
-					logging.debug(str(msg).lower())
+					logging.debug("Reply message to message match")
 					return ("match",reply)
 				elif body == str(data["msg_confirmation"]).lower():
-					logging.debug(body)
-					logging.debug(str(msg).lower())
+					logging.debug("Message confirmation match")
 					return ("confirm",reply)
 				elif body == str(data["error_bad_recipient"]).lower():
+					logging.debug("Error bad recipient match")
 					return ("error",reply)
 				elif body == str(data["error_submission_history"]).lower():
+					logging.debug("Error submission history match")
 					return ("error",reply)
 				else:
+					logging.debug("Unspecified match")
 					return ("other",reply)
 
 # Optional checks based on configuration
