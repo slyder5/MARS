@@ -66,7 +66,7 @@ def start_checks(data,r,token_comment,token_found):
 			logging.info("User replied to me")
 		elif awardee == awarder: # Prevents reply to self
 			logging.info("User replied to self")
-		elif check_already_replied(data,data["msg_confirmation"],token_comment.replies,running_username):
+		elif check_already_replied(data,data["msg_confirmation"],token_comment.replies,running_username) == :
 			logging.info("Already Confirmed")
 		else:
 			optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found)
@@ -91,6 +91,16 @@ def search_line(data_token,lines):
 # Check to make sure I haven't already replied
 def check_already_replied(data,msg,replies,running_username):
 	logging.debug("Checking Already Replied")
+	for reply in replies:
+		if reply.author:
+			if str(reply.author.name).lower() == running_username:
+				if str(reply.body).lower() == str(msg).lower():
+					return True
+					
+
+# Check to make sure I haven't already replied (remind version)
+def remind_already_replied(data,msg,replies,running_username):
+	logging.debug("Checking Already Replied - Remind Version")
 	for reply in replies:
 		if reply.author:
 			if str(reply.author.name).lower() == running_username:
