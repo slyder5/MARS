@@ -30,7 +30,7 @@ def get_flair(data,r,awardee):
     flair_count = int(flair_count.group(0))
     logging.debug(flair_count)
     flair_count = flair_count + 1
-    awardee_flair["flair_text"] = flair_count + "∆"
+    awardee_flair["flair_text"] = str(flair_count) + "∆"
     logging.debug(awardee_flair["flair_text"])
     return awardee_flair
 
