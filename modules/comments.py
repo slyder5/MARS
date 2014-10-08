@@ -7,6 +7,7 @@
 import re
 import logging
 import token
+import wiki
 from pprint import pprint 
 
 # Functions #
