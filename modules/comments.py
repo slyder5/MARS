@@ -96,8 +96,12 @@ def check_already_replied(data,msg,replies,running_username):
 			if str(reply.author.name).lower() == running_username:
 				body = str(reply.body).lower()
 				if body == str(msg).lower():
+					logging.debug(body)
+					logging.debug(str(msg).lower())
 					return ("match",reply)
 				elif body == str(data["msg_confirmation"]).lower():
+					logging.debug(body)
+					logging.debug(str(msg).lower())
 					return ("confirm",reply)
 				elif body == str(data["error_bad_recipient"]).lower():
 					return ("error",reply)
