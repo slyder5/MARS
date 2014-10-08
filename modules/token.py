@@ -21,11 +21,16 @@ def get_flair(data,r,awardee):
   logging.debug("Getting the awardee's flair")
   awardee_flair = r.get_flair(data["running_subreddit"],awardee)
   if awardee_flair["flair_text"] == None:
-    awardee_flair["flair_text"] = "1∆",
-    print awardee_flair["flair_text"]
+    awardee_flair["flair_text"] = "1∆"
+    logging.debug(awardee_flair["flair_text"])
     return awardee_flair
   else:
-    print("This user has more than no flair.")
+    flair_count = re.search('(\d+)', awardee_flair["flair_text"])
+    logging.debug(flair_count)
+    flair_count = flair_count + 1
+    awardee_flair["flair_text"] = flair_count + "∆"
+    logging.debug(awardee_flair["flair_text"])
+    return awardee_flair
 
 def set_flair(data,r,awardee,awardee_flair):
   logging.debug("Setting the awardee's new flair")
