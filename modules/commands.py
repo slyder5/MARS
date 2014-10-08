@@ -153,6 +153,9 @@ def separate_mail(body):
 # Reads the comment replies
 def read_comment_reply(data,r,mail):
 	logging.debug("Reading the reply to my comment.")
-	print("Placeholder: Read comment reply")
+	bots_comment = r.get_info(thing_id=mail.parent_id)
+	orig_comment = r.get_info(thing_id=bots_comment.parent_id)
+	mail.body = orig_comment.permalink
+	add(data,r,mail)
 
 # EOF
