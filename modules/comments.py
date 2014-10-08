@@ -132,9 +132,10 @@ def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_f
 		print("\nInsufficient length\n")
 	else:
 		logging.debug("Token Valid - Beginning Award Process")
-		token.start_increment(data,r,awardee)
+		flair_count = token.start_increment(data,r,awardee)
 		token_comment.reply(data["msg_confirmation"] % (awardee,data["running_subreddit"],awardee))
-		logging.info("Confirmation Message Sent")
+		logging.debug("Confirmation Message Sent - Beginning Wiki Update")
+		wiki.start(data,r,token_comment,awarder,awardee,flair_count)
 
 # Check to ensure submission author is not receiving a token
 def check_awardee_not_author(check_ana,sub_author,awardee):
