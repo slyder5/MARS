@@ -27,6 +27,7 @@ def get_flair(data,r,awardee):
     return awardee_flair
   else:
     flair_count = re.search('(\d+)', awardee_flair["flair_text"])
+    flair_count = flair_count.group(0)
     logging.debug(flair_count)
     flair_count = flair_count + 1
     awardee_flair["flair_text"] = flair_count + "∆"
