@@ -16,7 +16,7 @@ import re
 def start_increment(data,r,awardee):
   logging.debug("Starting Module: Token")
   awardee_flair,flair_count = get_flair(data,r,awardee)
-  logging.debug("Awardee's flair: " + awardee_flair)
+  logging.debug("Awardee's flair: " + awardee_flair["flair_text"])
   set_flair(data,r,awardee,awardee_flair)
   return flair_count
 
