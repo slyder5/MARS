@@ -19,6 +19,7 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
   logging.debug("Starting Module: Wiki")
   submission_url = token_comment.submission.permalink
   submission_title = token_comment.submission.title
+  today = datetime.date.today()
   try:
     user_wiki_page = r.get_wiki_page(data["running_subreddit"],"user/" + awardee)
     logging.debug("Found existing wiki page")
