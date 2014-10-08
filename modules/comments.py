@@ -67,7 +67,7 @@ def start_checks(data,r,token_comment,token_found):
 		elif awardee == awarder: # Prevents reply to self
 			logging.info("User replied to self")
 		elif check_already_replied(data,data["msg_confirmation"],token_comment.replies,running_username):
-			logging.info("Already Confirmed")
+			logging.info("Already Confirmed - Test")
 		else:
 			optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found)
 	else:
