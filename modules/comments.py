@@ -105,16 +105,16 @@ def remind_already_replied(data,msg,replies,running_username):
 		if reply.author:
 			if str(reply.author.name).lower() == running_username:
 				body = str(reply.body).lower()
-				if body == str(msg).lower():
+				if str(msg).lower()[0:15] in body:
 					logging.debug("Reply message to message match")
 					return ("match",reply)
-				elif body == str(data["msg_confirmation"]).lower():
+				elif str(data["msg_confirmation"]).lower()[0:15] in body:
 					logging.debug("Message confirmation match")
 					return ("confirm",reply)
-				elif body == str(data["error_bad_recipient"]).lower():
+				elif str(data["error_bad_recipient"]).lower()[0:15] in body:
 					logging.debug("Error bad recipient match")
 					return ("error",reply)
-				elif body == str(data["error_submission_history"]).lower():
+				elif str(data["error_submission_history"]).lower()[0:15] in body:
 					logging.debug("Error submission history match")
 					return ("error",reply)
 				else:
