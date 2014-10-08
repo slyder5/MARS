@@ -15,9 +15,10 @@ import re
 
 def start_increment(data,r,awardee):
   logging.debug("Starting Module: Token")
-  awardee_flair = get_flair(data,r,awardee)
+  awardee_flair,flair_count = get_flair(data,r,awardee)
   logging.debug("Awardee's flair: " + awardee_flair)
   set_flair(data,r,awardee,awardee_flair)
+  return flair_count
 
 def get_flair(data,r,awardee):
   logging.debug("Getting the awardee's flair")
@@ -25,13 +26,13 @@ def get_flair(data,r,awardee):
   if awardee_flair["flair_text"] == None:
     awardee_flair["flair_text"] = "1∆"
     logging.debug(awardee_flair["flair_text"])
-    return awardee_flair
+    return (awardee_flair,1)
   else:
     flair_count = re.search('(\d+)', awardee_flair["flair_text"])
     flair_count = int(flair_count.group(0))
     flair_count = flair_count + 1
     awardee_flair["flair_text"] = str(flair_count) + "∆"
-    return awardee_flair
+    return (awardee_flair, flair_count)
 
 def set_flair(data,r,awardee,awardee_flair):
   logging.debug("Setting the awardee's new flair")
