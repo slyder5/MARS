@@ -155,6 +155,7 @@ def read_comment_reply(data,r,mail):
 	logging.debug("Reading the reply to my comment.")
 	bots_comment = r.get_info(thing_id=mail.parent_id)
 	orig_comment = r.get_info(thing_id=bots_comment.parent_id)
-	comments.process_comments(data,r,orig_comment.permalink)
+	link = r.get_submission(orig_comment.permalink).comments
+	comments.process_comments(data,r,link)
 
 # EOF
