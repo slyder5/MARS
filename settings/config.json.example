@@ -13,6 +13,7 @@
 	"min_length": "",
 	"msg_confirmation": "",
 	"msg_remind": "",
+	"msg_removal": "",
 	"prod_password": "",
 	"prod_subreddit": "",
 	"prod_username": "",
