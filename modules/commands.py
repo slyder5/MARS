@@ -51,7 +51,7 @@ def read_mail(data,r,mail):
 		elif command == "reset": # Resets bot's scanned comments
 			reset(data)
 		elif command == "remove": # Removes token from user
-			remove(data,r,mail)
+			rem(data,r,mail)
 		elif command == "stop": # Stops bot
 			stop(data,r,mail)
 
@@ -123,7 +123,7 @@ def reset(data):
 	config.write_json(data)
 
 # Removes token from flair, wiki, scoreboard, and removes confirmation comment
-def remove(data,r,mail):
+def rem(data,r,mail):
 	logging.warning("Remove Command")
 	lines = separate_mail(mail.body)
 	username = str(data["running_username"]).lower()
