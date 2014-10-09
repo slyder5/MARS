@@ -50,8 +50,8 @@ def read_mail(data,r,mail):
 			force_add(data,r,mail)
 		elif command == "reset": # Resets bot's scanned comments
 			reset(data)
-		elif command == "delete": # Deletes token from user
-			delete(data,r,mail)
+		elif command == "remove": # Removes token from user
+			remove(data,r,mail)
 		elif command == "stop": # Stops bot
 			stop(data,r,mail)
 
@@ -66,7 +66,7 @@ def remind(data,r,mail):
 			is_match,is_reply = comments.remind_already_replied(data,data["msg_remind"],comment.replies,
 									str(data["running_username"]).lower())
 			if is_match == "match":
-				logging.info("Reminder found: Ignoring request.")
+				logging.info("Found reminder. Ignoring request.")
 				reminder = False
 			elif is_match == "confirm":
 				logging.info("Found a confirmation. Reminder not needed.")
@@ -123,20 +123,27 @@ def reset(data):
 	config.write_json(data)
 
 # Removes token from flair, wiki, scoreboard, and removes confirmation comment
-def delete(data,r,mail):
-	logging.warning("Delete Command")
-	match_options = ["match","confirm"]
+def remove(data,r,mail):
+	logging.warning("Remove Command")
 	lines = separate_mail(mail.body)
+	username = str(data["running_username"]).lower()
 	for line in lines:
 		links = r.get_submission(line).comments
 		for comment in links:
-			is_match,is_reply = comments.check_already_replied(data,data["msg_confirmation"],comment.replies,
-									str(data["running_username"]).lower())
-			if is_match in match_options:
-				is_reply.delete()
-				print("Placeholder: Remove Token")
+			if comments.check_already_replied(data,data["msg_confirmation"],comment.replies,username)
+        for reply in comment.replies:
+          if reply.author:
+            if str(reply.author.name).lower() == username:
+              reply.delete()
+        awardee_comment = r.get_info(thing_id=comment.parent_id)
+        if awardee_comment.author:
+          awardee = str(awardee_comment.author.name).lower()
+				  flair_count = token.start_decrement(data,r,awardee)
+				comment.reply(data["msg_removal"] % (data["running_subreddit"],data["running_username"])
+				comment.remove(spam=False)
+				print("Placeholder: Remove text from wiki and scoreboard")
 			else:
-				logging.warning("No token to delete.")
+				logging.warning("No token to remove.")
 
 # Stops bot
 def stop(data,r,mail):
