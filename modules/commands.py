@@ -165,7 +165,9 @@ def read_comment_reply(data,r,mail):
 	orig_comment = r.get_info(thing_id=bots_comment.parent_id)
 	link = r.get_submission(orig_comment.permalink).comments
 	comments.process_comments(data,r,link)
-	if not comments.check_already_replied(data,data["msg_confirmation"],bots_comment,data["running_username"]):
+	print str(data["msg_confirmation"].lower()[0:15]
+	print str(bots_comment.body).lower()
+	if str(data["msg_confirmation"].lower()[0:15] in str(bots_comment.body).lower()):
 		bots_comment.delete()
 		
 
