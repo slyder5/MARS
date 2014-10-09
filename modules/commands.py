@@ -130,7 +130,7 @@ def remove(data,r,mail):
 	for line in lines:
 		links = r.get_submission(line).comments
 		for comment in links:
-			if comments.check_already_replied(data,data["msg_confirmation"],comment.replies,username)
+			if comments.check_already_replied(data,data["msg_confirmation"],comment.replies,username):
         for reply in comment.replies:
           if reply.author:
             if str(reply.author.name).lower() == username:
