@@ -28,10 +28,10 @@ def check_mailbox(data,r):
 	mailbox = r.get_unread(unset_has_mail=True,update_user=True)
 	for mail in mailbox:
 		if type(mail) == praw.objects.Message: # Bot received mail
-			logging.info("You've got mail.")
+			logging.info("I've got mail.")
 			read_mail(data,r,mail)
 		if type(mail) == praw.objects.Comment: # Someone replied to bot
-			logging.info("Someone replied to you.")
+			logging.info("Someone replied to me.")
 			read_comment_reply(data,r,mail)
 		mail.mark_as_read() # Marks mail as read
 
