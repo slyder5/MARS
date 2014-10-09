@@ -139,8 +139,8 @@ def remove(data,r,mail):
 				if awardee_comment.author:
 					awardee = str(awardee_comment.author.name).lower()
 					flair_count = token.start_decrement(data,r,awardee)
-				comment.reply(data["msg_removal"] % (data["running_subreddit"],data["running_username"])
-				print comment
+				comment.reply(data["msg_removal"] % (data["running_subreddit"],data["running_username"]))
+				comment.remove(spam=False)
 				print("Placeholder: Remove text from wiki and scoreboard")
 			else:
 				logging.warning("No token to remove.")
