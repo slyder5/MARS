@@ -138,7 +138,7 @@ def remove(data,r,mail):
 				awardee_comment = r.get_info(thing_id=comment.parent_id)
 				if awardee_comment.author:
 					awardee = str(awardee_comment.author.name).lower()
-				  flair_count = token.start_decrement(data,r,awardee)
+					flair_count = token.start_decrement(data,r,awardee)
 				comment.reply(data["msg_removal"] % (data["running_subreddit"],data["running_username"])
 				comment.remove(spam=False)
 				print("Placeholder: Remove text from wiki and scoreboard")
