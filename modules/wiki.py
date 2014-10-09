@@ -31,8 +31,8 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
     full_update = initial_text + add_link
     r.edit_wiki_page(data["running_subreddit"],"user/" + awardee,full_update,"Created user's delta history page.")
   try:
+    tracker_page = r.get_wiki_page(data["running_subreddit"],"index/delta_tracker")
     logging.debug("Found existing tracker wiki page")
-    tracker_page = r.get_wiki_page(data["running_subreddit"],"/index/delta_tracker")
   except:
     logging.debug("Could not find existing tracker wiki page")
     add_link = "* /u/%s - [Delta List](/r/%s/wiki/%s)" % (awardee,data["running_subreddit"],awardee)
