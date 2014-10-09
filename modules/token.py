@@ -16,14 +16,14 @@ import re
 def start_increment(data,r,awardee):
   logging.debug("Starting Module: Token - Increment")
   old_flair,old_count = get_flair(data,r,awardee)
-  new_flair,new_count = increment_flair(old_count)
+  new_flair,new_count = increment_flair(old_flair,old_count)
   set_flair(data,r,awardee,new_flair)
   return new_count
 
 def start_decrement(data,r,awardee):
   logging.debug("Starting Module: Token - Decrement")
   old_flair,old_count = get_flair(data,r,awardee)
-  new_flair,new_count = decrement_flair(old_count)
+  new_flair,new_count = decrement_flair(old_flair,old_count)
   set_flair(data,r,awardee,new_flair)
   return new_count
 
@@ -38,18 +38,18 @@ def get_flair(data,r,awardee):
       flair_count = int(flair_count.group(0))
   return (awardee_flair,flair_count)
 
-def increment_flair(flair_count):
+def increment_flair(flair,old_count):
   logging.debug("Incrementing the flair")
-  flair_count = flair_count + 1
-  awardee_flair["flair_text"] = str(flair_count) + "∆"
-  return (awardee_flair,flair_count)
+  new_count = old_count + 1
+  flair["flair_text"] = str(new_count) + "∆"
+  return (flair,new_count)
 
-def decrement_flair(flair_count):
+def decrement_flair(flair,old_count):
   logging.debug("Decrementing the flair")
-  if flair_count > 0:
-    flair_count = flair_count - 1
-  awardee_flair["flair_text"] = str(flair_count) + "∆"
-  return (awardee_flair,flair_count)
+  if old_count > 0:
+    new_count = old_count - 1
+  flair["flair_text"] = str(new_count) + "∆"
+  return (flair,new_count)
 
 def set_flair(data,r,awardee,awardee_flair):
   logging.debug("Setting the awardee's new flair")
