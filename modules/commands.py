@@ -7,6 +7,7 @@
 import praw
 import logging
 import comments
+import token
 from settings import config
 from pprint import pprint
 
