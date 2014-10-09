@@ -131,13 +131,13 @@ def remove(data,r,mail):
 		links = r.get_submission(line).comments
 		for comment in links:
 			if comments.check_already_replied(data,data["msg_confirmation"],comment.replies,username):
-        for reply in comment.replies:
-          if reply.author:
-            if str(reply.author.name).lower() == username:
-              reply.delete()
-        awardee_comment = r.get_info(thing_id=comment.parent_id)
-        if awardee_comment.author:
-          awardee = str(awardee_comment.author.name).lower()
+				for reply in comment.replies:
+					if reply.author:
+						if str(reply.author.name).lower() == username:
+							reply.delete()
+				awardee_comment = r.get_info(thing_id=comment.parent_id)
+				if awardee_comment.author:
+					awardee = str(awardee_comment.author.name).lower()
 				  flair_count = token.start_decrement(data,r,awardee)
 				comment.reply(data["msg_removal"] % (data["running_subreddit"],data["running_username"])
 				comment.remove(spam=False)
