@@ -18,7 +18,7 @@ from pprint import pprint
 
 # Starts the commands module
 def start(data,r):
-	logging.debug("Starting Module - Commands")
+	logging.debug("Starting Module: Commands")
 	check_mailbox(data,r)
 
 # Checking the mailbox for mail
