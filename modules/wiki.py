@@ -27,9 +27,9 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
     logging.debug("Found existing user wiki page")
   except Exception as e:
     if e.response.status_code == 404:
-      logging.debug("404")
+      raise
     else:
-      logging.debug("It broked.")
+      logging.debug("Got here")
 
 def placeholder():
     if int(flair_count) < 2:
