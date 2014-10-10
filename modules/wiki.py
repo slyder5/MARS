@@ -22,7 +22,6 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
   submission_title = token_comment.submission.title
   today = datetime.date.today()
   try:
-    logging.debug("Do I get this far?")
     user_wiki_page = r.get_wiki_page(data["running_subreddit"],"user/" + awardee)
     logging.debug("Found existing user wiki page")
     found = True
