@@ -24,12 +24,11 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
   try:
     user_wiki_page = r.get_wiki_page(data["running_subreddit"],"user/" + awardee)
     logging.debug("Found existing user wiki page")
-  except urllib2.HTTPError:
-    logging.debug("Could not find existing user wiki page")
-    if err.code == 404:
+  except HTTPError as e:
+    if e.response.status_code == 404:
       logging.debug("404")
     else:
-      raise
+      logging.debug("It broked.")
 
 def placeholder():
     if int(flair_count) < 2:
