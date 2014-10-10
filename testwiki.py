@@ -15,6 +15,7 @@ from logging.handlers import TimedRotatingFileHandler
 # Reads in configuration file
 data = config.read_json()
 link = "http://www.reddit.com/r/PixelOrange/comments/2iqwgh/mars_test_thread_october/cl4m2jt"
+r = account.start(data)
 
 # Logging #
 ###########
@@ -22,7 +23,7 @@ consoleFormatter = logging.Formatter("%(asctime)s: %(message)s",datefmt="%I:%M:%
 fileFormatter = logging.Formatter("%(asctime)s %(levelname)s - %(message)s",datefmt="%I:%M:%S %p")
 rootLogger = logging.getLogger()
 rootLogger.setLevel(logging.DEBUG)
-fileHandler = TimedRotatingFileHandler("mars.log",when="midnight",backupCount=14)
+fileHandler = TimedRotatingFileHandler("testwiki.log",when="midnight",backupCount=14)
 fileHandler.setFormatter(fileFormatter)
 rootLogger.addHandler(fileHandler)
 consoleHandler = logging.StreamHandler()
