@@ -24,7 +24,7 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
   try:
     user_wiki_page = r.get_wiki_page(data["running_subreddit"],"user/" + awardee)
     print user_wiki_page
-    print user_wiki_page.body
+    print user_wiki_page.content_md
     logging.debug("Found existing user wiki page")
     found = True
   except Exception as e:
