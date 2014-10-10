@@ -27,7 +27,7 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
       initial_text = "/u/%s has received %s delta for the following comments:" % (awardee,flair_count)
     else:
       initial_text = "/u/%s has received %s deltas for the following comments:" % (awardee,flair_count)
-    add_title = "| Submission | Delta Comment | Awarded By | Date |\n| --- | --- | --- | --- |"
+    add_title = "| Submission | Delta Comment | Awarded By | Date |\n| --- | --- | --- | --- |\n"
     add_content = "|[%s](%s)|[Link](%s)|%s|%s/%s/%s|" % (submission_title,submission_url,
           token_comment.permalink + "?context=2",awarder,today.month,today.day,today.year)
     full_update = add_title + add_content
@@ -38,7 +38,7 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
       initial_text = "/u/%s has received %s delta for the following comments:" % (awardee,flair_count)
     else:
       initial_text = "/u/%s has received %s deltas for the following comments:" % (awardee,flair_count)
-    add_title = "| Submission | Delta Comment | Awarded By | Date |\n| --- | --- | --- | --- |"
+    add_title = "| Submission | Delta Comment | Awarded By | Date |\n| --- | --- | --- | --- |\n"
     add_content = "|[%s](%s)|[Link](%s)|%s|%s/%s/%s|" % (submission_title,submission_url,
           token_comment.permalink + "?context=2",awarder,today.month,today.day,today.year)
     full_update = add_title + add_content
