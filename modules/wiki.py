@@ -29,7 +29,7 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
     if e.response.status_code == 404:
       logging.debug("Did not find existing user wiki page")
       found = False
-  if found:
+  if not found:
     update_wiki_page(data,r,token_comment,awarder,awardee,flair_count)
   else:
     new_wiki_page(data,r,token_comment,awarder,awardee,flair_count)
