@@ -23,12 +23,25 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
   try:
     user_wiki_page = r.get_wiki_page(data["running_subreddit"],"user/" + awardee)
     logging.debug("Found existing user wiki page")
+    if flair_count < 2:
+      initial_text = "/u/%s has received %s delta for the following comments:" % (awardee,flair_count)
+    else:
+      initial_text = "/u/%s has received %s deltas for the following comments:" % (awardee,flair_count)
+    add_title = "| Submission | Delta Comment | Awarded By | Date |\n| --- | --- | --- | --- |"
+    add_content = "|[%s](%s)|[Link](%s)|%s|%s/%s/%s|" % (submission_title,submission_url,
+          token_comment.permalink + "?context=2",awarder,today.month,today.day,today.year)
+    full_update = add_title + add_content
+    r.edit_wiki_page(data["running_subreddit"],"user/" + awardee,full_update,"Created user's delta history page.")
   except:
     logging.debug("Could not find existing user wiki page")
-    initial_text = "/u/%s has received %s delta for the following comments:" % (awardee,flair_count)
-    add_link = "\n\n* [%s](%s) (1)\n    1. [Awarded by /u/%s](%s) on %s/%s/%s" % (submission_title, 
-      submission_url, awarder, token_comment.permalink + "?context=2",today.month,today.day,today.year)
-    full_update = initial_text + add_link
+    if flair_count < 2:
+      initial_text = "/u/%s has received %s delta for the following comments:" % (awardee,flair_count)
+    else:
+      initial_text = "/u/%s has received %s deltas for the following comments:" % (awardee,flair_count)
+    add_title = "| Submission | Delta Comment | Awarded By | Date |\n| --- | --- | --- | --- |"
+    add_content = "|[%s](%s)|[Link](%s)|%s|%s/%s/%s|" % (submission_title,submission_url,
+          token_comment.permalink + "?context=2",awarder,today.month,today.day,today.year)
+    full_update = add_title + add_content
     r.edit_wiki_page(data["running_subreddit"],"user/" + awardee,full_update,"Created user's delta history page.")
   try:
     tracker_page = r.get_wiki_page(data["running_subreddit"],"index/delta_tracker")
