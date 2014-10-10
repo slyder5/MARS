@@ -25,7 +25,7 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
     logging.debug("Do I get this far?")
     user_wiki_page = r.get_wiki_page(data["running_subreddit"],"user/" + awardee)
     logging.debug("Found existing user wiki page")
-  except HTTPError as e:
+  except:
     if e.response.status_code == 404:
       logging.debug("404")
     else:
