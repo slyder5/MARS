@@ -22,8 +22,9 @@ link = "http://www.reddit.com/r/PixelOrange/comments/2iqwgh/mars_test_thread_oct
 #############
 
 token_comment = r.get_submission(link).comments
-print token_comment.body
-print token_comment.author
-wiki.start(data,r,token_comment,"Awarder","pixeltest1","2")
+for comment in token_comment:
+  print token_comment.body
+  print token_comment.author
+  wiki.start(data,r,token_comment,"Awarder","pixeltest1","2")
 
 # EOF
