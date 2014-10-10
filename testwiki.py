@@ -9,6 +9,7 @@ from modules import account
 # Variables #
 #############
 
+data = 0
 data["running_subreddit"] = "PixelOrange"
 data["m_account"] = "1"
 r = account.start(data)
