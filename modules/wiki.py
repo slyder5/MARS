@@ -27,7 +27,7 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
       initial_text = "/u/%s has received %s delta for the following comments:" % (awardee,flair_count)
     else:
       initial_text = "/u/%s has received %s deltas for the following comments:\n\n" % (awardee,flair_count)
-    add_title = "| Submission | Delta Comment | Awarded By | Date |\n| --- | --- | --- | --- |\n"
+    add_title = "| Submission | Delta Comment | Awarded By | Date |\n| --- | :-: | --- | --- |\n"
     add_content = "|[%s](%s)|[Link](%s)|%s|%s/%s/%s|\n" % (submission_title,submission_url,
           token_comment.permalink + "?context=2",awarder,today.month,today.day,today.year)
     full_update = initial_text + add_title + add_content
@@ -37,11 +37,11 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
     if flair_count < 2:
       initial_text = "/u/%s has received %s delta for the following comments:" % (awardee,flair_count)
     else:
-      initial_text = "/u/%s has received %s deltas for the following comments:" % (awardee,flair_count)
-    add_title = "| Submission | Delta Comment | Awarded By | Date |\n| --- | --- | --- | --- |\n"
-    add_content = "|[%s](%s)|[Link](%s)|%s|%s/%s/%s|" % (submission_title,submission_url,
+      initial_text = "/u/%s has received %s deltas for the following comments:\n\n" % (awardee,flair_count)
+    add_title = "| Submission | Delta Comment | Awarded By | Date |\n| --- | :-: | --- | --- |\n"
+    add_content = "|[%s](%s)|[Link](%s)|%s|%s/%s/%s|\n" % (submission_title,submission_url,
           token_comment.permalink + "?context=2",awarder,today.month,today.day,today.year)
-    full_update = add_title + add_content
+    full_update = initial_text + add_title + add_content
     r.edit_wiki_page(data["running_subreddit"],"user/" + awardee,full_update,"Created user's delta history page.")
   try:
     tracker_page = r.get_wiki_page(data["running_subreddit"],"index/delta_tracker")
