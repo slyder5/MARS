@@ -11,6 +11,8 @@ from modules import account
 
 data = {}
 data["running_subreddit"] = "PixelOrange"
+data["running_username"] = "pixelsbot"
+data["running_password"] = "PixelOrange"
 data["m_account"] = "1"
 r = account.start(data)
 
