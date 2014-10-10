@@ -62,9 +62,9 @@ def new_wiki_page(data,r,token_comment,awarder,awardee,flair_count):
   r.edit_wiki_page(data["running_subreddit"],"user/" + awardee,full_update,"Created user's delta history page.")
 
 def new_tracker_page(data,r,awardee):
-  initial_text = "Below is a list of all of the users that have earned deltas."
+  initial_text = "Below is a list of all of the users that have earned deltas.\n\n"
   add_header = "| User | Delta List |\n| --- | --- |\n"
-  add_content = "|/u/%s|[Link](/r/%s/wiki/%s)" % (awardee,data["running_subreddit"],awardee)
+  add_content = "|/u/%s|[Link](/r/%s/wiki/%s)\n" % (awardee,data["running_subreddit"],awardee)
   full_update = initial_text + add_header + add_content
   r.edit_wiki_page(data["running_subreddit"],"index/delta_tracker",full_update,"Updated tracker")
 
