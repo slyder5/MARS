@@ -74,21 +74,21 @@ def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_
   today = datetime.date.today()
   old_content = user_wiki_page.content_md
   if int(flair_count) < 2:
-    flair_text = "%s delta" % flair_count
+    initial_text = "/u/%s has received %s delta for the following comments:\n\n" % (awardee,flair_count)
   else:
-    flair_text = "%s deltas" % flair_count
-  new_content = re.sub("(\d+) delta[s]?",flair_text,old_content)
-  lines = new_content.split("\n")
+    initial_text = "/u/%s has received %s deltas for the following comments:\n\n" % (awardee,flair_count)
+  lines = old_content.split("\n")
   table = []
   for line in lines:
     if re.match("(\|)",line):
       if not re.match("(\| Submission |\| --- \|)",line):
-        print("Printing Line")
-        print line
         table.append(line)
   table.sort()
   print("Printing table")
   print table
+  new_content = '\n'.join(table)
+  full_update = initial_text + new content
+  r.edit_wiki_page(data["running_subreddit"],"user/" + awardee,full_update,"Updated user's delta history page.")
 
 def update_tracker_page(data,r,awardee):
   return
