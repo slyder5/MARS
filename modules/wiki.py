@@ -27,7 +27,6 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
     logging.debug("Could not find existing user wiki page")
 
 def placeholder():
-    
     if int(flair_count) < 2:
       initial_text = "/u/%s has received %s delta for the following comments:\n\n" % (awardee,flair_count)
     else:
@@ -37,10 +36,8 @@ def placeholder():
           token_comment.permalink + "?context=2",awarder,today.month,today.day,today.year)
     full_update = initial_text + add_title + add_content
     r.edit_wiki_page(data["running_subreddit"],"user/" + awardee,full_update,"Created user's delta history page.")
-  try:
     tracker_page = r.get_wiki_page(data["running_subreddit"],"index/delta_tracker")
     logging.debug("Found existing tracker wiki page")
-  except:
     logging.debug("Could not find existing tracker wiki page")
     add_link = "* /u/%s - [Delta List](/r/%s/wiki/%s)" % (awardee,data["running_subreddit"],awardee)
     r.edit_wiki_page(data["running_subreddit"],"delta_tracker",add_link,"Updated tracker")
