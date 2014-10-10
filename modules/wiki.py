@@ -64,7 +64,7 @@ def new_wiki_page(data,r,token_comment,awarder,awardee,flair_count):
 def new_tracker_page(data,r,awardee):
   initial_text = "Below is a list of all of the users that have earned deltas.\n\n"
   add_header = "| User | Delta List |\n| --- | --- |\n"
-  add_content = "|/u/%s|[Link](/r/%s/wiki/%s)\n" % (awardee,data["running_subreddit"],awardee)
+  add_content = "|/u/%s|[Link](/r/%s/wiki/%s)|\n" % (awardee,data["running_subreddit"],awardee)
   full_update = initial_text + add_header + add_content
   r.edit_wiki_page(data["running_subreddit"],"index/delta_tracker",full_update,"Updated tracker")
 
@@ -80,7 +80,11 @@ def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_
   new_content = re.sub("(\d+) delta[s]?",flair_text,old_content)
   print old_content
   print new_content
-  
+  lines = new_content.split("\n")
+  table = []
+  for line in lines:
+    if re.match("(\|)",line):
+      print line
 
 def update_tracker_page(data,r,awardee):
   return
