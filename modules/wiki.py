@@ -23,22 +23,18 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
   today = datetime.date.today()
   try:
     user_wiki_page = r.get_wiki_page(data["running_subreddit"],"user/" + awardee)
+    print user_wiki_page
+    print user_wiki_page.body
     logging.debug("Found existing user wiki page")
     found = True
   except Exception as e:
     if e.response.status_code == 404:
       logging.debug("Did not find existing user wiki page")
       found = False
-  if not found:
+  if found:
     update_wiki_page(data,r,token_comment,awarder,awardee,flair_count)
   else:
     new_wiki_page(data,r,token_comment,awarder,awardee,flair_count)
-
-def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count):
-  submission_title = token_comment.submission.title
-  submission_url = token_comment.submission.permalink
-  today = datetime.date.today()
-  return
 
 def new_wiki_page(data,r,token_comment,awarder,awardee,flair_count):
   submission_title = token_comment.submission.title
@@ -58,5 +54,11 @@ def new_wiki_page(data,r,token_comment,awarder,awardee,flair_count):
   logging.debug("Could not find existing tracker wiki page")
   add_link = "* /u/%s - [Delta List](/r/%s/wiki/%s)" % (awardee,data["running_subreddit"],awardee)
   r.edit_wiki_page(data["running_subreddit"],"delta_tracker",add_link,"Updated tracker")
+
+def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count):
+  submission_title = token_comment.submission.title
+  submission_url = token_comment.submission.permalink
+  today = datetime.date.today()
+  return
 
 # EOF
