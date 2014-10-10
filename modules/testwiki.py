@@ -3,7 +3,6 @@
 # Import #
 ##########
 
-import praw
 import logging
 from modules import account
 
