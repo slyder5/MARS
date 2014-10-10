@@ -11,7 +11,7 @@ import logging
 import time
 import datetime
 import calendar
-import urllib2
+from urllib2 import HTTPError
 
 # Functions #
 #############
