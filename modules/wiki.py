@@ -25,13 +25,19 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
     logging.debug("Do I get this far?")
     user_wiki_page = r.get_wiki_page(data["running_subreddit"],"user/" + awardee)
     logging.debug("Found existing user wiki page")
-    print user_wiki_page
-    # update_wiki_page(data,r,token_comment,awarder,awardee,flair_count):
+    # Actual feature - remove # when not testing
+    #update_wiki_page(data,r,token_comment,awarder,awardee,flair_count)
+    # For testing the "new page" functionality
+    new_wiki_page(data,r,token_comment,awarder,awardee,flair_count)
   except Exception as e:
     if e.response.status_code == 404:
       logging.debug("Did not find existing user wiki page")
-        
-def placeholder():
+      new_wiki_page(data,r,token_comment,awarder,awardee,flair_count)
+
+def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count):
+  return
+
+def new_wiki_page(data,r,token_comment,awarder,awardee,flair_count):
     if int(flair_count) < 2:
       initial_text = "/u/%s has received %s delta for the following comments:\n\n" % (awardee,flair_count)
     else:
