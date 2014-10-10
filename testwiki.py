@@ -4,7 +4,7 @@
 ##########
 
 import logging
-import account
+from modules import account
 
 # Variables #
 #############
