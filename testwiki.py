@@ -5,6 +5,7 @@
 
 import logging
 from modules import account
+from modules import wiki
 
 # Variables #
 #############
@@ -19,5 +20,6 @@ r = account.start(data)
 # Functions #
 #############
 
-print data
-print r
+wiki.start(data,r,"http://google.com","Awarder","pixeltest1","2")
+
+# EOF
