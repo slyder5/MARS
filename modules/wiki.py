@@ -82,7 +82,7 @@ def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_
   table = []
   for line in lines:
     if re.match("(\|)",line):
-      if not re.match("(\| Submission | \| --- \|)",line):
+      if not re.match("(\| Submission |\| --- \|)",line):
         print("Printing Line")
         print line
         table.append(line)
