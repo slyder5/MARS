@@ -78,13 +78,15 @@ def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_
   else:
     flair_text = "%s deltas" % flair_count
   new_content = re.sub("(\d+) delta[s]?",flair_text,old_content)
-  print old_content
-  print new_content
   lines = new_content.split("\n")
   table = []
   for line in lines:
     if re.match("(\|)",line):
+      print("Printing Line")
       print line
+      table.append(line)
+  print("Printing table")
+  print table
 
 def update_tracker_page(data,r,awardee):
   return
