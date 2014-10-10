@@ -77,9 +77,10 @@ def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_
     flair_text = "%s delta" % flair_count
   else:
     flair_text = "%s deltas" % flair_count
-  new_content = re.sub("(\d+) delta[s]?", flair_text,old_content)
+  new_content = re.sub("(\d+) delta[s]?",flair_text,old_content)
   print old_content
   print new_content
+  
 
 def update_tracker_page(data,r,awardee):
   return
