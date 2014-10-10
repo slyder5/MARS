@@ -23,8 +23,8 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
   try:
     user_wiki_page = r.get_wiki_page(data["running_subreddit"],"user/" + awardee)
     logging.debug("Found existing user wiki page")
-    if flair_count < 2:
-      initial_text = "/u/%s has received %s delta for the following comments:" % (awardee,flair_count)
+    if int(flair_count) < 2:
+      initial_text = "/u/%s has received %s delta for the following comments:\n\n" % (awardee,flair_count)
     else:
       initial_text = "/u/%s has received %s deltas for the following comments:\n\n" % (awardee,flair_count)
     add_title = "| Submission | Delta Comment | Awarded By | Date |\n| --- | :-: | --- | --- |\n"
@@ -34,8 +34,8 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
     r.edit_wiki_page(data["running_subreddit"],"user/" + awardee,full_update,"Created user's delta history page.")
   except:
     logging.debug("Could not find existing user wiki page")
-    if flair_count < 2:
-      initial_text = "/u/%s has received %s delta for the following comments:" % (awardee,flair_count)
+    if int(flair_count) < 2:
+      initial_text = "/u/%s has received %s delta for the following comments:\n\n" % (awardee,flair_count)
     else:
       initial_text = "/u/%s has received %s deltas for the following comments:\n\n" % (awardee,flair_count)
     add_title = "| Submission | Delta Comment | Awarded By | Date |\n| --- | :-: | --- | --- |\n"
