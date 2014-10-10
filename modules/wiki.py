@@ -36,11 +36,11 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
     new_wiki_page(data,r,token_comment,awarder,awardee,flair_count)
   try:
     tracker_page = r.get_wiki_page(data["running_subreddit"],"index/delta_tracker")
-    logging.debug("Found existing user wiki page")
+    logging.debug("Found existing tracker wiki page")
     tracker_found = True
   except Exception as e:
     if e.response.status_code == 404:
-      logging.debug("Did not find existing user wiki page")
+      logging.debug("Did not find existing tracker wiki page")
       tracker_found = False
   if not tracker_found:
     update_tracker_page(data,r,awardee)
