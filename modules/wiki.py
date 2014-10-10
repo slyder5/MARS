@@ -25,14 +25,15 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
     logging.debug("Do I get this far?")
     user_wiki_page = r.get_wiki_page(data["running_subreddit"],"user/" + awardee)
     logging.debug("Found existing user wiki page")
-    # Actual feature - remove # when not testing
-    #update_wiki_page(data,r,token_comment,awarder,awardee,flair_count)
-    # For testing the "new page" functionality
-    new_wiki_page(data,r,token_comment,awarder,awardee,flair_count)
+    found = True
   except Exception as e:
     if e.response.status_code == 404:
       logging.debug("Did not find existing user wiki page")
-      new_wiki_page(data,r,token_comment,awarder,awardee,flair_count)
+      found = False
+  if found:
+    update_wiki_page(data,r,token_comment,awarder,awardee,flair_count)
+  else:
+    new_wiki_page(data,r,token_comment,awarder,awardee,flair_count)
 
 def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count):
   return
