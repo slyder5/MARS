@@ -86,6 +86,7 @@ def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_
         print("Printing Line")
         print line
         table.append(line)
+  table.sort()
   print("Printing table")
   print table
 
