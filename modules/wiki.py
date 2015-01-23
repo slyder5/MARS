@@ -66,6 +66,9 @@ def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_
   submission_url = token_comment.submission.permalink
   today = datetime.date.today()
   old_content = user_wiki_page.content_md
+  add_header = "| Submission | Delta Comment | Awarded By | Date |\n| --- | :-: | --- | --- |\n"
+  add_content = "|[%s](%s)|[Link](%s)|/u/%s|%s/%s/%s|" % (submission_title,submission_url,
+                token_comment.permalink + "?context=2",awarder,today.month,today.day,today.year)
   if int(flair_count) < 2:
     initial_text = "/u/%s has received %s delta for the following comments:\n\n" % (awardee,flair_count)
   else:
@@ -76,17 +79,14 @@ def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_
     if re.match("(\|)",line):
       if not re.match("(\| Submission |\| --- \|)",line):
         table.append(line)
-  # elif re.match("Any delta history",line):
-  #    note = line + "\n\n"
-  #  else:
-  #    note = ""
-  add_header = "| Submission | Delta Comment | Awarded By | Date |\n| --- | :-: | --- | --- |\n"
-  add_content = "|[%s](%s)|[Link](%s)|/u/%s|%s/%s/%s|" % (submission_title,submission_url,
-                token_comment.permalink + "?context=2",awarder,today.month,today.day,today.year)
+    elif re.match("Any delta history",line):
+      note = line + "\n\n"
+    else:
+      note = ""
   table.append(add_content)
   table.sort()
   new_content = '\n'.join(table)
-  full_update = initial_text + add_header + new_content
+  full_update = initial_text + note + add_header + new_content
   r.edit_wiki_page(data["running_subreddit"],"user/" + awardee,full_update,"Updated user's delta history page.")
 
 def new_tracker_page(data,r,awardee,token_comment):
