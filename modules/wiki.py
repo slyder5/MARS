@@ -52,7 +52,7 @@ def new_wiki_page(data,r,token_comment,awarder,awardee,flair_count):
   submission_url = token_comment.submission.permalink
   today = datetime.date.today()
   add_header = "| Submission | Delta Comment | Awarded By | Date |\n| --- | :-: | --- | --- |\n"
-  add_content = "|[%s](%s)|[Link](%s)|/u/%s|%s/%s/%s|\n" % (submission_title,submission_url,
+  add_content = "|[%s](%s)|[Link](%s)|/u/%s|%s/%s/%s|" % (submission_title,submission_url,
         token_comment.permalink + "?context=2",awarder,today.month,today.day,today.year)
   if int(flair_count) < 2:
     initial_text = "/u/%s has received %s delta for the following comments:\n\n" % (awardee,flair_count)
@@ -81,7 +81,7 @@ def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_
   #  else:
   #    note = ""
   add_header = "| Submission | Delta Comment | Awarded By | Date |\n| --- | :-: | --- | --- |\n"
-  add_content = "|[%s](%s)|[Link](%s)|/u/%s|%s/%s/%s|\n" % (submission_title,submission_url,
+  add_content = "|[%s](%s)|[Link](%s)|/u/%s|%s/%s/%s|" % (submission_title,submission_url,
                 token_comment.permalink + "?context=2",awarder,today.month,today.day,today.year)
   table.append(add_content)
   table.sort()
@@ -92,14 +92,16 @@ def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_
 def new_tracker_page(data,r,awardee,token_comment):
   initial_text = "Below is a list of all of the users that have earned deltas.\n\n"
   add_header = "| User | Delta List | Delta Earned|\n| --- | --- | --- |\n"
-  add_content = "|/u/%s|[Link](/r/%s/wiki/user/%s)|[Link](%s)|\n" % (awardee,data["running_subreddit"],awardee,token_comment.permalink + "?context=2")
+  add_content = "|/u/%s|[Link](/r/%s/wiki/user/%s)|[Link](%s)|" % (awardee,data["running_subreddit"],
+                awardee,token_comment.permalink + "?context=2")
   full_update = initial_text + add_header + add_content
   r.edit_wiki_page(data["running_subreddit"],"index/delta_tracker",full_update,"Updated tracker")
 
 def update_tracker_page(data,r,awardee,token_comment,tracker_page):
   initial_text = "Below is a list of all of the users that have earned deltas.\n\n"
   add_header = "| User | Delta List | Delta Earned |\n| --- | --- | --- |\n"
-  add_content = "|/u/%s|[Link](/r/%s/wiki/user/%s)|[Link](%s)|\n" % (awardee,data["running_subreddit"],awardee,token_comment.permalink + "?context=2")
+  add_content = "|/u/%s|[Link](/r/%s/wiki/user/%s)|[Link](%s)|" % (awardee,data["running_subreddit"],
+                awardee,token_comment.permalink + "?context=2")
   old_content = tracker_page.content_md
   lines = old_content.split("\n")
   table = []
