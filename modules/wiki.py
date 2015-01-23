@@ -43,9 +43,9 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
       logging.debug("Did not find existing tracker wiki page")
       tracker_found = False
   if tracker_found:
-    update_tracker_page(data,r,awardee,tracker_page)
+    update_tracker_page(data,r,awardee,token_comment,tracker_page)
   else:
-    new_tracker_page(data,r,awardee)
+    new_tracker_page(data,r,awardee,token_comment)
 
 def new_wiki_page(data,r,token_comment,awarder,awardee,flair_count):
   submission_title = token_comment.submission.title
@@ -85,17 +85,17 @@ def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_
   full_update = initial_text + add_header + new_content
   r.edit_wiki_page(data["running_subreddit"],"user/" + awardee,full_update,"Updated user's delta history page.")
 
-def new_tracker_page(data,r,awardee):
+def new_tracker_page(data,r,awardee,token_comment):
   initial_text = "Below is a list of all of the users that have earned deltas.\n\n"
-  add_header = "| User | Delta List |\n| --- | --- |\n"
-  add_content = "|/u/%s|[Link](/r/%s/wiki/user/%s)|\n" % (awardee,data["running_subreddit"],awardee)
+  add_header = "| User | Delta List | Delta Earned|\n| --- | --- |\n"
+  add_content = "|/u/%s|[Link](/r/%s/wiki/user/%s)|[Link](%s)|\n" % (awardee,data["running_subreddit"],awardee,token_comment.permalink + "?context=2")
   full_update = initial_text + add_header + add_content
   r.edit_wiki_page(data["running_subreddit"],"index/delta_tracker",full_update,"Updated tracker")
 
-def update_tracker_page(data,r,awardee,tracker_page):
+def update_tracker_page(data,r,awardee,token_comment,tracker_page):
   initial_text = "Below is a list of all of the users that have earned deltas.\n\n"
-  add_header = "| User | Delta List |\n| --- | --- |\n"
-  add_content = "|/u/%s|[Link](/r/%s/wiki/user/%s)|\n" % (awardee,data["running_subreddit"],awardee)
+  add_header = "| User | Delta List | Delta Earned |\n| --- | --- |\n"
+  add_content = "|/u/%s|[Link](/r/%s/wiki/user/%s)|[Link](%s)|\n" % (awardee,data["running_subreddit"],awardee,token_comment.permalink + "?context=2")
   old_content = tracker_page.content_md
   lines = old_content.split("\n")
   table = []
@@ -104,7 +104,6 @@ def update_tracker_page(data,r,awardee,tracker_page):
       if not re.match("(\| User |\| --- \|)",line):
         table.append(line)
   table.append(add_content)
-  set(table)
   table.sort()
   new_content = '\n'.join(table)
   full_update = initial_text + add_header + new_content
