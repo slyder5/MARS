@@ -64,7 +64,7 @@ def new_wiki_page(data,r,token_comment,awarder,awardee,flair_count):
 def new_tracker_page(data,r,awardee):
   initial_text = "Below is a list of all of the users that have earned deltas.\n\n"
   add_header = "| User | Delta List |\n| --- | --- |\n"
-  add_content = "|/u/%s|[Link](/r/%s/wiki/%s)|\n" % (awardee,data["running_subreddit"],awardee)
+  add_content = "|/u/%s|[Link](/r/%s/wiki/user/%s)|\n" % (awardee,data["running_subreddit"],awardee)
   full_update = initial_text + add_header + add_content
   r.edit_wiki_page(data["running_subreddit"],"index/delta_tracker",full_update,"Updated tracker")
 
@@ -83,9 +83,10 @@ def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_
     if re.match("(\|)",line):
       if not re.match("(\| Submission |\| --- \|)",line):
         table.append(line)
+  add_content = "|[%s](%s)|[Link](%s)|/u/%s|%s%s%s|\n" % (submission_title,submission_url,
+                token_comment,permalink + "?context=2",awarder,today.month,today.day,today.year)
+  table.append(line)
   table.sort()
-  print("Printing table")
-  print table
   new_content = '\n'.join(table)
   add_header = "| Submission | Delta Comment | Awarded By | Date |\n| --- | :-: | --- | --- |\n"
   full_update = initial_text + add_header + new_content
