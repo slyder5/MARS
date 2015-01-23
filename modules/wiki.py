@@ -87,14 +87,14 @@ def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_
 
 def new_tracker_page(data,r,awardee,token_comment):
   initial_text = "Below is a list of all of the users that have earned deltas.\n\n"
-  add_header = "| User | Delta List | Delta Earned|\n| --- | --- |\n"
+  add_header = "| User | Delta List | Delta Earned|\n| --- | --- | --- |\n"
   add_content = "|/u/%s|[Link](/r/%s/wiki/user/%s)|[Link](%s)|\n" % (awardee,data["running_subreddit"],awardee,token_comment.permalink + "?context=2")
   full_update = initial_text + add_header + add_content
   r.edit_wiki_page(data["running_subreddit"],"index/delta_tracker",full_update,"Updated tracker")
 
 def update_tracker_page(data,r,awardee,token_comment,tracker_page):
   initial_text = "Below is a list of all of the users that have earned deltas.\n\n"
-  add_header = "| User | Delta List | Delta Earned |\n| --- | --- |\n"
+  add_header = "| User | Delta List | Delta Earned |\n| --- | --- | --- |\n"
   add_content = "|/u/%s|[Link](/r/%s/wiki/user/%s)|[Link](%s)|\n" % (awardee,data["running_subreddit"],awardee,token_comment.permalink + "?context=2")
   old_content = tracker_page.content_md
   lines = old_content.split("\n")
