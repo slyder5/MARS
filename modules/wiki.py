@@ -74,6 +74,7 @@ def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_
   else:
     initial_text = "/u/%s has received %s deltas for the following comments:\n\n" % (awardee,flair_count)
   lines = old_content.split("\n")
+  note = ""
   table = []
   for line in lines:
     if re.match("(\|)",line):
@@ -81,8 +82,6 @@ def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_
         table.append(line)
     elif re.match("Any delta history",line):
       note = line + "\n\n"
-    else:
-      note = ""
   table.append(add_content)
   table.sort()
   new_content = '\n'.join(table)
