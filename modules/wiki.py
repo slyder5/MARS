@@ -83,7 +83,7 @@ def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_
     if re.match("(\|)",line):
       if not re.match("(\| Submission |\| --- \|)",line):
         table.append(line)
-  add_content = "|[%s](%s)|[Link](%s)|/u/%s|%s%s%s|\n" % (submission_title,submission_url,
+  add_content = "|[%s](%s)|[Link](%s)|/u/%s|%s/%s/%s|\n" % (submission_title,submission_url,
                 token_comment.permalink + "?context=2",awarder,today.month,today.day,today.year)
   table.append(add_content)
   table.sort()
