@@ -79,10 +79,14 @@ def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_
     if re.match("(\|)",line):
       if not re.match("(\| Submission |\| --- \|)",line):
         table.append(line)
+    if re.match("(Any delta history",line):
+      footnote = line
+    else:
+      footnote = ""
   table.append(add_content)
   table.sort()
   new_content = '\n'.join(table)
-  full_update = initial_text + add_header + new_content
+  full_update = initial_text + add_header + new_content + footnote
   r.edit_wiki_page(data["running_subreddit"],"user/" + awardee,full_update,"Updated user's delta history page.")
 
 def new_tracker_page(data,r,awardee,token_comment):
