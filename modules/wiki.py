@@ -104,6 +104,7 @@ def update_tracker_page(data,r,awardee,tracker_page):
       if not re.match("(\| User |\| --- \|)",line):
         table.append(line)
   table.append(add_content)
+  set(table)
   table.sort()
   new_content = '\n'.join(table)
   full_update = initial_text + add_header + new_content
