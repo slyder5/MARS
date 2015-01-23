@@ -80,7 +80,7 @@ def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_
       if not re.match("(\| Submission |\| --- \|)",line):
         table.append(line)
     if re.match("Any delta history",line):
-      footnote = line
+      footnote = "\n" + line
     else:
       footnote = ""
   table.append(add_content)
