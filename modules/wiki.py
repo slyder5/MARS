@@ -42,8 +42,8 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
     if e.response.status_code == 404:
       logging.debug("Did not find existing tracker wiki page")
       tracker_found = False
-  if not tracker_found:
-    update_tracker_page(data,r,awardee)
+  if tracker_found:
+    update_tracker_page(data,r,awardee,tracker_page)
   else:
     new_tracker_page(data,r,awardee)
 
@@ -51,28 +51,24 @@ def new_wiki_page(data,r,token_comment,awarder,awardee,flair_count):
   submission_title = token_comment.submission.title
   submission_url = token_comment.submission.permalink
   today = datetime.date.today()
+  add_header = "| Submission | Delta Comment | Awarded By | Date |\n| --- | :-: | --- | --- |\n"
+  add_content = "|[%s](%s)|[Link](%s)|/u/%s|%s/%s/%s|\n" % (submission_title,submission_url,
+        token_comment.permalink + "?context=2",awarder,today.month,today.day,today.year)
   if int(flair_count) < 2:
     initial_text = "/u/%s has received %s delta for the following comments:\n\n" % (awardee,flair_count)
   else:
     initial_text = "/u/%s has received %s deltas for the following comments:\n\n" % (awardee,flair_count)
-  add_header = "| Submission | Delta Comment | Awarded By | Date |\n| --- | :-: | --- | --- |\n"
-  add_content = "|[%s](%s)|[Link](%s)|/u/%s|%s/%s/%s|\n" % (submission_title,submission_url,
-        token_comment.permalink + "?context=2",awarder,today.month,today.day,today.year)
   full_update = initial_text + add_header + add_content
   r.edit_wiki_page(data["running_subreddit"],"user/" + awardee,full_update,"Created user's delta history page.")
-
-def new_tracker_page(data,r,awardee):
-  initial_text = "Below is a list of all of the users that have earned deltas.\n\n"
-  add_header = "| User | Delta List |\n| --- | --- |\n"
-  add_content = "|/u/%s|[Link](/r/%s/wiki/user/%s)|\n" % (awardee,data["running_subreddit"],awardee)
-  full_update = initial_text + add_header + add_content
-  r.edit_wiki_page(data["running_subreddit"],"index/delta_tracker",full_update,"Updated tracker")
 
 def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_page):
   submission_title = token_comment.submission.title
   submission_url = token_comment.submission.permalink
   today = datetime.date.today()
   old_content = user_wiki_page.content_md
+  add_header = "| Submission | Delta Comment | Awarded By | Date |\n| --- | :-: | --- | --- |\n"
+  add_content = "|[%s](%s)|[Link](%s)|/u/%s|%s/%s/%s|\n" % (submission_title,submission_url,
+                token_comment.permalink + "?context=2",awarder,today.month,today.day,today.year)
   if int(flair_count) < 2:
     initial_text = "/u/%s has received %s delta for the following comments:\n\n" % (awardee,flair_count)
   else:
@@ -83,16 +79,34 @@ def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_
     if re.match("(\|)",line):
       if not re.match("(\| Submission |\| --- \|)",line):
         table.append(line)
-  add_content = "|[%s](%s)|[Link](%s)|/u/%s|%s/%s/%s|\n" % (submission_title,submission_url,
-                token_comment.permalink + "?context=2",awarder,today.month,today.day,today.year)
   table.append(add_content)
   table.sort()
   new_content = '\n'.join(table)
-  add_header = "| Submission | Delta Comment | Awarded By | Date |\n| --- | :-: | --- | --- |\n"
   full_update = initial_text + add_header + new_content
   r.edit_wiki_page(data["running_subreddit"],"user/" + awardee,full_update,"Updated user's delta history page.")
 
-def update_tracker_page(data,r,awardee):
-  return
+def new_tracker_page(data,r,awardee):
+  initial_text = "Below is a list of all of the users that have earned deltas.\n\n"
+  add_header = "| User | Delta List |\n| --- | --- |\n"
+  add_content = "|/u/%s|[Link](/r/%s/wiki/user/%s)|\n" % (awardee,data["running_subreddit"],awardee)
+  full_update = initial_text + add_header + add_content
+  r.edit_wiki_page(data["running_subreddit"],"index/delta_tracker",full_update,"Updated tracker")
+
+def update_tracker_page(data,r,awardee,tracker_page):
+  initial_text = "Below is a list of all of the users that have earned deltas.\n\n"
+  add_header = "| User | Delta List |\n| --- | --- |\n"
+  add_content = "|/u/%s|[Link](/r/%s/wiki/user/%s)|\n" % (awardee,data["running_subreddit"],awardee)
+  old_content = tracker_page.content_md
+  lines = old_content.split("\n")
+  table = []
+  for line in lines:
+    if re.match("(\|)",line):
+      if not re.match("(\| User |\| --- \|)",line):
+        table.append(line)
+  table.append(add_content)
+  table.sort()
+  new_content = '\n'.join(table)
+  full_update = initial_text + add_header + new_content
+  r.edit_wiki_page(data["running_subreddit"],"index/delta_tracker",full_update,"Updated tracker")
 
 # EOF
