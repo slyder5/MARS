@@ -55,7 +55,7 @@ def new_wiki_page(data,r,token_comment,awarder,awardee,flair_count):
   add_content = "|[%s](%s)|[Link](%s)|/u/%s|%s/%s/%s|" % (submission_title,submission_url,
         token_comment.permalink + "?context=2",awarder,today.month,today.day,today.year)
   if int(flair_count) < 2:
-    initial_text = "/u/%s has received %s delta for the following comments:\n\n" % (awardee,flair_count)
+    initial_text = "/u/%s has received %s delta for the following comment:\n\n" % (awardee,flair_count)
   else:
     initial_text = "/u/%s has received %s deltas for the following comments:\n\n" % (awardee,flair_count)
   full_update = initial_text + add_header + add_content
@@ -70,7 +70,7 @@ def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_
   add_content = "|[%s](%s)|[Link](%s)|/u/%s|%s/%s/%s|" % (submission_title,submission_url,
                 token_comment.permalink + "?context=2",awarder,today.month,today.day,today.year)
   if int(flair_count) < 2:
-    initial_text = "/u/%s has received %s delta for the following comments:\n\n" % (awardee,flair_count)
+    initial_text = "/u/%s has received %s delta for the following comment:\n\n" % (awardee,flair_count)
   else:
     initial_text = "/u/%s has received %s deltas for the following comments:\n\n" % (awardee,flair_count)
   lines = old_content.split("\n")
