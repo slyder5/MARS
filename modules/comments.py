@@ -157,10 +157,6 @@ def check_awarder_to_awardee_history(data,r,awardee_comment,awardee,token_commen
 		if iterate_replies(data,r,root,awardee,awarder):
 			logging.info("Token awarded elsewhere in tree")
 			return True
-	elif data["check_history"] == "2":
-		# FOREST means it will search the entire submission
-		logging.debug("Checking Awarder to Awardee History - FOREST")
-		print("Placeholder: Check entire submission")
 	elif data["check_history"] == "0":
 		logging.debug("Check Awarder to Awardee History is disabled.")
 
