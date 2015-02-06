@@ -78,7 +78,7 @@ def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_
   table = []
   for line in lines:
     if re.match("(\|)",line):
-      if not re.match("(\| Submission |\| --- \|)",line):
+      if not re.match("(\| Date |\| --- \|)",line):
         table.append(line)
     elif re.match("Any delta history",line):
       note = line + "\n\n"
