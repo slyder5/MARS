@@ -32,7 +32,7 @@ def get_flair(data,r,awardee):
   awardee_flair = r.get_flair(data["running_subreddit"],awardee)
   if awardee_flair["flair_text"] == None:
     flair_count = 0
-    r.send_message(awardee,data["msg_first_subject"],data["msg_first_body"] % data["running_subreddit"],awardee)
+    r.send_message(awardee,data["msg_first_subject"],data["msg_first_body"] % (data["running_subreddit"],awardee))
   else:
     flair_count = re.search('(\d+)', awardee_flair["flair_text"])
     if flair_count.group(0):
