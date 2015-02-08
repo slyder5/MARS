@@ -25,7 +25,11 @@ def start(data,r):
 # Checking the mailbox for mail
 def check_mailbox(data,r):
 	logging.debug("Checking Mailbox")
-	mailbox = r.get_unread(unset_has_mail=True,update_user=True)
+	try:
+		mailbox = r.get_unread(unset_has_mail=True,update_user=True)
+	except:
+		logging.warning("Failed to get unread messages. Retrying.")
+		check_mailbox(data,r)
 	for mail in mailbox:
 		if type(mail) == praw.objects.Message: # Bot received mail
 			logging.info("I've got mail.")
@@ -62,7 +66,11 @@ def remind(data,r,mail):
 	reminder = True
 	lines = separate_mail(mail.body)
 	for line in lines:
-		links = r.get_submission(line).comments
+		try:
+			links = r.get_submission(line).comments
+		except:
+			logging.error("Failed to get comments. Retrying.")
+			remind(data,r,mail)
 		for comment in links:
 			is_match,is_reply = comments.remind_already_replied(data,data["msg_remind"],comment.replies,
 									str(data["running_username"]).lower())
@@ -94,14 +102,22 @@ def add(data,r,mail):
 	logging.debug("Add Command")
 	lines = separate_mail(mail.body)
 	for line in lines:
-		links = r.get_submission(line).comments
+		try:
+			links = r.get_submission(line).comments
+		except:
+			logging.warning("Failed to get comments. Retrying.")
+			add(data,r,mail)
 		comments.process_comments(data,r,links)
 
 # Checks to see if user is a moderator
 def is_moderator(data,r,name):
 	logging.debug("Comparing User to Moderators")
 	name = str(name).lower()
-	moderators = r.get_moderators(data["running_subreddit"])
+	try:
+		moderators = r.get_moderators(data["running_subreddit"])
+	except:
+		logging.warning("Failed to get moderators for sub. Retrying.")
+		is_moderator(data,r,name)
 	for mod in moderators:
 		mod = str(mod).lower()
 		if mod == name:
