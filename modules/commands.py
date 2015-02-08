@@ -151,6 +151,7 @@ def remove(data,r,mail):
 				for reply in comment.replies:
 					if reply.author:
 						if str(reply.author.name).lower() == username:
+							reply.unsave()
 							reply.delete()
 				awardee_comment = r.get_info(thing_id=comment.parent_id)
 				if awardee_comment.author:
