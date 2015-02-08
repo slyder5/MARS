@@ -185,9 +185,10 @@ def iterate_replies(data,r,comment,awardee,awarder):
 	running_username = str(data["running_username"]).lower()
 	try:
 		comments = r.get_submission(comment.permalink).comments
-	except:
-		logging.warning("Attempting to get comments for iteration and failed. Retrying.")
-		iterate_replies(data,r,comment,awardee,awarder)
+	except Exception as e:
+		if e.response.status_code != 200:
+			logging.warning("Attempting to get comments for iteration and failed. Retrying.")
+			return iterate_replies(data,r,comment,awardee,awarder)
 	for comment in comments:
 		if iterate == "Yes":
 			if check_already_replied(data,msg_confirmation,comment.replies,running_username):
