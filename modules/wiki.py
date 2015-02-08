@@ -109,7 +109,7 @@ def update_tracker_page(data,r,awardee,token_comment,tracker_page):
   for line in lines:
     if re.match("(\|)",line):
       if not re.match("(\| User |\| --- \|)",line):
-        if not re.match(awardee,line):
+        if awardee not in line:
           table.append(line)
         else:
           table.append(add_content)
