@@ -28,7 +28,7 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
     logging.debug("Found existing user wiki page")
     user_found = True
   except Exception as e:
-    pprint e
+    pprint(e)
     pause
     if e.response.status_code == 404:
       logging.debug("Did not find existing user wiki page")
@@ -42,7 +42,7 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
     logging.debug("Found existing tracker wiki page")
     tracker_found = True
   except Exception as e:
-    pprint e
+    pprint(e)
     pause
     if e.response.status_code == 404:
       logging.debug("Did not find existing tracker wiki page")
