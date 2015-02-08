@@ -35,7 +35,7 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
   else:
     new_wiki_page(data,r,token_comment,awarder,awardee,flair_count)
   try:
-    tracker_page = r.get_wiki_page(data["running_subreddit"],"index/delta_tracker")
+    tracker_page = r.get_wiki_page(data["running_subreddit"],data["running_username"]/tracker)
     logging.debug("Found existing tracker wiki page")
     tracker_found = True
   except Exception as e:
@@ -94,7 +94,7 @@ def new_tracker_page(data,r,awardee,token_comment):
   add_content = "|/u/%s|[Link](/r/%s/wiki/user/%s)|[Link](%s)|" % (awardee,data["running_subreddit"],
                 awardee,token_comment.permalink + "?context=2")
   full_update = initial_text + add_header + add_content
-  r.edit_wiki_page(data["running_subreddit"],"index/delta_tracker",full_update,"Updated tracker")
+  r.edit_wiki_page(data["running_subreddit"],data["running_username"]/tracker,full_update,"Updated tracker")
 
 def update_tracker_page(data,r,awardee,token_comment,tracker_page):
   initial_text = "Below is a list of all of the users that have earned deltas.\n\n"
@@ -112,6 +112,6 @@ def update_tracker_page(data,r,awardee,token_comment,tracker_page):
   table.sort()
   new_content = '\n'.join(table)
   full_update = initial_text + add_header + new_content
-  r.edit_wiki_page(data["running_subreddit"],"index/delta_tracker",full_update,"Updated tracker")
+  r.edit_wiki_page(data["running_subreddit"],data["running_username"]/tracker,full_update,"Updated tracker")
 
 # EOF
