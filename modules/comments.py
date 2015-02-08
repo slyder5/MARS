@@ -24,6 +24,7 @@ def start(data,r):
 def get_sub(r,sub_name):
 	logging.debug("Getting Subreddit")
 	try:
+		logging.info("Running in %s" % sub_name)
 		return r.get_subreddit(sub_name)
 	except:
 		logging.warning("Failed to get sub %s. Probably just a reddit time-out. Check sub name if this continues." % sub_name)
