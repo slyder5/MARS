@@ -118,9 +118,7 @@ def update_tracker_page(data,r,awardee,token_comment,tracker_page):
           print("in line")
           table.append(add_content)
           awardee_already_exists = True
-  if awardee_already_exists:
-    table.append(add_content)
-  else:
+  if not awardee_already_exists:
     table.append(add_content)
   table.sort()
   new_content = '\n'.join(table)
