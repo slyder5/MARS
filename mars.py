@@ -87,6 +87,8 @@ def mars(data):
 # Run #
 #######
 
-mars(data)
+run = True
+while run:
+ mars(data)
 
 # EOF
