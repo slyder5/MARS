@@ -150,7 +150,7 @@ def remove(data,r,mail):
 # Stops bot
 def stop(data,r,mail):
 	logging.warning(data["stop_warning"])
-	r.send_message("/r/" + data["running_subreddit"],data["stop_subject"],data["stop_body"])
+	r.send_message("/r/" + data["running_subreddit"],data["stop_subject"],data["stop_body"] % mail.author.name)
 	mail.mark_as_read()
 	raise SystemExit(0)
 
