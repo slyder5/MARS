@@ -27,9 +27,10 @@ def check_mailbox(data,r):
 	logging.debug("Checking Mailbox")
 	try:
 		mailbox = r.get_unread(unset_has_mail=True,update_user=True)
-	except:
-		logging.warning("Failed to get unread messages. Retrying.")
-		check_mailbox(data,r)
+	except Exception as e:
+		if e.response.status_code != 200:
+			logging.warning("Failed to get unread messages. Retrying.")
+			check_mailbox(data,r)
 	for mail in mailbox:
 		if type(mail) == praw.objects.Message: # Bot received mail
 			logging.info("I've got mail.")
