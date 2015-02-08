@@ -97,17 +97,25 @@ def new_tracker_page(data,r,awardee,token_comment):
 
 def update_tracker_page(data,r,awardee,token_comment,tracker_page):
   initial_text = "Below is a list of all of the users that have earned deltas.\n\n"
-  add_header = "| User | Delta List | Delta Earned |\n| --- | --- | --- |\n"
+  add_header = "| User | Delta List | Last Delta Earned |\n| --- | --- | --- |\n"
   add_content = "|/u/%s|[Link](/r/%s/wiki/user/%s)|[Link](%s)|" % (awardee,data["running_subreddit"],
                 awardee,token_comment.permalink + "?context=2")
   old_content = tracker_page.content_md
+  awardee_compare = "\|" + awardee
   lines = old_content.split("\n")
   table = []
   for line in lines:
     if re.match("(\|)",line):
       if not re.match("(\| User |\| --- \|)",line):
-        table.append(line)
-  table.append(add_content)
+        if not re.match(awardee_already_exists,line):
+          table.append(line)
+        else:
+          table.append(add_content)
+          awardee_already_exists = True
+  if awardee_already_exists:
+    table.append(add_content)
+  else:
+    table.append(add_content)
   table.sort()
   new_content = '\n'.join(table)
   full_update = initial_text + add_header + new_content
