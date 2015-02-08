@@ -104,6 +104,7 @@ def update_tracker_page(data,r,awardee,token_comment,tracker_page):
                 awardee,token_comment.permalink + "?context=2")
   old_content = tracker_page.content_md
   awardee_compare = "\|" + awardee
+  awardee_already_exists = False
   lines = old_content.split("\n")
   table = []
   for line in lines:
