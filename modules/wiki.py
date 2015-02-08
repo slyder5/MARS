@@ -39,7 +39,7 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
     tracker_page = r.get_wiki_page(data["running_subreddit"],data["running_username"] + "/tracker")
     logging.debug("Found existing tracker wiki page")
     tracker_found = True
-  except:
+  except Exception as e:
     if e.response.status_code == 404:
       logging.debug("Did not find existing tracker wiki page")
       tracker_found = False
