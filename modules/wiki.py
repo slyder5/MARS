@@ -103,14 +103,13 @@ def update_tracker_page(data,r,awardee,token_comment,tracker_page):
   add_content = "|/u/%s|[Link](/r/%s/wiki/user/%s)|[Link](%s)|" % (awardee,data["running_subreddit"],
                 awardee,token_comment.permalink + "?context=2")
   old_content = tracker_page.content_md
-  awardee_compare = "\|" + awardee
   awardee_already_exists = False
   lines = old_content.split("\n")
   table = []
   for line in lines:
     if re.match("(\|)",line):
       if not re.match("(\| User |\| --- \|)",line):
-        if not re.match(awardee_compare,line):
+        if not re.match(awardee,line):
           table.append(line)
         else:
           table.append(add_content)
