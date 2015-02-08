@@ -23,12 +23,20 @@ def start(data,r):
 # Gets subreddit object from reddit
 def get_sub(r,sub_name):
 	logging.debug("Getting Subreddit")
-	return r.get_subreddit(sub_name)
+	try:
+		return r.get_subreddit(sub_name)
+	except:
+		logging.warning("Failed to get sub %s. Probably just a reddit time-out. Check sub name if this continues." % sub_name)
+		get_sub(r,sub_name)
 
 # Gets the newest comments from the subreddit
 def sub_get_comments(subreddit):
 	logging.debug("Getting Comments")
-	return subreddit.get_comments(limit=1) # Limits comments retrieved
+	try:
+		return subreddit.get_comments(limit=None) # Limits comments retrieved
+	except:
+		logging.warning("Failed to get comments. Retrying.")
+		sub_get_comments(subreddit)
 
 # Comment Processing
 def process_comments(data,r,sub_comments):
@@ -60,7 +68,11 @@ def start_checks(data,r,token_comment,token_found):
 	logging.debug("Starting Checks")
 	running_username = str(data["running_username"]).lower()
 	awarder = str(token_comment.author.name).lower()
-	awardee_comment = r.get_info(thing_id=token_comment.parent_id)
+	try:
+		awardee_comment = r.get_info(thing_id=token_comment.parent_id)
+	except:
+		logging.error("Failed to get awardee comment. Check for a comment if this continues.")
+		start_checks(data,r,token_comment,token_found)
 	if awardee_comment.author:
 		awardee = str(awardee_comment.author.name).lower()
 		if awardee == running_username: # Prevents reply to bot
@@ -153,7 +165,11 @@ def check_awarder_to_awardee_history(data,r,awardee_comment,awardee,token_commen
 		logging.debug("Checking Awarder to Awardee History - TREE")
 		root = awardee_comment
 		while not root.is_root: # Move to the top comment
-			root = r.get_info(thing_id=root.parent_id)
+			try:
+				root = r.get_info(thing_id=root.parent_id)
+			except:
+				logging.warning("Failed to get root. Retrying.")
+				check_awarder_to_awardee_history(data,r,awardee_comment,awardee,token_comment,awarder)
 		if iterate_replies(data,r,root,awardee,awarder):
 			logging.info("Token awarded elsewhere in tree")
 			return True
@@ -166,7 +182,11 @@ def iterate_replies(data,r,comment,awardee,awarder):
 	iterate = "Yes"
 	msg_confirmation = data["msg_confirmation"]
 	running_username = str(data["running_username"]).lower()
-	comments = r.get_submission(comment.permalink).comments
+	try:
+		comments = r.get_submission(comment.permalink).comments
+	except:
+		logging.warning("Attempting to get comments for iteration and failed. Retrying.")
+		iterate_replies(data,r,comment,awardee,awarder)
 	for comment in comments:
 		if iterate == "Yes":
 			if check_already_replied(data,msg_confirmation,comment.replies,running_username):
@@ -181,7 +201,7 @@ def iterate_replies(data,r,comment,awardee,awarder):
 		elif iterate == "No":
 			# Not sure this is ever called
 			print("Comment NoIteration Called - Remove this line and comment")
-			logging.warning("Comment NoIteration Called - Remove this line and comment")
+			logging.critical("Comment NoIteration Called - Remove this line and comment")
 			return iterate
 
 # Checks original awarder against recently found awarder
@@ -197,7 +217,11 @@ def check_awarder(r,comment,orig_awarder):
 # Checks original awardee against recently found awardee
 def check_awardee(r,comment,orig_awardee):
 	logging.debug("Checking Awardee")
-	awardee_comment = r.get_info(thing_id=comment.parent_id)
+	try:
+		awardee_comment = r.get_info(thing_id=comment.parent_id)
+	except:
+		logging.error("Failed to get awardee comment. Check for a comment if this continues.")
+		check_awardee(r,comment,orig_awardee)
 	if awardee_comment.author:
 		awardee = str(awardee_comment.author.name).lower()
 	else:
