@@ -44,7 +44,7 @@ def process_comments(data,r,sub_comments):
 				lines = split_comment(comment.body) # Gets comment lines
 				token_found = search_line(data["token"],lines) # Checks for match
 				if token_found: # Starts checks when a token is found
-					logging.debug("A token was found.")
+					logging.info("A token was found.")
 					start_checks(data,r,comment,token_found)
 				else:
 					logging.info("No token found.")
@@ -136,7 +136,7 @@ def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_f
 		flair_count = token.start_increment(data,r,awardee)
 		token_comment.save()
 		token_comment.reply(data["msg_confirmation"] % (awardee,data["running_subreddit"],awardee))
-		logging.debug("Confirmation Message Sent - Beginning Wiki Update")
+		logging.info("Confirmation Message Sent")
 		wiki.start(data,r,token_comment,awarder,awardee,flair_count)
 
 # Check to ensure submission author is not receiving a token
@@ -182,6 +182,7 @@ def iterate_replies(data,r,comment,awardee,awarder):
 		elif iterate == "No":
 			# Not sure this is ever called
 			print("Comment NoIteration Called - Remove this line and comment")
+			logging.warning("Comment NoIteration Called - Remove this line and comment")
 			return iterate
 
 # Checks original awarder against recently found awarder
