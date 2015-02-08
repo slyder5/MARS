@@ -86,7 +86,6 @@ def search_line(data_token,lines):
 		if re.match("(    |&gt;)",line) is None: # Don't look in code or quotes
 			for token in data_token: # Check each type of token
 				if token in line:
-					logging.info("Found Token - Starting Checks")
 					return token
 
 # Check to make sure I haven't already replied
