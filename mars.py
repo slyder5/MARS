@@ -7,6 +7,7 @@
 ##########
 
 import os
+import time
 from settings import *
 from modules import *
 import logging
@@ -85,6 +86,11 @@ def mars(data):
 
 		# Comments Module
 		comments.start(data,r)
+		
+		# Wait 10 seconds
+		wait_time = 10
+		logging.info("Sleeping for %s seconds" % wait_time)
+		time.sleep(wait_time)
 
 # Run #
 #######
