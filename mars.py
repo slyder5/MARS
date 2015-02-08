@@ -74,21 +74,21 @@ def mars(data):
 		else:
 			print("Please enter prod or test.\n")
 	data = config.check_environment(data)
-
+	
 	# Account Module
 	r = account.start(data)
 	
-	# Commands Module
-	commands.start(data,r)
+	run = True
+	while run:
+		# Commands Module
+		commands.start(data,r)
 
-	# Comments Module
-	comments.start(data,r)
+		# Comments Module
+		comments.start(data,r)
 
 # Run #
 #######
 
-run = True
-while run:
- mars(data)
+mars(data)
 
 # EOF
