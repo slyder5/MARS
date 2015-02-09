@@ -47,7 +47,9 @@ def read_mail(data,r,mail):
 	elif command == "rescan": # Same functionality as add
 		add(data,r,mail)
 	elif is_moderator(data,r,mail.author.name): 
-		if command == "force add": # Force add skips token check
+		if command == "approve": # Approves token in queue
+			approve(data,r,mail)
+		elif command == "force add": # Force add skips token check
 			force_add(data,r,mail)
 		elif command == "reset": # Resets bot's scanned comments
 			reset(data)
@@ -106,6 +108,11 @@ def is_moderator(data,r,name):
 		mod = str(mod).lower()
 		if mod == name:
 			return True
+
+def approve(data,r,mail):
+	logging.debug("Approve Command")
+	lines = separate_mail(mail.body)
+	print("Placeholder: Needs wiki removal hook.")
 
 # Forces award (skips token check and length check)
 def force_add(data,r,mail):
@@ -169,6 +176,5 @@ def read_comment_reply(data,r,mail):
 	if str(data["msg_confirmation"]).lower()[0:15] not in str(bots_comment.body).lower():
 		logging.debug("Removing old comment.")
 		bots_comment.remove(spam=False)
-		
 
 # EOF
