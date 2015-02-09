@@ -47,6 +47,18 @@ def start(data,r,token_comment,awarder,awardee,flair_count):
     update_tracker_page(data,r,awardee,token_comment,tracker_page)
   else:
     new_tracker_page(data,r,awardee,token_comment)
+  try:
+    queue_page = r.get_wiki_page(data["running_subreddit"],data["running_username"] + "/queue")
+    logging.debug("Found existing token queue wiki page")
+    queue_found = True
+  except Exception as e:
+    if e.response.status_code == 404:
+      logging.debug("Did not find existing token queue wiki page")
+      queue_found = False
+  if queue_found:
+    update_queue_page(data,r,awardee,token_comment,queue_page)
+  else:
+    new_queue_page(data,r,awardee,token_comment)
 
 def new_wiki_page(data,r,token_comment,awarder,awardee,flair_count):
   submission_title = token_comment.submission.title
@@ -109,13 +121,9 @@ def update_tracker_page(data,r,awardee,token_comment,tracker_page):
   for line in lines:
     if re.match("(\|)",line):
       if not re.match("(\| User |\| --- \|)",line):
-        print(awardee)
-        print(line)
         if awardee not in line:
-          print("not in line")
           table.append(line)
         else:
-          print("in line")
           table.append(add_content)
           awardee_already_exists = True
   if not awardee_already_exists:
@@ -124,5 +132,34 @@ def update_tracker_page(data,r,awardee,token_comment,tracker_page):
   new_content = '\n'.join(table)
   full_update = initial_text + add_header + new_content
   r.edit_wiki_page(data["running_subreddit"],data["running_username"] + "/tracker",full_update,"Updated tracker")
+
+def new_queue_page(data,r,awardee,token_comment):
+  initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot."
+  add_header = "| Awardee | Comment | Action |\n| --- | --- | --- |\n"
+  add_content = "|/u/%s|[Link](%s)| [Approve](/message/compose/?to=%s&subject=%s&message=%s)\| \
+                [Reject](/message/compose/?to=%s&subject=%s&message=%s) |" % (awardee,
+                token_comment.permalink + "?context=2",data["running_username"],"approve",
+                token_comment.permalink,data["running_username"],"remove",token_comment.permalink)
+  full_update = initial_text + add_header + add_content
+  r.edit_wiki_page(data["running_subreddit"],data["running_username"] + "/queue",full_update,"Updated queue")
+
+def update_queue_page(data,r,awardee,token_comment,queue_page):
+  initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot."
+  add_header = "| Awardee | Comment | Action |\n| --- | --- | --- |\n"
+  add_content = "|/u/%s|[Link](%s)| [Approve](/message/compose/?to=%s&subject=%s&message=%s)\| \
+                [Reject](/message/compose/?to=%s&subject=%s&message=%s) |" % (awardee,
+                token_comment.permalink + "?context=2",data["running_username"],"approve",
+                token_comment.permalink,data["running_username"],"remove",token_comment.permalink)
+  old_content = tracker_page.content_md
+  lines = old_content.split("\n")
+  table = []
+  for line in lines:
+    if re.match("(\|)",line):
+      if not re.match("(\| Awardee |\| --- \|)",line):
+        table.append(line)
+  table.append(add_content)
+  new_content = '\n'.join(table)
+  full_update = initial_text + add_header + new_content
+  r.edit_wiki_page(data["running_subreddit"],data["running_username"] + "/queue",full_update,"Updated queue")
 
 # EOF
