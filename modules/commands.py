@@ -8,6 +8,7 @@ import praw
 import logging
 import comments
 import token
+import wiki
 from settings import config
 from pprint import pprint
 
@@ -112,7 +113,8 @@ def is_moderator(data,r,name):
 def approve(data,r,mail):
 	logging.debug("Approve Command")
 	lines = separate_mail(mail.body)
-	print("Placeholder: Needs wiki removal hook.")
+	for line in lines:
+		wiki.approve(data,r,line)
 
 # Forces award (skips token check and length check)
 def force_add(data,r,mail):
