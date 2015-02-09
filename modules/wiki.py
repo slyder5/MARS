@@ -137,19 +137,19 @@ def new_queue_page(data,r,awardee,token_comment):
   initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\n"
   add_header = "| Awardee | Comment | Action |\n| --- | --- | --- |\n"
   add_content = "|/u/%s|[Link](%s)| [Approve](/message/compose/?to=%s&subject=%s&message=%s)\| \
-                [Reject](/message/compose/?to=%s&subject=%s&message=%s) |" % (awardee,
-                token_comment.permalink + "?context=2",data["running_username"],"approve",
-                token_comment.permalink,data["running_username"],"remove",token_comment.permalink)
+  [Reject](/message/compose/?to=%s&subject=%s&message=%s) |" % (awardee,token_comment.permalink + "?context=2",
+  data["running_username"],"approve",token_comment.permalink,data["running_username"],"remove",
+  token_comment.permalink)
   full_update = initial_text + add_header + add_content
   r.edit_wiki_page(data["running_subreddit"],data["running_username"] + "/queue",full_update,"Updated queue")
 
 def update_queue_page(data,r,awardee,token_comment,queue_page):
   initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\n"
   add_header = "| Awardee | Comment | Action |\n| --- | --- | --- |\n"
-  add_content = "|/u/%s|[Link](%s)| [Approve](/message/compose/?to=%s&subject=%s&message=%s)\| \
-                [Reject](/message/compose/?to=%s&subject=%s&message=%s) |" % (awardee,
-                token_comment.permalink + "?context=2",data["running_username"],"approve",
-                token_comment.permalink,data["running_username"],"remove",token_comment.permalink)
+  add_content = "|/u/%s|[Link](%s)| [Approve](/message/compose/?to=%s&subject=%s&message=%s)| \
+  [Reject](/message/compose/?to=%s&subject=%s&message=%s) |" % (awardee,token_comment.permalink + "?context=2",
+  data["running_username"],"approve",token_comment.permalink,data["running_username"],"remove",
+  token_comment.permalink)
   old_content = tracker_page.content_md
   lines = old_content.split("\n")
   table = []
