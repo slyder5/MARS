@@ -104,16 +104,16 @@ def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_
 def new_tracker_page(data,r,awardee,token_comment):
   initial_text = "Below is a list of all of the users that have earned deltas.\n\n"
   add_header = "| User | Delta List | Delta Earned|\n| --- | --- | --- |\n"
-  add_content = "|/u/%s|[Link](/r/%s/wiki/user/%s)|[Link](%s)|" % (awardee,data["running_subreddit"],
-                awardee,token_comment.permalink + "?context=2")
+  add_content = "|/u/%s|[Link](/r/%s/wiki/user/%s)|[%s/%s/%s](%s)|" % (awardee,data["running_subreddit"],
+                awardee,today.month,today.day,today.year,token_comment.permalink + "?context=2")
   full_update = initial_text + add_header + add_content
   r.edit_wiki_page(data["running_subreddit"],data["running_username"] + "/tracker",full_update,"Updated tracker")
 
 def update_tracker_page(data,r,awardee,token_comment,tracker_page):
   initial_text = "Below is a list of all of the users that have earned deltas.\n\n"
   add_header = "| User | Delta List | Last Delta Earned |\n| --- | --- | --- |\n"
-  add_content = "|/u/%s|[Link](/r/%s/wiki/user/%s)|[Link](%s)|" % (awardee,data["running_subreddit"],
-                awardee,token_comment.permalink + "?context=2")
+  add_content = "|/u/%s|[Link](/r/%s/wiki/user/%s)|[%s/%s/%s](%s)|" % (awardee,data["running_subreddit"],
+                awardee,today.month,today.day,today.year,token_comment.permalink + "?context=2")
   old_content = tracker_page.content_md
   awardee_already_exists = False
   lines = old_content.split("\n")
