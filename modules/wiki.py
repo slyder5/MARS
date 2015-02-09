@@ -150,7 +150,7 @@ def update_queue_page(data,r,awardee,token_comment,queue_page):
   [Reject](/message/compose/?to=%s&subject=%s&message=%s) |" % (awardee,token_comment.permalink + "?context=2",
   data["running_username"],"approve",token_comment.permalink,data["running_username"],"remove",
   token_comment.permalink)
-  old_content = tracker_page.content_md
+  old_content = queue_page.content_md
   lines = old_content.split("\n")
   table = []
   for line in lines:
