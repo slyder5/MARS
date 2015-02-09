@@ -45,10 +45,10 @@ def process_comments(data,r,sub_comments):
 				lines = split_comment(comment.body) # Gets comment lines
 				token_found = search_line(data["token"],lines) # Checks for match
 				if token_found: # Starts checks when a token is found
-					logging.info("A token was found.")
+					logging.info("Token Found")
 					start_checks(data,r,comment,token_found)
 				else:
-					logging.info("No token found.")
+					logging.info("No Token Found")
 			else:
 				logging.debug("Comment found was my own.")
 			if comment_author == str(comment.submission.author).lower():
