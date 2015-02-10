@@ -180,7 +180,6 @@ def remove_wiki_line(data,r,wiki_line,awardee,flair_count):
           table.append(line)
     elif re.match("Any delta history",line):
       note = line + "\n\n"
-  table.append(add_content)
   table.sort(reverse=True)
   new_content = '\n'.join(table)
   full_update = initial_text + note + add_header + new_content
