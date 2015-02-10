@@ -162,7 +162,7 @@ def update_queue_page(data,r,awardee,token_comment,queue_page):
   full_update = initial_text + add_header + new_content
   r.edit_wiki_page(data["running_subreddit"],data["running_username"] + "/queue",full_update,"Updated queue")
 
-def approve(data,r,approved):
+def remove_queue_line(data,r,queue_line):
   initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\n"
   add_header = "| Awardee | Comment | Action |\n| --- | --- | --- |\n"
   queue_page = r.get_wiki_page(data["running_subreddit"],data["running_username"] + "/queue")
@@ -172,7 +172,7 @@ def approve(data,r,approved):
   for line in lines:
     if re.match("(\|)",line):
       if not re.match("(\| Awardee |\| --- \|)",line):
-        if approved not in line:
+        if queue_line not in line:
           table.append(line)
   new_content = '\n'.join(table)
   full_update = initial_text + add_header + new_content
