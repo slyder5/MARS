@@ -152,6 +152,7 @@ def remove(data,r,mail):
 				comment.reply(data["msg_removal"] % (data["running_subreddit"],data["running_username"]))
 				comment.unsave()
 				comment.remove(spam=False)
+				wiki.remove_wiki_line(data,r,comment.permalink,awardee_comment.author,flair_count)
 				wiki.remove_queue_line(data,r,line)
 				print("Placeholder: Remove text from wiki and scoreboard")
 			else:
