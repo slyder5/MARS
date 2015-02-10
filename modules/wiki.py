@@ -162,7 +162,7 @@ def update_queue_page(data,r,awardee,token_comment,queue_page):
   full_update = initial_text + add_header + new_content
   r.edit_wiki_page(data["running_subreddit"],data["running_username"] + "/queue",full_update,"Updated queue")
 
-def remove_wiki_line(data,r,wiki_line,awardee,flair_count,):
+def remove_wiki_line(data,r,wiki_line,awardee,flair_count):
   user_wiki_page = r.get_wiki_page(data["running_subreddit"],"user/" + awardee)
   old_content = user_wiki_page.content_md
   add_header = "| Date | Submission | Delta Comment | Awarded By |\n| --- | :-: | --- | --- |\n"
