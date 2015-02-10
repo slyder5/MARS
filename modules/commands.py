@@ -114,7 +114,7 @@ def approve(data,r,mail):
 	logging.debug("Approve Command")
 	lines = separate_mail(mail.body)
 	for line in lines:
-		wiki.approve(data,r,line)
+		wiki.remove_queue_line(data,r,line)
 
 # Forces award (skips token check and length check)
 def force_add(data,r,mail):
@@ -152,6 +152,7 @@ def remove(data,r,mail):
 				comment.reply(data["msg_removal"] % (data["running_subreddit"],data["running_username"]))
 				comment.unsave()
 				comment.remove(spam=False)
+				wiki.remove_queue_line(data,r,line)
 				print("Placeholder: Remove text from wiki and scoreboard")
 			else:
 				logging.warning("No token to remove.")
