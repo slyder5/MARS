@@ -135,15 +135,6 @@ def update_tracker_page(data,r,awardee,token_comment,tracker_page):
   full_update = initial_text + add_header + new_content
   r.edit_wiki_page(data["running_subreddit"],data["running_username"] + "/tracker",full_update,"Updated tracker")
 
-def new_queue_page(data,r,awardee,token_comment):
-  initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\n"
-  add_header = "| Awardee | Comment | Action |\n| --- | --- | --- |\n"
-  add_content = "|/u/%s|[%s](%s)| [Approve](/message/compose/?to=%s&subject=%s&message=%s) / [Reject](/message/compose/?to=%s&subject=%s&message=%s) |" % \
-    (awardee,token_comment.body,token_comment.permalink + "?context=2",data["running_username"],"approve",token_comment.permalink,
-    data["running_username"],"remove",token_comment.permalink)
-  full_update = initial_text + add_header + add_content
-  r.edit_wiki_page(data["running_subreddit"],data["running_username"] + "/queue",full_update,"Updated queue")
-
 def update_queue_page(data,r,awardee,token_comment,queue_page):
   initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\n"
   add_header = "| Awardee | Comment | Action |\n| --- | --- | --- |\n"
@@ -161,6 +152,29 @@ def update_queue_page(data,r,awardee,token_comment,queue_page):
   new_content = '\n'.join(table)
   full_update = initial_text + add_header + new_content
   r.edit_wiki_page(data["running_subreddit"],data["running_username"] + "/queue",full_update,"Updated queue")
+
+def remove_wiki_line(data,r,token_comment,awardee,flair_count,user_wiki_page):
+  old_content = user_wiki_page.content_md
+  add_header = "| Date | Submission | Delta Comment | Awarded By |\n| --- | :-: | --- | --- |\n"
+  if int(flair_count) < 2:
+    initial_text = "/u/%s has received %s delta for the following comment:\n\n" % (awardee,flair_count)
+  else:
+    initial_text = "/u/%s has received %s deltas for the following comments:\n\n" % (awardee,flair_count)
+  lines = old_content.split("\n")
+  note = ""
+  table = []
+  for line in lines:
+    if re.match("(\|)",line):
+      if not re.match("(\| Date |\| --- \|)",line):
+        if wiki_line not in line:
+          table.append(line)
+    elif re.match("Any delta history",line):
+      note = line + "\n\n"
+  table.append(add_content)
+  table.sort(reverse=True)
+  new_content = '\n'.join(table)
+  full_update = initial_text + note + add_header + new_content
+  r.edit_wiki_page(data["running_subreddit"],"user/" + awardee,full_update,"Updated user's delta history page.")
 
 def remove_queue_line(data,r,queue_line):
   initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\n"
