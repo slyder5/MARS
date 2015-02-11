@@ -126,11 +126,14 @@ def remind_already_replied(data,msg,replies,running_username):
 def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found):
 	logging.debug("Optional Checks")
 	if check_awardee_not_author(data["check_ana"],token_comment.submission.author,awardee):
-		print("\nBad recipient\n")
+		token_comment.reply(data["error_bad_recipient"] % token_comment.permalink).distinguish()
+		logging.info("Error Bad Recipient Sent")
 	elif check_awarder_to_awardee_history(data,r,awardee_comment,awardee,token_comment,awarder):
-		print("\nAlready awarded this thread\n")
+		token_comment.reply(data["error_submission_history"] % awardee).distinguish()
+		logging.info("Error Submission History Sent")
 	elif check_length(data,token_comment.body,token_found):
-		print("\nInsufficient length\n")
+		token_comment.reply(data["error_length"] % awardee).distinguish()
+		logging.info("Error Length Sent")
 	else:
 		logging.debug("Token Valid - Beginning Award Process")
 		flair_count = token.start_increment(data,r,awardee)
