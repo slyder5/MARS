@@ -47,7 +47,8 @@ def mars(data):
 	os.system("cls" if os.name == "nt" else "clear")
 	print "MARS - Modular Automated Reddit Script\n"
 
-	data = config.check_environment("prod")
+	data["environment"] = "prod"
+	data = config.check_environment(data)
 	
 	# Account Module
 	r = account.start(data)
