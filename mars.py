@@ -47,34 +47,7 @@ def mars(data):
 	os.system("cls" if os.name == "nt" else "clear")
 	print "MARS - Modular Automated Reddit Script\n"
 
-	# First Time Setup
-	if data["initialize"]:
-		if data["initialize"] == 0:
-			ui.start(data)
-		else:
-			condition = True
-			while condition:
-				reset = raw_input("Do you wish to run setup (yes/no)? ")
-				if reset == "yes":
-					condition = False
-					ui.start(data)
-				elif reset == "no":
-					condition = False
-				else:
-					print("Please type yes or no.\n")
-	else:
-		ui.start(data)
-
-	# Checks environment settings
-	condition = True
-	while condition:
-		env = raw_input("Do you wish to run the script in prod or test? ")
-		if env == "prod" or env == "test":
-			data["environment"] = env
-			condition = False
-		else:
-			print("Please enter prod or test.\n")
-	data = config.check_environment(data)
+	data = config.check_environment("prod")
 	
 	# Account Module
 	r = account.start(data)
