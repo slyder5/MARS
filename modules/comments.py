@@ -70,6 +70,12 @@ def start_checks(data,r,token_comment,token_found):
 			logging.info("User replied to self")
 		elif check_already_replied(data,data["msg_confirmation"],token_comment.replies,running_username):
 			logging.info("Already Confirmed")
+		elif check_already_replied(data,data["error_length"],token_comment.replies,running_usernames):
+			logging.info("Already notified - too short")
+		elif check_already_replied(data,data["error_bad_recipient"],token_comment.replies,running_usernames):
+			logging.info("Already notifird - bad recipient")
+		elif check_already_replied(data,data["error_submission_history"],token_comment.replies,running_usernames):
+			logging.info("Already notified - sumbission history")
 		else:
 			optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found)
 	else:
