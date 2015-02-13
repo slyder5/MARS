@@ -97,8 +97,11 @@ def add(data,r,mail):
 	logging.debug("Add Command")
 	lines = separate_mail(mail.body)
 	for line in lines:
-		links = r.get_submission(line).comments
-		comments.process_comments(data,r,links)
+		try:
+			links = r.get_submission(line).comments
+			comments.process_comments(data,r,links)
+		except:
+			logging.error("No link found.")
 
 # Checks to see if user is a moderator
 def is_moderator(data,r,name):
@@ -121,10 +124,13 @@ def force_add(data,r,mail):
 	logging.warning("Force Add Command")
 	lines = separate_mail(mail.body)
 	for line in lines:
-		links = r.get_submission(line).comments
-		for comment in links:
-			token_found = "force"
-			comments.start_checks(data,r,comment,token_found)
+		try:
+			links = r.get_submission(line).comments
+			for comment in links:
+				token_found = "force"
+				comments.start_checks(data,r,comment,token_found)
+		except:
+			logging.error("No link found.")
 
 # Resets last scanned comment
 def reset(data):
