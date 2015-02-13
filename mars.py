@@ -69,6 +69,14 @@ def mars(data):
 # Run #
 #######
 
-mars(data)
+try:
+  mars(data)
+except Exception as e:
+  if e.response:
+    if e.response.status_code >= 500:
+      logging.critical("Server Unavailable Error")
+      time.sleep(10)
+      mars(data)
+
 
 # EOF
