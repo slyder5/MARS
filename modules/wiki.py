@@ -138,7 +138,7 @@ def update_tracker_page(data,r,awardee,token_comment,tracker_page):
 def new_queue_page(data,r,awardee,token_comment):
   initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\n"
   add_header = "| Awardee | Comment | Action |\n| --- | --- | --- |\n"
-  token_comment_body = token_comment.body.replace("\r\n"," ")
+  token_comment_body = token_comment.body.replace("\n"," ")
   add_content = "|/u/%s|[%s](%s)| [Approve](/message/compose/?to=%s&subject=%s&message=%s) / [Reject](/message/compose/?to=%s&subject=%s&message=%s) |" % \
   (awardee,token_comment_body,token_comment.permalink + "?context=2",data["running_username"],"approve",token_comment.permalink,
   data["running_username"],"remove",token_comment.permalink)
@@ -148,7 +148,7 @@ def new_queue_page(data,r,awardee,token_comment):
 def update_queue_page(data,r,awardee,token_comment,queue_page):
   initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\n"
   add_header = "| Awardee | Comment | Action |\n| --- | --- | --- |\n"
-  token_comment_body = token_comment.body.replace("\r\n"," ")
+  token_comment_body = token_comment.body.replace("\n"," ")
   add_content = "|/u/%s|[%s](%s)| [Approve](/message/compose/?to=%s&subject=%s&message=%s) / [Reject](/message/compose/?to=%s&subject=%s&message=%s) |" % \
     (awardee,token_comment_body,token_comment.permalink + "?context=2",data["running_username"],"approve",token_comment.permalink,
     data["running_username"],"remove",token_comment.permalink)
