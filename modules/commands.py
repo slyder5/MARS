@@ -135,7 +135,7 @@ def force_add(data,r,mail):
 # Resets last scanned comment
 def reset(data):
 	logging.debug("Reset Command")
-	data["last_scanned"] = ""
+	data["skip_scan_history"] = "1"
 	config.write_json(data)
 
 # Removes token from flair, wiki, scoreboard, and removes confirmation comment
