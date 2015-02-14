@@ -74,11 +74,9 @@ try:
 except Exception as e:
 	try:
 		if e.response.status_code >= 500:
-			logging.critical("Server Unavailable Error")
-			time.sleep(10)
+			logging.error("Error code: %s" % e.response.status_code)
 			mars(data)
 	except:
-		logging.error(e)
-
+		logging.critical("Failed to run.")
 
 # EOF
