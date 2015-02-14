@@ -140,7 +140,7 @@ def new_queue_page(data,r,awardee,token_comment):
   add_header = "| Awardee | Comment | Action |\n| --- | --- | --- |\n"
   token_comment_body = token_comment.body.replace("\r\n"," ")
   add_content = "|/u/%s|[%s](%s)| [Approve](/message/compose/?to=%s&subject=%s&message=%s) / [Reject](/message/compose/?to=%s&subject=%s&message=%s) |" % \
-  (awardee,token_comment.body,token_comment.permalink + "?context=2",data["running_username"],"approve",token_comment.permalink,
+  (awardee,token_comment_body,token_comment.permalink + "?context=2",data["running_username"],"approve",token_comment.permalink,
   data["running_username"],"remove",token_comment.permalink)
   full_update = initial_text + add_header + add_content
   r.edit_wiki_page(data["running_subreddit"],data["running_username"] + "/queue",full_update,"Updated queue")
@@ -148,8 +148,9 @@ def new_queue_page(data,r,awardee,token_comment):
 def update_queue_page(data,r,awardee,token_comment,queue_page):
   initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\n"
   add_header = "| Awardee | Comment | Action |\n| --- | --- | --- |\n"
+  token_comment_body = token_comment.body.replace("\r\n"," ")
   add_content = "|/u/%s|[%s](%s)| [Approve](/message/compose/?to=%s&subject=%s&message=%s) / [Reject](/message/compose/?to=%s&subject=%s&message=%s) |" % \
-    (awardee,token_comment.body,token_comment.permalink + "?context=2",data["running_username"],"approve",token_comment.permalink,
+    (awardee,token_comment_body,token_comment.permalink + "?context=2",data["running_username"],"approve",token_comment.permalink,
     data["running_username"],"remove",token_comment.permalink)
   old_content = queue_page.content_md
   lines = old_content.split("\n")
