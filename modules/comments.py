@@ -148,6 +148,7 @@ def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_f
 		token_comment.reply(data["msg_confirmation"] % (awardee_comment.author.name,data["running_subreddit"],awardee)).distinguish()
 		logging.info("Confirmation Message Sent")
 		wiki.start(data,r,token_comment,awarder,awardee,flair_count)
+		logging.info("Wiki Updates Complete")
 
 # Check to ensure submission author is not receiving a token
 def check_awardee_not_author(check_ana,sub_author,awardee):
