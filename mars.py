@@ -76,6 +76,6 @@ except Exception as e:
 			logging.error("Error code: %s" % e.response.status_code)
 			mars(data)
 	except:
-		logging.critical("Failed to run.")
+		logging.critical("Failed to run. %s" % e)
 
 # EOF
