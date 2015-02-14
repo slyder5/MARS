@@ -102,6 +102,7 @@ def add(data,r,mail):
 			comments.process_comments(data,r,links)
 		except:
 			logging.error("No link found.")
+	r.send_message(mail.author.name,"Add Complete","The Add command has been completed for:\n\n%s" % mail.body)
 
 # Checks to see if user is a moderator
 def is_moderator(data,r,name):
@@ -131,6 +132,7 @@ def force_add(data,r,mail):
 				comments.start_checks(data,r,comment,token_found)
 		except:
 			logging.error("No link found.")
+	r.send_message("/r/" + data["running_subreddit"],"Force Add Detected","Force Add from %s detected on:\n\n%s" % (mail.author.name,mail.body))
 
 # Resets last scanned comment
 def reset(data):
@@ -163,6 +165,7 @@ def remove(data,r,mail):
 				print("Placeholder: Remove text from wiki and scoreboard")
 			else:
 				logging.warning("No token to remove.")
+	r.send_message("/r/" + data["running_subreddit"],"Remove Detected","Remove from %s detected on:\n\n%s" % (mail.author.name,mail.body))
 
 # Stops bot
 def stop(data,r,mail):

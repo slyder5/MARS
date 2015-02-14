@@ -71,11 +71,11 @@ def start_checks(data,r,token_comment,token_found):
 		elif check_already_replied(data,data["msg_confirmation"],token_comment.replies,running_username):
 			logging.info("Already Confirmed")
 		elif check_already_replied(data,data["error_length"],token_comment.replies,running_username):
-			logging.info("Already notified - too short")
+			logging.info("Already Notified - Comment Too Short")
 		elif check_already_replied(data,data["error_bad_recipient"],token_comment.replies,running_username):
-			logging.info("Already notifird - bad recipient")
+			logging.info("Already Notifird - Bad Recipient")
 		elif check_already_replied(data,data["error_submission_history"],token_comment.replies,running_username):
-			logging.info("Already notified - sumbission history")
+			logging.info("Already Notified - Submission History Error")
 		else:
 			optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found)
 	else:
@@ -113,19 +113,19 @@ def remind_already_replied(data,msg,replies,running_username):
 			if str(reply.author.name).lower() == running_username:
 				body = str(reply.body).lower()
 				if str(msg).lower()[0:15] in body:
-					logging.debug("Reply message to message match")
+					logging.debug("Reply Message-to-Message Match")
 					return ("match",reply)
 				elif str(data["msg_confirmation"]).lower()[0:15] in body:
-					logging.debug("Message confirmation match")
+					logging.debug("Already Confirmed")
 					return ("confirm",reply)
 				elif str(data["error_bad_recipient"]).lower()[0:15] in body:
-					logging.debug("Error bad recipient match")
+					logging.debug("Already Notifird - Bad Recipient")
 					return ("error",reply)
 				elif str(data["error_submission_history"]).lower()[0:15] in body:
-					logging.debug("Error submission history match")
+					logging.debug("Already Notified - Submission History Error")
 					return ("error",reply)
 				else:
-					logging.debug("Unspecified match")
+					logging.debug("Unspecified Match")
 					return ("other",reply)
 
 # Optional checks based on configuration
