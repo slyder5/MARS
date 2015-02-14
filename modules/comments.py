@@ -90,7 +90,6 @@ def split_comment(body):
 def search_line(data_token,lines):
 	logging.debug("Searching Line For Token")
 	for line in lines:
-		logging.debug(line)
 		if re.match("(    |&gt;)",line) is None: # Don't look in code or quotes
 			for token in data_token: # Check each type of token
 				if token in line:
@@ -148,6 +147,7 @@ def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_f
 		token_comment.reply(data["msg_confirmation"] % (awardee_comment.author.name,data["running_subreddit"],awardee)).distinguish()
 		logging.info("Confirmation Message Sent")
 		wiki.start(data,r,token_comment,awarder,awardee,flair_count)
+		logging.info("Wiki Updates Complete")
 
 # Check to ensure submission author is not receiving a token
 def check_awardee_not_author(check_ana,sub_author,awardee):
