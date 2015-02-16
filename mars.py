@@ -68,14 +68,11 @@ def mars(data):
 # Run #
 #######
 
-try:
-	mars(data)
-except Exception as e:
+# Stop reddit failures from killing the script
+while True:
 	try:
-		if e.response.status_code >= 500:
-			logging.error("Error code: %s" % e.response.status_code)
-			mars(data)
-	except:
-		logging.critical("Failed to run. %s" % e)
+		mars(data)
+	except Exception as e:
+		logging.error("Error code: %s" % e)
 
 # EOF
