@@ -11,6 +11,7 @@ import token
 import wiki
 from settings import config
 from pprint import pprint
+import time
 
 # Variables #
 #############
@@ -83,6 +84,7 @@ def remind(data,r,mail):
 				reminder = False
 				is_reply.edit(data["msg_remind"])
 				logging.info("Edited comment and left the reminder.")
+		wait()
 	if reminder:
 		for comment in links:
 			if comment.author:
@@ -102,6 +104,7 @@ def add(data,r,mail):
 			comments.process_comments(data,r,links)
 		except:
 			logging.error("No link found.")
+		wait()
 	r.send_message(mail.author.name,"Add Complete","The Add command has been completed for:\n\n%s" % mail.body)
 
 # Checks to see if user is a moderator
@@ -119,6 +122,7 @@ def approve(data,r,mail):
 	lines = separate_mail(mail.body)
 	for line in lines:
 		wiki.remove_queue_line(data,r,line)
+		wait()
 
 # Forces award (skips token check and length check)
 def force_add(data,r,mail):
@@ -132,6 +136,7 @@ def force_add(data,r,mail):
 				comments.start_checks(data,r,comment,token_found)
 		except:
 			logging.error("No link found.")
+		wait()
 	r.send_message("/r/" + data["running_subreddit"],"Force Add Detected","Force Add from %s detected on:\n\n%s" % (mail.author.name,mail.body))
 
 # Resets last scanned comment
@@ -165,6 +170,7 @@ def remove(data,r,mail):
 				print("Placeholder: Remove text from wiki and scoreboard")
 			else:
 				logging.warning("No token to remove.")
+		wait()
 	r.send_message("/r/" + data["running_subreddit"],"Remove Detected","Remove from %s detected on:\n\n%s" % (mail.author.name,mail.body))
 
 # Stops bot
@@ -189,5 +195,10 @@ def read_comment_reply(data,r,mail):
 	if str(data["msg_confirmation"]).lower()[0:15] not in str(bots_comment.body).lower():
 		logging.debug("Removing old comment.")
 		bots_comment.remove(spam=False)
+
+def wait():
+	wait_time = 35
+	logging.debug("Sleeping for %s seconds to clear cache" % wait_time)
+	time.sleep(wait_time)
 
 # EOF
