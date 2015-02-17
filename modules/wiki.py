@@ -153,12 +153,13 @@ def update_queue_page(data,r,awardee,token_comment,queue_page):
   add_content = "|/u/%s|[%s](%s)| [Approve](/message/compose/?to=%s&subject=%s&message=%s) / [Reject](/message/compose/?to=%s&subject=%s&message=%s) |" % \
     (awardee,token_comment_body,token_comment.permalink + "?context=2",data["running_username"],"approve",token_comment.permalink,
     data["running_username"],"remove",token_comment.permalink)
-  old_content = HTMLParser().unescape(queue_page.content_md)
+  old_content = HTMLParser().escape(queue_page.content_md)
   lines = old_content.split("\n")
   table = []
   for line in lines:
     if re.match("(\|)",line):
       if not re.match("(\| Awardee |\| --- \|)",line):
+        line = HTMLParser().escape(line)
         table.append(line)
   table.append(add_content)
   new_content = '\n'.join(table)
@@ -180,6 +181,7 @@ def remove_wiki_line(data,r,wiki_line,awardee,flair_count):
     if re.match("(\|)",line):
       if not re.match("(\| Date |\| --- \|)",line):
         if wiki_line not in line:
+          line = HTMLParser().escape(line)
           table.append(line)
     elif re.match("Any delta history",line):
       note = line + "\n\n"
