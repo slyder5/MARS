@@ -153,7 +153,7 @@ def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_f
 
 def wait():
 	wait_time = 35
-	logging.debug("Sleeping for %s to clear cache" %s wait_time)
+	logging.debug("Sleeping for %s to clear cache" % wait_time)
 	time.sleep(wait_time)
 
 # Check to ensure submission author is not receiving a token
