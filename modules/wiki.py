@@ -12,6 +12,7 @@ import time
 import datetime
 import calendar
 from urllib2 import HTTPError
+from HTMLParser import HTMLParser
 import re
 import pprint
 
@@ -152,7 +153,7 @@ def update_queue_page(data,r,awardee,token_comment,queue_page):
   add_content = "|/u/%s|[%s](%s)| [Approve](/message/compose/?to=%s&subject=%s&message=%s) / [Reject](/message/compose/?to=%s&subject=%s&message=%s) |" % \
     (awardee,token_comment_body,token_comment.permalink + "?context=2",data["running_username"],"approve",token_comment.permalink,
     data["running_username"],"remove",token_comment.permalink)
-  old_content = queue_page.content_md
+  old_content = HTMLParser().unescape(queue_page.content_md)
   lines = old_content.split("\n")
   table = []
   for line in lines:
