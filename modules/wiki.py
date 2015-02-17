@@ -12,7 +12,6 @@ import time
 import datetime
 import calendar
 from urllib2 import HTTPError
-from HTMLParser import HTMLParser
 import re
 import pprint
 
@@ -163,6 +162,7 @@ def new_queue_page(data,r,awardee,token_comment):
   initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\n"
   add_header = "| Awardee | Comment | Action |\n| --- | --- | --- |\n"
   token_comment_body = token_comment.body.replace("\n"," ")
+  token_comment_body = token_comment_body.replace("&amp;","\&")
   add_content = "|/u/%s|[%s](%s)| [Approve](/message/compose/?to=%s&subject=%s&message=%s) / [Reject](/message/compose/?to=%s&subject=%s&message=%s) |" % \
   (awardee,token_comment_body,token_comment.permalink + "?context=2",data["running_username"],"approve",token_comment.permalink,
   data["running_username"],"remove",token_comment.permalink)
@@ -173,16 +173,16 @@ def update_queue_page(data,r,awardee,token_comment,queue_page):
   initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\n"
   add_header = "| Awardee | Comment | Action |\n| --- | --- | --- |\n"
   token_comment_body = token_comment.body.replace("\n"," ")
+  token_comment_body = token_comment_body.replace("&amp;","\&")
   add_content = "|/u/%s|[%s](%s)| [Approve](/message/compose/?to=%s&subject=%s&message=%s) / [Reject](/message/compose/?to=%s&subject=%s&message=%s) |" % \
     (awardee,token_comment_body,token_comment.permalink + "?context=2",data["running_username"],"approve",token_comment.permalink,
     data["running_username"],"remove",token_comment.permalink)
-  old_content = HTMLParser().escape(queue_page.content_md)
+  old_content = queue_page.content_md
   lines = old_content.split("\n")
   table = []
   for line in lines:
     if re.match("(\|)",line):
       if not re.match("(\| Awardee |\| --- \|)",line):
-        line = HTMLParser().escape(line)
         table.append(line)
   table.append(add_content)
   new_content = '\n'.join(table)
@@ -200,7 +200,6 @@ def remove_queue_line(data,r,queue_line):
     if re.match("(\|)",line):
       if not re.match("(\| Awardee |\| --- \|)",line):
         if queue_line not in line:
-          line = HTMLParser().escape(line)
           table.append(line)
   new_content = '\n'.join(table)
   full_update = initial_text + add_header + new_content
