@@ -8,7 +8,8 @@ import re
 import logging
 import token
 import wiki
-from pprint import pprint 
+from pprint import pprint
+import time
 
 # Functions #
 #############
@@ -148,6 +149,12 @@ def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_f
 		logging.info("Confirmation Message Sent")
 		wiki.start(data,r,token_comment,awarder,awardee,flair_count)
 		logging.info("Wiki Updates Complete")
+		wait()
+
+def wait():
+	wait_time = 35
+	logging.debug("Sleeping for %s to clear cache" %s wait_time)
+	time.sleep(wait_time)
 
 # Check to ensure submission author is not receiving a token
 def check_awardee_not_author(check_ana,sub_author,awardee):
