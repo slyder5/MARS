@@ -11,6 +11,11 @@ import wiki
 from pprint import pprint
 import time
 
+# Variables #
+#############
+
+history = []
+
 # Functions #
 #############
 
@@ -38,24 +43,26 @@ def process_comments(data,r,sub_comments):
 	running_username = str(data["running_username"]).lower()
 	logging.debug("Running username is: %s" % running_username)
 	for comment in sub_comments: # for each comment in batch
-		if not comment.banned_by: # Ignores removed comments
-			comment_author = str(comment.author.name).lower()
-			if comment_author != running_username: # Ignore my own comments
-				logging.info("Searching comment by: %s\n%s" % (comment.author.name
-					if comment.author else "[deleted]",comment.permalink)) # Shows redditor and permalink
-				lines = split_comment(comment.body) # Gets comment lines
-				token_found = search_line(data["token"],lines) # Checks for match
-				if token_found: # Starts checks when a token is found
-					logging.info("Token Found")
-					start_checks(data,r,comment,token_found)
+		if comment.permalink not in history:
+			if not comment.banned_by: # Ignores removed comments
+				comment_author = str(comment.author.name).lower()
+				if comment_author != running_username: # Ignore my own comments
+					logging.info("Searching comment by: %s\n%s" % (comment.author.name
+						if comment.author else "[deleted]",comment.permalink)) # Shows redditor and permalink
+					lines = split_comment(comment.body) # Gets comment lines
+					token_found = search_line(data["token"],lines) # Checks for match
+					if token_found: # Starts checks when a token is found
+						logging.info("Token Found")
+						start_checks(data,r,comment,token_found)
+					else:
+						logging.info("No Token Found")
 				else:
-					logging.info("No Token Found")
+					logging.debug("Comment found was my own.")
+				if comment_author == str(comment.submission.author).lower():
+					print("Placeholder: Change Submission Flair")
 			else:
-				logging.debug("Comment found was my own.")
-			if comment_author == str(comment.submission.author).lower():
-				print("Placeholder: Change Submission Flair")
-		else:
-			logging.debug("This comment was removed by a mod and has not been scanned.")
+				logging.debug("This comment was removed by a mod and has not been scanned.")
+		history.append(comment.permalink)
 
 # Starts Checks
 def start_checks(data,r,token_comment,token_found):
