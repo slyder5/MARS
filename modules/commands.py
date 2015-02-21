@@ -90,7 +90,7 @@ def remind(data,r,mail):
 			if comment.author:
 				if str(comment.author.name).lower() != str(data["running_username"]).lower():
 					logging.info("User has been sent a reminder.")
-					comment.reply(data["msg_remind"])
+					comment.reply(data["msg_remind"]).distinguish()
 				else:
 					logging.info("Silly person tried to remind me how to do my job.")
 
@@ -163,7 +163,7 @@ def remove(data,r,mail):
 					awardee = str(awardee_comment.author.name).lower()
 					flair_count = token.start_decrement(data,r,awardee)
 					wiki.remove_wiki_line(data,r,comment.permalink,awardee,flair_count)
-				comment.reply(data["msg_removal"] % (data["running_subreddit"],data["running_username"]))
+				comment.reply(data["msg_removal"] % (data["running_subreddit"],data["running_username"])).distinguish()
 				comment.unsave()
 				comment.remove(spam=False)
 				wiki.remove_queue_line(data,r,line)
