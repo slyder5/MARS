@@ -152,7 +152,14 @@ def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_f
 		logging.debug("Token Valid - Beginning Award Process")
 		flair_count = token.start_increment(data,r,awardee)
 		token_comment.save()
-		token_comment.reply(data["msg_confirmation"] % (awardee_comment.author.name,data["running_subreddit"],awardee)).distinguish()
+		edited_reply = False
+		for reply in token_comment.replies:
+			if reply.author:
+				if str(reply.author.name).lower() == data["running_username"].lower():
+					reply.edit(data["msg_confirmation"] % (awardee_comment.author.name,data["running_subreddit"],awardee)).distinguish()
+					edited_reply = True
+		if edited_reply == False:
+			token_comment.reply(data["msg_confirmation"] % (awardee_comment.author.name,data["running_subreddit"],awardee)).distinguish()
 		logging.info("Confirmation Message Sent")
 		wiki.start(data,r,token_comment,awarder,awardee,flair_count)
 		logging.info("Wiki Updates Complete")
