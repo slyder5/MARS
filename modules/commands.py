@@ -200,7 +200,10 @@ def read_comment_reply(data,r,mail):
 	orig_comment = r.get_info(thing_id=bots_comment.parent_id)
 	link = r.get_submission(orig_comment.permalink).comments
 	if str(data["msg_confirmation"]).lower()[0:15] not in str(bots_comment.body).lower():
+		logging.debug("Rescanning Comment")
 		comments.process_comments(data,r,link)
+	else:
+		logging.debug("This comment did not need rescanned.")
 
 def wait():
 	wait_time = 35
