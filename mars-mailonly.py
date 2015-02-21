@@ -57,8 +57,8 @@ def mars(data):
 		# Commands Module
 		commands.start(data,r)
 		
-		# Wait 10 seconds
-		wait_time = 10
+		# Wait 60 seconds
+		wait_time = 60
 		logging.info("Sleeping for %s seconds" % wait_time)
 		time.sleep(wait_time)
 

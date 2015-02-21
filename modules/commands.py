@@ -99,11 +99,8 @@ def add(data,r,mail):
 	logging.debug("Add Command")
 	lines = separate_mail(mail.body)
 	for line in lines:
-		try:
-			links = r.get_submission(line).comments
-			comments.process_comments(data,r,links)
-		except:
-			logging.error("No link found.")
+		links = r.get_submission(line).comments
+		comments.process_comments(data,r,links)
 		wait()
 	r.send_message(mail.author.name,"Add Complete","The Add command has been completed for:\n\n%s" % mail.body)
 
