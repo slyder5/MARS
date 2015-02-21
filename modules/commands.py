@@ -101,7 +101,7 @@ def remind(data,r,mail):
 # Checks comment for token - Same functionality as if bot found the token itself
 def add(data,r,mail):
 	logging.debug("Add Command")
-	proceed = True
+	proceed == True
 	lines = separate_mail(mail.body)
 	for line in lines:
 		try:
