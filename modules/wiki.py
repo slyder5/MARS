@@ -160,10 +160,10 @@ def update_tracker_page(data,r,awardee,token_comment,tracker_page):
 
 def new_queue_page(data,r,awardee,token_comment):
   initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\n"
-  add_header = "| Awardee | Comment | Action |\n| --- | --- | --- |\n"
+  add_header = "| Awardee | Comment | Approve | Reject (Low Effort) | Reject (Remind) | Reject (Abuse) |\n| --- | --- | --- | --- | --- | --- |\n"
   token_comment_body = token_comment.body.replace("\n"," ")
   token_comment_body = token_comment_body.replace("&amp;","\&")
-  add_content = "|/u/%s|[%s](%s)| [Approve](/message/compose/?to=%s&subject=%s&message=%s) \n\n [Reject for Low Effort](/message/compose/?to=%s&subject=reject low effort&message=%s) \n\n [Reject and Remind](/message/compose/?to=%s&subject=reject remind&message=%s) \n\n [Reject for Abuse](/message/compose/?to=%s&subject=reject abuse&message=%s)|" % \
+  add_content = "|/u/%s|[%s](%s)| [Approve](/message/compose/?to=%s&subject=%s&message=%s) | [Reject for Low Effort](/message/compose/?to=%s&subject=reject low effort&message=%s) | [Reject and Remind](/message/compose/?to=%s&subject=reject remind&message=%s) | [Reject for Abuse](/message/compose/?to=%s&subject=reject abuse&message=%s)|" % \
     (awardee,token_comment_body,token_comment.permalink + "?context=2",data["running_username"],"approve",token_comment.permalink,
     data["running_username"],token_comment.permalink,data["running_username"],token_comment.permalink,data["running_username"],token_comment.permalink)
   full_update = initial_text + add_header + add_content
@@ -171,10 +171,10 @@ def new_queue_page(data,r,awardee,token_comment):
 
 def update_queue_page(data,r,awardee,token_comment,queue_page):
   initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\n"
-  add_header = "| Awardee | Comment | Action |\n| --- | --- | --- |\n"
+  add_header = "| Awardee | Comment | Approve | Reject (Low Effort) | Reject (Remind) | Reject (Abuse) |\n| --- | --- | --- | --- | --- | --- |\n"
   token_comment_body = token_comment.body.replace("\n"," ")
   token_comment_body = token_comment_body.replace("&amp;","\&")
-  add_content = "|/u/%s|[%s](%s)| [Approve](/message/compose/?to=%s&subject=%s&message=%s) \n\n [Reject for Low Effort](/message/compose/?to=%s&subject=reject low effort&message=%s) \n\n [Reject and Remind](/message/compose/?to=%s&subject=reject remind&message=%s) \n\n [Reject for Abuse](/message/compose/?to=%s&subject=reject abuse&message=%s)|" % \
+  add_content = "|/u/%s|[%s](%s)| [Approve](/message/compose/?to=%s&subject=%s&message=%s) | [Reject for Low Effort](/message/compose/?to=%s&subject=reject low effort&message=%s) | [Reject and Remind](/message/compose/?to=%s&subject=reject remind&message=%s) | [Reject for Abuse](/message/compose/?to=%s&subject=reject abuse&message=%s)|" % \
     (awardee,token_comment_body,token_comment.permalink + "?context=2",data["running_username"],"approve",token_comment.permalink,
     data["running_username"],token_comment.permalink,data["running_username"],token_comment.permalink,data["running_username"],token_comment.permalink)
   old_content = queue_page.content_md
