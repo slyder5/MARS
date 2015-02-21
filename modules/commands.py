@@ -55,8 +55,12 @@ def read_mail(data,r,mail):
 			force_add(data,r,mail)
 		elif command == "reset": # Resets bot's scanned comments
 			reset(data)
-		elif command == "remove": # Removes token from user
-			remove(data,r,mail)
+		elif command == "remove low effort": # Removes token from user
+			remove(data,r,mail,data["msg_remove_low_effort"])
+		elif command == "remove remind": # Removes token from user
+			remove(data,r,mail,data["msg_remove_remind"])
+		elif command == "remove abuse": # Removes token from user
+			remove(data,r,mail,data["msg_remove_abuse"])
 		elif command == "stop": # Stops bot
 			stop(data,r,mail)
 
@@ -146,7 +150,7 @@ def reset(data):
 	config.write_json(data)
 
 # Removes token from flair, wiki, scoreboard, and removes confirmation comment
-def remove(data,r,mail):
+def remove(data,r,mail,message):
 	logging.warning("Remove Command")
 	lines = separate_mail(mail.body)
 	username = str(data["running_username"]).lower()
@@ -163,11 +167,11 @@ def remove(data,r,mail):
 					awardee = str(awardee_comment.author.name).lower()
 					flair_count = token.start_decrement(data,r,awardee)
 					wiki.remove_wiki_line(data,r,comment.permalink,awardee,flair_count)
-				comment.reply(data["msg_removal"] % (data["running_subreddit"],data["running_username"])).distinguish()
+				comment.reply(message).distinguish()
 				comment.unsave()
 				comment.remove(spam=False)
 				wiki.remove_queue_line(data,r,line)
-				print("Placeholder: Remove text from wiki and scoreboard")
+				print("Placeholder: Remove text from scoreboard")
 			else:
 				logging.warning("No token to remove.")
 		wait()
