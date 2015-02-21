@@ -200,12 +200,7 @@ def read_comment_reply(data,r,mail):
 	orig_comment = r.get_info(thing_id=bots_comment.parent_id)
 	link = r.get_submission(orig_comment.permalink).comments
 	if str(data["msg_confirmation"]).lower()[0:15] not in str(bots_comment.body).lower():
-		bots_orig_comment = bots_comment.body
-		bots_comment.edit("Rescanning previous comment.")
 		comments.process_comments(data,r,link)
-		if str(data["msg_confirmation"]).lower()[0:15] not in str(bots_comment.body).lower():
-			logging.debug("Still not confirmed.")
-			bots_comment.edit(bots_orig_comment)
 
 def wait():
 	wait_time = 35
