@@ -43,7 +43,8 @@ def process_comments(data,r,sub_comments):
 	running_username = str(data["running_username"]).lower()
 	logging.debug("Running username is: %s" % running_username)
 	for comment in sub_comments: # for each comment in batch
-		logging.debug("THIS SHOULD STICK OUT: " + comment)
+		logging.debug("THIS SHOULD STICK OUT:")
+		logging.debug(comment)
 		if comment not in history:
 			if not comment.banned_by: # Ignores removed comments
 				comment_author = str(comment.author.name).lower()
