@@ -43,7 +43,8 @@ def process_comments(data,r,sub_comments):
 	running_username = str(data["running_username"]).lower()
 	logging.debug("Running username is: %s" % running_username)
 	for comment in sub_comments: # for each comment in batch
-		if comment.permalink not in history:
+		print comment
+		if comment not in history:
 			if not comment.banned_by: # Ignores removed comments
 				comment_author = str(comment.author.name).lower()
 				if comment_author != running_username: # Ignore my own comments
@@ -62,7 +63,7 @@ def process_comments(data,r,sub_comments):
 					print("Placeholder: Change Submission Flair")
 			else:
 				logging.debug("This comment was removed by a mod and has not been scanned.")
-		history.append(comment.permalink)
+		history.append(comment)
 
 # Starts Checks
 def start_checks(data,r,token_comment,token_found):
