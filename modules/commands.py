@@ -101,7 +101,7 @@ def remind(data,r,mail):
 # Checks comment for token - Same functionality as if bot found the token itself
 def add(data,r,mail):
 	logging.debug("Add Command")
-	proceed == True
+	proceed = True
 	lines = separate_mail(mail.body)
 	for line in lines:
 		try:
@@ -110,7 +110,7 @@ def add(data,r,mail):
 		except:
 			logging.error("No Link Found in: %s" % line)
 			proceed = False
-		if proceed = True:
+		if proceed == True:
 			comments.process_comments(data,r,links)
 			wait()
 	r.send_message(mail.author.name,"Add Complete","The Add command has been completed for:\n\n%s" % mail.body)
