@@ -26,7 +26,7 @@ consoleFormatter = logging.Formatter("%(asctime)s: %(message)s",datefmt="%I:%M:%
 fileFormatter = logging.Formatter("%(asctime)s %(levelname)s - %(message)s",datefmt="%I:%M:%S %p")
 rootLogger = logging.getLogger()
 rootLogger.setLevel(logging.DEBUG)
-fileHandler = TimedRotatingFileHandler("mars.log",when="midnight",backupCount=14)
+fileHandler = TimedRotatingFileHandler("logs/mars.log",when="midnight",backupCount=14)
 fileHandler.setFormatter(fileFormatter)
 rootLogger.addHandler(fileHandler)
 consoleHandler = logging.StreamHandler()
