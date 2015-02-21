@@ -66,7 +66,7 @@ def process_comments(data,r,sub_comments):
 		if len(history) > 1000:
 			del history[0]
 		else:
-			logging.debug("History is currently at: " + len(history))
+			logging.debug("History is currently at: " + str(len(history)))
 
 # Starts Checks
 def start_checks(data,r,token_comment,token_found):
