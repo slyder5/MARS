@@ -159,7 +159,7 @@ def update_tracker_page(data,r,awardee,token_comment,tracker_page):
   r.edit_wiki_page(data["running_subreddit"],data["running_username"] + "/tracker",full_update,"Updated tracker")
 
 def new_queue_page(data,r,awardee,token_comment):
-  initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\n"
+  initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\nApprove: This will remove the line from this queue. No other action is taken. Reject (reason): Will remove the delta and all related information and then reply to the user with the reason it was removed based on your selection."
   add_header = "| Awardee | Comment | Approve | Reject (Low Effort) | Reject (Remind) | Reject (Abuse) |\n| --- | --- | --- | --- | --- | --- |\n"
   token_comment_body = token_comment.body.replace("\n"," ")
   token_comment_body = token_comment_body.replace("&amp;","\&")
@@ -170,7 +170,7 @@ def new_queue_page(data,r,awardee,token_comment):
   r.edit_wiki_page(data["running_subreddit"],data["running_username"] + "/queue",full_update,"Updated queue")
 
 def update_queue_page(data,r,awardee,token_comment,queue_page):
-  initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\n"
+  initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\nApprove: This will remove the line from this queue. No other action is taken. Reject (reason): Will remove the delta and all related information and then reply to the user with the reason it was removed based on your selection."
   add_header = "| Awardee | Comment | Approve | Reject (Low Effort) | Reject (Remind) | Reject (Abuse) |\n| --- | --- | --- | --- | --- | --- |\n"
   token_comment_body = token_comment.body.replace("\n"," ")
   token_comment_body = token_comment_body.replace("&amp;","\&")
@@ -190,7 +190,7 @@ def update_queue_page(data,r,awardee,token_comment,queue_page):
   r.edit_wiki_page(data["running_subreddit"],data["running_username"] + "/queue",full_update,"Updated queue")
 
 def remove_queue_line(data,r,queue_line):
-  initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\n"
+  initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\nApprove: This will remove the line from this queue. No other action is taken. Reject (reason): Will remove the delta and all related information and then reply to the user with the reason it was removed based on your selection."
   add_header = "| Awardee | Comment | Action |\n| --- | --- | --- |\n"
   queue_page = r.get_wiki_page(data["running_subreddit"],data["running_username"] + "/queue")
   old_content = queue_page.content_md
