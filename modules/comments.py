@@ -43,6 +43,7 @@ def process_comments(data,r,sub_comments):
 	running_username = str(data["running_username"]).lower()
 	logging.debug("Running username is: %s" % running_username)
 	for comment in sub_comments: # for each comment in batch
+		logging.debug(str(len(history)))
 		if comment not in history:
 			if not comment.banned_by: # Ignores removed comments
 				comment_author = str(comment.author.name).lower()
@@ -63,10 +64,8 @@ def process_comments(data,r,sub_comments):
 			else:
 				logging.debug("This comment was removed by a mod and has not been scanned.")
 			history.append(comment)
-		if len(history) > 1000:
+		if len(history) > 2000:
 			del history[0]
-		else:
-			logging.debug("History is currently at: " + str(len(history)))
 
 # Starts Checks
 def start_checks(data,r,token_comment,token_found):
