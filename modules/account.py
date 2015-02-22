@@ -19,7 +19,7 @@ def start(data):
 		return readonly(data)
 
 def login(data):
-	r = praw.Reddit(user_agent = data["running_username"])
+	r = praw.Reddit(user_agent = data["running_username"] + ": Powered by MARS github.com/PixelOrange/MARS")
 	try:
 		logging.info(data["running_username"] + ": Attempting Login")
 		r.login(data["running_username"],data["running_password"])
