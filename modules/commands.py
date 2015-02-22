@@ -135,16 +135,20 @@ def approve(data,r,mail):
 # Forces award (skips token check and length check)
 def force_add(data,r,mail):
 	logging.warning("Force Add Command")
+	proceed = True
 	lines = separate_mail(mail.body)
 	for line in lines:
 		try:
 			links = r.get_submission(line).comments
+			proceed = True
+		except:
+			logging.error("No Link Found in: %s" % line)
+			proceed = False
+		if proceed == True:
 			for comment in links:
 				token_found = "force"
 				comments.start_checks(data,r,comment,token_found)
-		except:
-			logging.error("No link found.")
-		wait()
+				wait()
 	r.send_message("/r/" + data["running_subreddit"],"Force Add Detected","Force Add from %s detected on:\n\n%s" % (mail.author.name,mail.body))
 
 # Resets last scanned comment
