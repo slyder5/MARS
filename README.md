@@ -9,4 +9,4 @@ For information on how to use MARS, please refer to the [wiki](https://github.co
 
 Why (for) Reddit?
 
-On the 30th day of the third month of the year 2015, Reddit decided to no longer allow scripts to use "Reddit" in their name due to the possibility that someone would think Reddit made the script themselves. The only exception to this is to put "for" before the word "Reddit". [More information](http://www.reddit.com/r/redditdev/comments/2ujhkr/important_api_licensing_terms_clarified/)
+On the 30th day of the 3rd month of the year 2015, Reddit decided to no longer allow scripts to use "Reddit" in their name due to the possibility that someone would think Reddit made the script themselves. The only exception to this is to put "for" before the word "Reddit". [More information](http://www.reddit.com/r/redditdev/comments/2ujhkr/important_api_licensing_terms_clarified/).
