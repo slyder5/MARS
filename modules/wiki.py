@@ -13,7 +13,6 @@ import datetime
 import calendar
 from urllib2 import HTTPError
 import re
-import pprint
 
 # Functions #
 #############
