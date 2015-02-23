@@ -182,7 +182,7 @@ def update_queue_page(data,r,awardee,token_comment,queue_page):
   table = []
   for line in lines:
     if re.match("(\|)",line):
-      if not re.match("(\| Awardee |\| --- \|)",line):
+      if not re.match("(\|Awardee|\|---\|)",line):
         table.append(line)
   table.append(add_content)
   new_content = '\n'.join(table)
@@ -198,7 +198,7 @@ def remove_queue_line(data,r,queue_line):
   table = []
   for line in lines:
     if re.match("(\|)",line):
-      if not re.match("(\| Awardee |\| --- \|)",line):
+      if not re.match("(\|Awardee|\|---\|)",line):
         if queue_line not in line:
           table.append(line)
   new_content = '\n'.join(table)
