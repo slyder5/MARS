@@ -86,10 +86,7 @@ def start_checks(data,r,token_comment,token_found):
 				if check_length(data,token_comment.body,token_found):
 					logging.info("Already Notified - Comment Too Short")
 				else:
-					for reply in token_comment.replies:
-						if reply.author:
-							if str(reply.author.name).lower() == running_username:
-								optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found)
+					optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found)
 		elif check_already_replied(data,data["error_bad_recipient"],token_comment.replies,running_username):
 			logging.info("Already Notifird - Bad Recipient")
 		elif check_already_replied(data,data["error_submission_history"],token_comment.replies,running_username):
