@@ -4,7 +4,7 @@
   "check_length": "1", 
   "environment": "prod", 
   "error_bad_recipient": "You cannot award OP a delta as the moderators feel that allowing so would corrupt the delta system. If you were trying to show the OP how to award a delta please do so by clicking [here](http://www.reddit.com/message/compose/?to=DeltaBot&subject=remind&message=%s) and then clicking 'send'.", 
-  "error_length": "This delta is currently disallowed as your comment contains either no or little text ([comment rule 4](http://www.reddit.com/r/changemyview/wiki/rules#wiki_rule_4)). Please include an explanation for how /u/%s changed your view. Please respond to this comment once you have made the necessary changes.", 
+  "error_length": "This delta is currently disallowed as your comment contains doesn't include enough text ([comment rule 4](http://www.reddit.com/r/changemyview/wiki/rules#wiki_rule_4)). Please include an explanation for how /u/%s changed your view. Responding to this comment will cause me to re-check your delta award comment.", 
   "error_submission_history": "You have already awarded /u/%s a delta in this comment tree.", 
   "initialize": "1", 
   "last_scanned": "", 
