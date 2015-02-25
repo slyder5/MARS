@@ -163,10 +163,11 @@ def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_f
 		for reply in token_comment.replies:
 			if reply.author:
 				if str(reply.author.name).lower() == data["running_username"].lower():
-					reply.edit(data["msg_confirmation"] % (awardee_comment.author.name,data["running_subreddit"],awardee)).distinguish()
+					case_sensitive_awardee = awardee_comment.author.name
+					reply.edit(data["msg_confirmation"] % (case_sensitive_awardee,case_sensitive_awardee,data["running_subreddit"],awardee,data["running_username"],data["running_subreddit"],data["running_username"])).distinguish()
 					edited_reply = True
 		if edited_reply == False:
-			token_comment.reply(data["msg_confirmation"] % (awardee_comment.author.name,data["running_subreddit"],awardee)).distinguish()
+			token_comment.reply(data["msg_confirmation"] % (case_sensitive_awardee,case_sensitive_awardee,data["running_subreddit"],awardee,data["running_username"],data["running_subreddit"],data["running_username"])).distinguish()
 		logging.info("Confirmation Message Sent")
 		wiki.start(data,r,token_comment,awarder,awardee,flair_count)
 		logging.info("Wiki Updates Complete")
