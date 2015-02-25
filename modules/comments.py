@@ -89,7 +89,7 @@ def start_checks(data,r,token_comment,token_found):
 					for reply in token_comment.replies:
 						if reply.author:
 							if str(reply.author.name).lower() == running_username:
-								reply.edit(data["msg_confirmation"] % (awardee_comment.author.name,data["running_subreddit"],awardee)).distinguish()
+								optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found)
 		elif check_already_replied(data,data["error_bad_recipient"],token_comment.replies,running_username):
 			logging.info("Already Notifird - Bad Recipient")
 		elif check_already_replied(data,data["error_submission_history"],token_comment.replies,running_username):
