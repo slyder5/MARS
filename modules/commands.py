@@ -67,26 +67,27 @@ def read_mail(data,r,mail):
 # Reminds users how to use the token system
 def remind(data,r,mail):
 	logging.debug("Remind Command")
+	running_username = str(data["running_username"]).lower()
 	reminder = True
 	lines = separate_mail(mail.body)
 	for line in lines:
 		links = r.get_submission(line).comments
 		for comment in links:
 			if comment.replies:
-				if comments.check_already_replied(data,data["msg_confirmation"],comment.replies,data["running_username"]):
+				if comments.check_already_replied(data,data["msg_confirmation"],comment.replies,running_username):
 					logging.info("Already Confirmed")
 					reminder = False
-				elif comments.check_already_replied(data,data["error_length"],comment.replies,data["running_username"]):
+				elif comments.check_already_replied(data,data["error_length"],comment.replies,running_username):
 					if comment.edited:
 						comments.process_comments(data,r,links)
 						reminder = False
-				elif comments.check_already_replied(data,data["error_bad_recipient"],comment.replies,data["running_username"]):
+				elif comments.check_already_replied(data,data["error_bad_recipient"],comment.replies,running_username):
 					logging.info("Already Notifird - Bad Recipient")
 					reminder = False
-				elif comments.check_already_replied(data,data["error_submission_history"],comment.replies,data["running_username"]):
+				elif comments.check_already_replied(data,data["error_submission_history"],comment.replies,running_username):
 					logging.info("Already Notified - Submission History Error")
 					reminder = False
-				elif comments.check_already_replied(data,data["msg_remind"],comment.replies,data["running_username"]):
+				elif comments.check_already_replied(data,data["msg_remind"],comment.replies,running_username):
 					logging.info("Already Reminded")
 					reminder = False
 		wait()
