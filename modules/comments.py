@@ -118,30 +118,6 @@ def check_already_replied(data,msg,replies,running_username):
 			if str(reply.author.name).lower() == running_username:
 				if str(msg).lower()[0:15] in str(reply.body).lower():
 					return True
-					
-
-# Check to make sure I haven't already replied (remind version)
-def remind_already_replied(data,msg,replies,running_username):
-	logging.debug("Checking Already Replied - Remind Version")
-	for reply in replies:
-		if reply.author:
-			if str(reply.author.name).lower() == running_username:
-				body = str(reply.body).lower()
-				if str(msg).lower()[0:15] in body:
-					logging.debug("Reply Message-to-Message Match")
-					return ("match",reply)
-				elif str(data["msg_confirmation"]).lower()[0:15] in body:
-					logging.debug("Already Confirmed")
-					return ("confirm",reply)
-				elif str(data["error_bad_recipient"]).lower()[0:15] in body:
-					logging.debug("Already Notifird - Bad Recipient")
-					return ("error",reply)
-				elif str(data["error_submission_history"]).lower()[0:15] in body:
-					logging.debug("Already Notified - Submission History Error")
-					return ("error",reply)
-				else:
-					logging.debug("Unspecified Match")
-					return ("other",reply)
 
 # Optional checks based on configuration
 def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found):
