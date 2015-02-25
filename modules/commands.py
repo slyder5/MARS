@@ -72,22 +72,23 @@ def remind(data,r,mail):
 	for line in lines:
 		links = r.get_submission(line).comments
 		for comment in links:
-			is_match,is_reply = comments.remind_already_replied(data,data["msg_remind"],comment.replies,
-									str(data["running_username"]).lower())
-			if is_match == "match":
-				logging.info("Found reminder. Ignoring request.")
-				reminder = False
-			elif is_match == "confirm":
-				logging.info("Found a confirmation. Reminder not needed.")
-				reminder = False
-			elif is_match == "error":
-				logging.info("Found an error. Reminder not needed.")
-				reminder = False
-			elif is_match:
-				logging.info("Found an old comment I can edit.")
-				reminder = False
-				is_reply.edit(data["msg_remind"])
-				logging.info("Edited comment and left the reminder.")
+			if comment.replies:
+				is_match,is_reply = comments.remind_already_replied(data,data["msg_remind"],comment.replies,
+						str(data["running_username"]).lower())
+				if is_match == "match":
+					logging.info("Found reminder. Ignoring request.")
+					reminder = False
+				elif is_match == "confirm":
+					logging.info("Found a confirmation. Reminder not needed.")
+					reminder = False
+				elif is_match == "error":
+					logging.info("Found an error. Reminder not needed.")
+					reminder = False
+				elif is_match:
+					logging.info("Found an old comment I can edit.")
+					reminder = False
+					is_reply.edit(data["msg_remind"])
+					logging.info("Edited comment and left the reminder.")
 		wait()
 	if reminder:
 		for comment in links:
