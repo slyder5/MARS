@@ -107,7 +107,7 @@ def split_comment(body):
 def search_line(data_token,lines):
 	logging.debug("Searching Line For Token")
 	for line in lines:
-		print(str(line).encode("UTF-8"))
+		print(str(line).encode(encoding="UTF-8"))
 		if re.match("(    |&gt;)",line) is None: # Don't look in code or quotes
 			for token in data_token: # Check each type of token
 				if token in line:
