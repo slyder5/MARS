@@ -86,6 +86,9 @@ def remind(data,r,mail):
 				elif comments.check_already_replied(data,data["error_submission_history"],comment.replies,data["running_username"]):
 					logging.info("Already Notified - Submission History Error")
 					reminder = False
+				elif comments.check_already_replied(data,data["msg_remind"],comment.replies,data["running_username"]):
+					logging.info("Already Reminded")
+					reminder = False
 		wait()
 	if reminder:
 		for comment in links:
