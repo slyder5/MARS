@@ -139,7 +139,7 @@ def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_f
 		token_comment.save()
 		logging.debug("Comment Saved")
 		edited_reply = False
-		CSawardee = awardee_comment.author.name
+		CSawardee = str(awardee_comment.author.name)
 		logging.debug(CSawardee)
 		for reply in token_comment.replies:
 			if reply.author:
