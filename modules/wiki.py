@@ -161,7 +161,6 @@ def new_queue_page(data,r,awardee,token_comment):
   initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\nApprove: This will remove the line from this queue. No other action is taken. Reject (reason): Will remove the delta and all related information and then reply to the user with the reason it was removed based on your selection.\n\n"
   add_header="|Awardee|Comment|Approve|Reject(Low Effort)|Reject (Remind)|Reject (Abuse)|\n|---|---|---|---|---|---|\n"
   token_comment_body = token_comment.body.replace("\n"," ")
-  token_comment_body = token_comment_body.replace("&amp;","\&")
   add_content = "|/u/%s|[%s](%s)|[Approve](/message/compose/?to=%s&subject=%s&message=%s)|[Reject for Low Effort](/message/compose/?to=%s&subject=reject low effort&message=%s)|[Reject and Remind](/message/compose/?to=%s&subject=reject remind&message=%s)|[Reject for Abuse](/message/compose/?to=%s&subject=reject abuse&message=%s)|" % \
     (awardee,token_comment_body,token_comment.permalink + "?context=2",data["running_username"],"approve",token_comment.permalink,
     data["running_username"],token_comment.permalink,data["running_username"],token_comment.permalink,data["running_username"],token_comment.permalink)
@@ -172,7 +171,7 @@ def update_queue_page(data,r,awardee,token_comment,queue_page):
   initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\nApprove: This will remove the line from this queue. No other action is taken. Reject (reason): Will remove the delta and all related information and then reply to the user with the reason it was removed based on your selection.\n\n"
   add_header="|Awardee|Comment|Approve|Reject(Low Effort)|Reject (Remind)|Reject (Abuse)|\n|---|---|---|---|---|---|\n"
   token_comment_body = token_comment.body.replace("\n"," ")
-  token_comment_body = token_comment_body.replace("&amp;","\&")
+  token_comment_body = token_comment_body.replace("amp;amp;","amp;")
   add_content = "|/u/%s|[%s](%s)|[Approve](/message/compose/?to=%s&subject=%s&message=%s)|[Reject for Low Effort](/message/compose/?to=%s&subject=reject low effort&message=%s)|[Reject and Remind](/message/compose/?to=%s&subject=reject remind&message=%s)|[Reject for Abuse](/message/compose/?to=%s&subject=reject abuse&message=%s)|" % \
     (awardee,token_comment_body,token_comment.permalink + "?context=2",data["running_username"],"approve",token_comment.permalink,
     data["running_username"],token_comment.permalink,data["running_username"],token_comment.permalink,data["running_username"],token_comment.permalink)
@@ -199,6 +198,7 @@ def remove_queue_line(data,r,queue_line):
     if re.match("(\|)",line):
       if not re.match("(\|Awardee|\|---\|)",line):
         if queue_line not in line:
+          line = line.replace("amp;amp;","amp;")
           table.append(line)
   new_content = '\n'.join(table)
   full_update = initial_text + add_header + new_content
