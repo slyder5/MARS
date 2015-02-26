@@ -123,7 +123,6 @@ def check_already_replied(data,msg,replies,running_username):
 # Optional checks based on configuration
 def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found):
 	logging.debug("Optional Checks")
-	case_sensitive_awardee = awardee_comment.author.name
 	if check_awardee_not_author(data["check_ana"],token_comment.submission.author,awardee):
 		token_comment.reply(data["error_bad_recipient"] % token_comment.permalink).distinguish()
 		logging.info("Error Bad Recipient Sent")
@@ -141,10 +140,10 @@ def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_f
 		for reply in token_comment.replies:
 			if reply.author:
 				if str(reply.author.name).lower() == data["running_username"].lower():
-					reply.edit(data["msg_confirmation"] % (case_sensitive_awardee,case_sensitive_awardee,data["running_subreddit"],awardee,data["running_username"],data["running_subreddit"],data["running_username"])).distinguish()
+					reply.edit(data["msg_confirmation"] % (awardee_comment.author.name,awardee_comment.author.name,data["running_subreddit"],awardee,data["running_username"],data["running_subreddit"],data["running_username"])).distinguish()
 					edited_reply = True
 		if edited_reply == False:
-			token_comment.reply(data["msg_confirmation"] % (case_sensitive_awardee,case_sensitive_awardee,data["running_subreddit"],awardee,data["running_username"],data["running_subreddit"],data["running_username"])).distinguish()
+			token_comment.reply(data["msg_confirmation"] % (awardee_comment.author.name,awardee_comment.author.name,data["running_subreddit"],awardee,data["running_username"],data["running_subreddit"],data["running_username"])).distinguish()
 		logging.info("Confirmation Message Sent")
 		wiki.start(data,r,token_comment,token_comment.author.name,awardee_comment.author.name,flair_count)
 		logging.info("Wiki Updates Complete")
