@@ -54,7 +54,8 @@ def decrement_flair(flair,old_count):
 
 def set_flair(data,r,awardee,awardee_flair):
   logging.debug("Setting the awardee's new flair")
+  logging.debug(awardee)
+  logging.debug(awardee_flair["flair_text"])
   r.set_flair(data["running_subreddit"],awardee,awardee_flair["flair_text"])
-  r.raise_for_status()
 
 # EOF
