@@ -43,7 +43,6 @@ def sub_get_comments(subreddit):
 def process_comments(data,r,sub_comments):
 	logging.debug("Processing Comments")
 	running_username = str(data["running_username"]).lower()
-	logging.debug("Running username is: %s" % running_username)
 	for comment in sub_comments: # for each comment in batch
 		if comment not in history or comment.edited:
 			if not comment.banned_by: # Ignores removed comments
@@ -85,12 +84,11 @@ def start_checks(data,r,token_comment,token_found):
 			logging.info("Already Confirmed")
 		elif check_already_replied(data,data["error_length"],token_comment.replies,running_username):
 			if token_comment.edited:
-				if check_length(data,token_comment.body,token_found):
-					logging.info("Already Notified - Comment Too Short")
-				else:
-					optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found)
+				optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found)
+			else:
+				logging.info("Already Notified - Too Short")
 		elif check_already_replied(data,data["error_bad_recipient"],token_comment.replies,running_username):
-			logging.info("Already Notifird - Bad Recipient")
+			logging.info("Already Notified - Bad Recipient")
 		elif check_already_replied(data,data["error_submission_history"],token_comment.replies,running_username):
 			logging.info("Already Notified - Submission History Error")
 		else:
@@ -101,12 +99,13 @@ def start_checks(data,r,token_comment,token_found):
 # Splits comments into lines for more thorough processing
 def split_comment(body):
 	logging.debug("Splitting Comment Body")
-	return body.split("\n\n") # Splits double line breaks
+	return body.split("\n") # Splits double line breaks
 
 # Search comment for symbol token
 def search_line(data_token,lines):
 	logging.debug("Searching Line For Token")
 	for line in lines:
+	#	logging.debug("Debug Comment Line: " + line)
 		if re.match("(    |&gt;)",line) is None: # Don't look in code or quotes
 			for token in data_token: # Check each type of token
 				if token in line:
@@ -124,6 +123,7 @@ def check_already_replied(data,msg,replies,running_username):
 # Optional checks based on configuration
 def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found):
 	logging.debug("Optional Checks")
+	case_sensitive_awardee = awardee_comment.author.name
 	if check_awardee_not_author(data["check_ana"],token_comment.submission.author,awardee):
 		token_comment.reply(data["error_bad_recipient"] % token_comment.permalink).distinguish()
 		logging.info("Error Bad Recipient Sent")
@@ -141,7 +141,6 @@ def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_f
 		for reply in token_comment.replies:
 			if reply.author:
 				if str(reply.author.name).lower() == data["running_username"].lower():
-					case_sensitive_awardee = awardee_comment.author.name
 					reply.edit(data["msg_confirmation"] % (case_sensitive_awardee,case_sensitive_awardee,data["running_subreddit"],awardee,data["running_username"],data["running_subreddit"],data["running_username"])).distinguish()
 					edited_reply = True
 		if edited_reply == False:

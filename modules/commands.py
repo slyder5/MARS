@@ -82,7 +82,7 @@ def remind(data,r,mail):
 						comments.process_comments(data,r,links)
 						reminder = False
 				elif comments.check_already_replied(data,data["error_bad_recipient"],comment.replies,running_username):
-					logging.info("Already Notifird - Bad Recipient")
+					logging.info("Already Notified - Bad Recipient")
 					reminder = False
 				elif comments.check_already_replied(data,data["error_submission_history"],comment.replies,running_username):
 					logging.info("Already Notified - Submission History Error")
