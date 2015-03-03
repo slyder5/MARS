@@ -17,6 +17,7 @@ import time
 #############
 
 history = []
+edit_history = []
 
 # Functions #
 #############
@@ -44,36 +45,35 @@ def process_comments(data,r,sub_comments):
 	logging.debug("Processing Comments")
 	running_username = str(data["running_username"]).lower()
 	for comment in sub_comments: # for each comment in batch
-		logging.debug(history)
-		logging.debug(comment.edited)
-		if not comment.banned_by: # Ignores removed comments
-			if comment.permalink not in history and str(comment.edited) not in history:
-				comment_author = str(comment.author.name).lower()
-				if comment_author != running_username: # Ignore my own comments
-					logging.info("Searching comment by: %s\n%s" % (comment.author.name
-						if comment.author else "[deleted]",comment.permalink)) # Shows redditor and permalink
-					lines = split_comment(comment.body) # Gets comment lines
-					token_found = search_line(data["token"],lines) # Checks for match
-					if token_found: # Starts checks when a token is found
-						logging.info("Token Found")
-						start_checks(data,r,comment,token_found)
+		if comment not in history or comment.edited:
+			history.append(comment)
+			if comment.edited not in edit_history:
+				edit_history.append(comment.edited)
+				if not comment.banned_by: # Ignores removed comments
+					comment_author = str(comment.author.name).lower()
+					if comment_author != running_username: # Ignore my own comments
+						logging.info("Searching comment by: %s\n%s" % (comment.author.name
+							if comment.author else "[deleted]",comment.permalink)) # Shows redditor and permalink
+						lines = split_comment(comment.body) # Gets comment lines
+						token_found = search_line(data["token"],lines) # Checks for match
+						if token_found: # Starts checks when a token is found
+							logging.info("Token Found")
+							start_checks(data,r,comment,token_found)
+						else:
+							logging.info("No Token Found")
 					else:
-						logging.info("No Token Found")
+						logging.debug("Comment found was my own.")
+					if comment_author == str(comment.submission.author).lower():
+						print("Placeholder: Change Submission Flair")
 				else:
-					logging.debug("Comment found was my own.")
-				if comment_author == str(comment.submission.author).lower():
-					print("Placeholder: Change Submission Flair")
+					logging.debug("This comment was removed by a mod and has not been scanned.")
 			else:
-				logging.debug("Comment found in history. Ignoring.")
-			if comment.edited:
-				history.append(comment.permalink + " Edited: " + str(comment.edited))
-			else:
-				history.append(comment.permalink)
-			logging.debug("Comment History Count: " + str(len(history)))
-			if len(history) > 2000:
-				del history[0]
+				logging.debug("Comment found in edit history. Ignoring.")
 		else:
-			logging.debug("This comment was removed by a mod and has not been scanned.")
+			logging.debug("Comment found in history. Ignoring.")
+		logging.debug("Comment History Count: " + str(len(history)))
+		if len(history) > 2000:
+			del history[0]
 
 # Starts Checks
 def start_checks(data,r,token_comment,token_found):
