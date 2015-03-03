@@ -46,8 +46,8 @@ def process_comments(data,r,sub_comments):
 	for comment in sub_comments: # for each comment in batch
 		logging.debug(comment.edited)
 		logging.debug(history)
-		if comment not in history or comment.edited not in history:
-			if not comment.banned_by: # Ignores removed comments
+		if not comment.banned_by: # Ignores removed comments
+			if comment.permalink not in history or comment.edited not in history:
 				comment_author = str(comment.author.name).lower()
 				if comment_author != running_username: # Ignore my own comments
 					logging.info("Searching comment by: %s\n%s" % (comment.author.name
@@ -63,12 +63,12 @@ def process_comments(data,r,sub_comments):
 					logging.debug("Comment found was my own.")
 				if comment_author == str(comment.submission.author).lower():
 					print("Placeholder: Change Submission Flair")
-			else:
-				logging.debug("This comment was removed by a mod and has not been scanned.")
-			history.append(comment)
+			history.append(comment.permalink + " " + comment.edited)
 			logging.debug("Comment History Count: " + str(len(history)))
-		if len(history) > 2000:
-			del history[0]
+			if len(history) > 2000:
+				del history[0]
+		else:
+			logging.debug("This comment was removed by a mod and has not been scanned.")
 
 # Starts Checks
 def start_checks(data,r,token_comment,token_found):
