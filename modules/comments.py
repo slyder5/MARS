@@ -115,10 +115,13 @@ def search_line(data_token,lines):
 def check_already_replied(data,msg,replies,running_username):
 	logging.debug("Checking Already Replied")
 	for reply in replies:
-		if reply.author:
+		try:
 			if str(reply.author.name).lower() == running_username:
 				if str(msg).lower()[0:15] in str(reply.body).lower():
 					return True
+		except:
+			logging.debug("Check Failed")
+			
 
 # Optional checks based on configuration
 def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found):
@@ -186,7 +189,10 @@ def iterate_replies(data,r,comment,awardee,awarder):
 	iterate = "Yes"
 	msg_confirmation = data["msg_confirmation"]
 	running_username = str(data["running_username"]).lower()
-	comments = r.get_submission(comment.permalink).comments
+	try:
+		comments = r.get_submission(comment.permalink).comments
+	except:
+		return iterate
 	for comment in comments:
 		if iterate == "Yes":
 			if check_already_replied(data,msg_confirmation,comment.replies,running_username):
@@ -207,9 +213,9 @@ def iterate_replies(data,r,comment,awardee,awarder):
 # Checks original awarder against recently found awarder
 def check_awarder(r,comment,orig_awarder):
 	logging.debug("Checking Awarder")
-	if comment.author:
+	try:
 		awarder = str(comment.author.name).lower()
-	else:
+	except:
 		awarder = "[deleted]"
 	if awarder == orig_awarder:
 		return True
@@ -218,9 +224,9 @@ def check_awarder(r,comment,orig_awarder):
 def check_awardee(r,comment,orig_awardee):
 	logging.debug("Checking Awardee")
 	awardee_comment = r.get_info(thing_id=comment.parent_id)
-	if awardee_comment.author:
+	try:
 		awardee = str(awardee_comment.author.name).lower()
-	else:
+	except:
 		awardee = "[deleted]"
 	if awardee == orig_awardee:
 		return True
