@@ -37,7 +37,7 @@ def get_sub(r,sub_name):
 # Gets the newest comments from the subreddit
 def sub_get_comments(subreddit):
 	logging.debug("Getting Comments")
-	return subreddit.get_comments(limit=None) # Limits comments retrieved
+	return subreddit.get_comments(limit=5) # Limits comments retrieved
 
 # Comment Processing
 def process_comments(data,r,sub_comments):
@@ -47,7 +47,7 @@ def process_comments(data,r,sub_comments):
 		logging.debug(history)
 		logging.debug(comment.edited)
 		if not comment.banned_by: # Ignores removed comments
-			if comment.permalink not in history or comment.edited not in history:
+			if comment.permalink not in history or str(comment.edited) not in history:
 				comment_author = str(comment.author.name).lower()
 				if comment_author != running_username: # Ignore my own comments
 					logging.info("Searching comment by: %s\n%s" % (comment.author.name
@@ -64,7 +64,7 @@ def process_comments(data,r,sub_comments):
 				if comment_author == str(comment.submission.author).lower():
 					print("Placeholder: Change Submission Flair")
 			if comment.edited:
-				history.append(comment.permalink + " Edited: " + comment.edited)
+				history.append(comment.permalink + " Edited: " + str(comment.edited))
 			else:
 				history.append(comment.permalink)
 			logging.debug("Comment History Count: " + str(len(history)))
