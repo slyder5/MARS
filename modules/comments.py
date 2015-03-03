@@ -44,7 +44,9 @@ def process_comments(data,r,sub_comments):
 	logging.debug("Processing Comments")
 	running_username = str(data["running_username"]).lower()
 	for comment in sub_comments: # for each comment in batch
-		if comment not in history or comment.edited:
+		logging.debug(comment.edited)
+		logging.debug(history)
+		if comment not in history or comment.edited not in history:
 			if not comment.banned_by: # Ignores removed comments
 				comment_author = str(comment.author.name).lower()
 				if comment_author != running_username: # Ignore my own comments
