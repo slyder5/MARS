@@ -44,8 +44,8 @@ def process_comments(data,r,sub_comments):
 	logging.debug("Processing Comments")
 	running_username = str(data["running_username"]).lower()
 	for comment in sub_comments: # for each comment in batch
-		logging.debug(comment.edited)
 		logging.debug(history)
+		logging.debug(comment.edited)
 		if not comment.banned_by: # Ignores removed comments
 			if comment.permalink not in history or comment.edited not in history:
 				comment_author = str(comment.author.name).lower()
@@ -63,7 +63,10 @@ def process_comments(data,r,sub_comments):
 					logging.debug("Comment found was my own.")
 				if comment_author == str(comment.submission.author).lower():
 					print("Placeholder: Change Submission Flair")
-			history.append(comment.permalink + " " + comment.edited)
+			if comment.edited:
+				history.append(comment.permalink + " Edited: " + comment.edited)
+			else:
+				history.append(comment.permalink)
 			logging.debug("Comment History Count: " + str(len(history)))
 			if len(history) > 2000:
 				del history[0]
