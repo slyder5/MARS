@@ -17,7 +17,6 @@ import time
 #############
 
 history = []
-edit_history = []
 
 # Functions #
 #############
@@ -38,7 +37,7 @@ def get_sub(r,sub_name):
 # Gets the newest comments from the subreddit
 def sub_get_comments(subreddit):
 	logging.debug("Getting Comments")
-	return subreddit.get_comments(limit=20) # Limits comments retrieved
+	return subreddit.get_comments(limit=None) # Limits comments retrieved
 
 # Comment Processing
 def process_comments(data,r,sub_comments):
