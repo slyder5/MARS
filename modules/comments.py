@@ -37,7 +37,7 @@ def get_sub(r,sub_name):
 # Gets the newest comments from the subreddit
 def sub_get_comments(subreddit):
 	logging.debug("Getting Comments")
-	return subreddit.get_comments(limit=5) # Limits comments retrieved
+	return subreddit.get_comments(limit=20) # Limits comments retrieved
 
 # Comment Processing
 def process_comments(data,r,sub_comments):
@@ -47,7 +47,7 @@ def process_comments(data,r,sub_comments):
 		logging.debug(history)
 		logging.debug(comment.edited)
 		if not comment.banned_by: # Ignores removed comments
-			if comment.permalink not in history or str(comment.edited) not in history:
+			if comment.permalink not in history and str(comment.edited) not in history:
 				comment_author = str(comment.author.name).lower()
 				if comment_author != running_username: # Ignore my own comments
 					logging.info("Searching comment by: %s\n%s" % (comment.author.name
