@@ -47,6 +47,7 @@ def process_comments(data,r,sub_comments):
 	for comment in sub_comments: # for each comment in batch
 		if comment not in history:
 			history.append(comment)
+			logging.debug("Comment History Count: " + str(len(history)))
 			if not comment.banned_by: # Ignores removed comments
 				comment_author = str(comment.author.name).lower()
 				if comment_author != running_username: # Ignore my own comments
@@ -65,9 +66,6 @@ def process_comments(data,r,sub_comments):
 					print("Placeholder: Change Submission Flair")
 			else:
 				logging.debug("This comment was removed by a mod and has not been scanned.")
-		else:
-			logging.debug("Comment found in history. Ignoring.")
-			logging.debug("Comment History Count: " + str(len(history)))
 		if len(history) > 2000:
 			del history[0]
 
