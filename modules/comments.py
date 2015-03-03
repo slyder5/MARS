@@ -63,6 +63,8 @@ def process_comments(data,r,sub_comments):
 					logging.debug("Comment found was my own.")
 				if comment_author == str(comment.submission.author).lower():
 					print("Placeholder: Change Submission Flair")
+			else:
+				logging.debug("Comment found in history. Ignoring.")
 			if comment.edited:
 				history.append(comment.permalink + " Edited: " + str(comment.edited))
 			else:
