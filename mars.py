@@ -62,7 +62,7 @@ def mars(data):
 		comments.start(data,r)
 		
 		# Wait 10 seconds
-		wait_time = 60
+		wait_time = 10
 		logging.info("Sleeping for %s seconds" % wait_time)
 		time.sleep(wait_time)
 
