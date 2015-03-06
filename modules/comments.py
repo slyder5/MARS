@@ -87,7 +87,7 @@ def start_checks(data,r,token_comment,token_found):
 				optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found)
 			else:
 				logging.info("Already Notified - Too Short")
-		elif check_already_replied(data,data["error_bad_recipient"],token_comment.replies,running_username):
+		elif check_already_replied(data,data["error_bad_recipient"],token_comment.replies,running_username,awardee_comment.permalink):
 			logging.info("Already Notified - Bad Recipient")
 		elif check_already_replied(data,data["error_submission_history"],token_comment.replies,running_username):
 			logging.info("Already Notified - Submission History Error")
