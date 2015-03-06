@@ -6,6 +6,7 @@
 import os
 import praw
 import logging
+import time
 
 # Variables
 
@@ -20,13 +21,17 @@ def start(data):
 
 def login(data):
 	r = praw.Reddit(user_agent = data["running_username"] + ": Powered by MARS github.com/PixelOrange/MARS")
-	try:
-		logging.info(data["running_username"] + ": Attempting Login")
-		r.login(data["running_username"],data["running_password"])
-		logging.info("Login Successful")
-	except:
-		logging.info("Login Failed")
-		raise SystemExit(0)
+	login_attmept = True
+	while login_attempt:
+		try:
+			logging.info(data["running_username"] + ": Attempting Login")
+			r.login(data["running_username"],data["running_password"])
+			logging.info("Login Successful")
+			login_attempt = False
+		except:
+			login_wait = 300
+			logging.info("Login Failed - Trying again in %s seconds" % login_wait)
+			time.sleep(login_wait)
 	return r
 
 def readonly(data):
