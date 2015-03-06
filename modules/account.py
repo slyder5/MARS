@@ -21,7 +21,7 @@ def start(data):
 
 def login(data):
 	r = praw.Reddit(user_agent = data["running_username"] + ": Powered by MARS github.com/PixelOrange/MARS")
-	login_attmept = True
+	login_attempt = True
 	while login_attempt:
 		try:
 			logging.info(data["running_username"] + ": Attempting Login")
