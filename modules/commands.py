@@ -190,7 +190,7 @@ def remove(data,msg,r,mail,message):
 
 # Stops bot
 def stop(data,msg,r,mail):
-	logging.warning(msg["stop_warning"])
+	logging.warning(msg["stop_warning"] % data["running_username"])
 	messages.stop(data,msg,r,mail)
 	#r.send_message("/r/" + data["running_subreddit"],msg["stop_subject"],msg["stop_body"] % (mail.author.name,mail.body))
 	mail.mark_as_read()
