@@ -39,6 +39,6 @@ def remove():
 	logging.debug("Not Ready")
 
 def stop(data,msg,r,mail):
-	r.send_message("/r/" + data["running_subreddit"],msg["stop_subject"] % data["running_subreddit"],msg["stop_body"] % (mail.author.name,mail.body))
+	r.send_message("/r/" + data["running_subreddit"],msg["stop_subject"] % data["running_subreddit"],msg["stop_body"] % (data["running_username"],mail.author.name,mail.body))
 	
 # EOF
