@@ -1,0 +1,15 @@
+{
+  "error_bad_recipient": "You cannot award OP a delta as the moderators feel that allowing so would corrupt the delta system. If you were trying to show the OP how to award a delta please do so by clicking [here](http://www.reddit.com/message/compose/?to=%s&subject=remind&message=%s) and then clicking 'send'.", 
+  "error_length": "This delta is currently disallowed as your comment doesn't include enough text ([comment rule 4](http://www.reddit.com/r/changemyview/wiki/rules#wiki_rule_4)). Please add an explanation for how /u/%s changed your view. Responding to this comment will cause me to recheck your delta comment.", 
+  "error_submission_history": "You have already awarded /u/%s a delta in this comment tree.", 
+  "msg_confirmation": "Confirmed: 1 delta awarded to /u/%s.\n\n[^%s's ^delta ^history](/r/%s/wiki/user/%s) ^| [^Delta ^system ^explained](/r/%s/wiki/%s)", 
+  "msg_first_body": "Congratulations! You've earned your first delta!\n\nAs you may already know, a delta (&#8710;) is given when a comment has changed someone's view. For a more detailed explanation of the delta system, [see here](http://www.reddit.com/r/changemyview/wiki/data[\"running_username\"]).\n\n/u/data[\"running_username\"] has updated your user flair and created [your own wiki page](/r/%s/wiki/user/%s) which will be updated every time you earn a delta. If you do well, you may find yourself on our [leaderboards](http://www.reddit.com/r/changemyview/wiki/leaderboards) (the monthly one is also featured in our sidebar).\n\nGood luck, and happy CMVing!\n\n_____\n\n*[^I ^am ^a ^bot](https://github.com/alexames/data[\"running_username\"])^, ^and ^this ^action ^was ^performed ^automatically. ^Please [^contact ^the ^moderators ^of ^CMV](http://www.reddit.com/message/compose?to=/r/changemyview) ^if ^you ^have ^any ^further ^questions ^or ^concerns.*", 
+  "msg_first_subject": "Congratulations on your first delta!", 
+  "msg_remind": "To award a delta, the following criteria must be met:\n\n1. A valid delta symbol (mobile users: type !delta) must appear somewhere in the message.\n\n2. The comment must be at least %s long.\n\n3. The delta cannot be awarded to the redditor that submitted this CMV topic.", 
+  "msg_remove_low_effort": "Your comment was removed as it contains a delta but does not explain why your view was changed.",
+  "msg_remove_remind": "Your comment was removed as it appears you were trying to show someone how to use the delta system. Please use the [remind feature](/message/compose/?to=data[\"running_username\"]&subject=remind) instead. Simply include the permalink (no context please!) in the message section.",
+  "msg_remove_abuse": "Your comment was removed for abusing the delta system.",
+  "stop_body": "data[\"running_username\"] has been issued a STOP command and is shutting down. Command issued by %s.\n\nReason: %s", 
+  "stop_subject": "data[\"running_username\"] Status: Offline", 
+  "stop_warning": "data[\"running_username\"] STOP command received. Shutting down."
+}
