@@ -22,11 +22,11 @@ history = []
 #############
 
 # Starts the comments module
-def start(data,r):
+def start(data,msg,r):
 	logging.debug("Starting Module: Comments")
 	subreddit = get_sub(r,data["running_subreddit"]) # gets subreddit object
 	sub_comments = sub_get_comments(subreddit) # gets x comments from sub
-	process_comments(data,r,sub_comments) # processes the comments
+	process_comments(data,msg,r,sub_comments) # processes the comments
 
 # Gets subreddit object from reddit
 def get_sub(r,sub_name):
@@ -40,7 +40,7 @@ def sub_get_comments(subreddit):
 	return subreddit.get_comments(limit=None) # Limits comments retrieved
 
 # Comment Processing
-def process_comments(data,r,sub_comments):
+def process_comments(data,msg,r,sub_comments):
 	logging.debug("Processing Comments")
 	running_username = str(data["running_username"]).lower()
 	for comment in sub_comments: # for each comment in batch
@@ -56,7 +56,7 @@ def process_comments(data,r,sub_comments):
 					token_found = search_line(data["token"],lines) # Checks for match
 					if token_found: # Starts checks when a token is found
 						logging.info("Token Found")
-						start_checks(data,r,comment,token_found)
+						start_checks(data,msg,r,comment,token_found)
 					else:
 						logging.info("No Token Found")
 				else:
@@ -69,7 +69,7 @@ def process_comments(data,r,sub_comments):
 			del history[0]
 
 # Starts Checks
-def start_checks(data,r,token_comment,token_found):
+def start_checks(data,msg,r,token_comment,token_found):
 	logging.debug("Starting Checks")
 	running_username = str(data["running_username"]).lower()
 	awarder = str(token_comment.author.name).lower()
@@ -80,19 +80,19 @@ def start_checks(data,r,token_comment,token_found):
 			logging.info("User replied to me")
 		elif awardee == awarder: # Prevents reply to self
 			logging.info("User replied to self")
-		elif check_already_replied(data,data["msg_confirmation"],token_comment.replies,running_username):
+		elif check_already_replied(data,msg["confirmation"],token_comment.replies,running_username):
 			logging.info("Already Confirmed")
-		elif check_already_replied(data,data["error_length"],token_comment.replies,running_username):
+		elif check_already_replied(data,msg["error_length"],token_comment.replies,running_username):
 			if token_comment.edited:
-				optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found)
+				optional_checks(data,msg,r,token_comment,awarder,awardee_comment,awardee,token_found)
 			else:
 				logging.info("Already Notified - Too Short")
-		elif check_already_replied(data,data["error_bad_recipient"],token_comment.replies,running_username):
+		elif check_already_replied(data,msg["error_bad_recipient"],token_comment.replies,running_username):
 			logging.info("Already Notified - Bad Recipient")
-		elif check_already_replied(data,data["error_submission_history"],token_comment.replies,running_username):
+		elif check_already_replied(data,msg["error_submission_history"],token_comment.replies,running_username):
 			logging.info("Already Notified - Submission History Error")
 		else:
-			optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found)
+			optional_checks(data,msg,r,token_comment,awarder,awardee_comment,awardee,token_found)
 	else:
 		logging.info("Unable to award token to deleted comment")
 
@@ -124,20 +124,20 @@ def check_already_replied(data,msg,replies,running_username):
 			
 
 # Optional checks based on configuration
-def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found):
+def optional_checks(data,msg,r,token_comment,awarder,awardee_comment,awardee,token_found):
 	logging.debug("Optional Checks")
-	if check_awardee_not_author(data["check_ana"],token_comment.submission.author,awardee):
-		token_comment.reply(data["error_bad_recipient"] % data["running_username"],token_comment.permalink).distinguish()
+	if check_awardee_not_author(msg["check_ana"],token_comment.submission.author,awardee):
+		token_comment.reply(msg["error_bad_recipient"] % data["running_username"],token_comment.permalink).distinguish()
 		logging.info("Error Bad Recipient Sent")
-	elif check_awarder_to_awardee_history(data,r,awardee_comment,awardee,token_comment,awarder):
-		token_comment.reply(data["error_submission_history"] % awardee).distinguish()
+	elif check_awarder_to_awardee_history(data,msg,r,awardee_comment,awardee,token_comment,awarder):
+		token_comment.reply(msg["error_submission_history"] % awardee).distinguish()
 		logging.info("Error Submission History Sent")
 	elif check_length(data,token_comment.body,token_found):
-		token_comment.reply(data["error_length"] % awardee).distinguish()
+		token_comment.reply(msg["error_length"] % awardee).distinguish()
 		logging.info("Error Length Sent")
 	else:
 		logging.debug("Token Valid - Beginning Award Process")
-		flair_count = token.start_increment(data,r,awardee)
+		flair_count = token.start_increment(data,msg,r,awardee)
 		logging.debug("Token Awarded")
 		token_comment.save()
 		logging.debug("Comment Saved")
@@ -146,13 +146,13 @@ def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_f
 			if reply.author:
 				logging.debug("Editing existing comment")
 				if str(reply.author.name).lower() == data["running_username"].lower():
-					reply.edit(data["msg_confirmation"] % (awardee_comment.author.name,awardee_comment.author.name,data["running_subreddit"],awardee,data["running_subreddit"],data["running_username"])).distinguish()
+					reply.edit(msg["confirmation"] % (awardee_comment.author.name,awardee_comment.author.name,data["running_subreddit"],awardee,data["running_subreddit"],data["running_username"])).distinguish()
 					edited_reply = True
 		if edited_reply == False:
 			logging.debug("Leaving new comment")
-			token_comment.reply(data["msg_confirmation"] % (awardee_comment.author.name,awardee_comment.author.name,data["running_subreddit"],awardee,data["running_subreddit"],data["running_username"])).distinguish()
+			token_comment.reply(msg["confirmation"] % (awardee_comment.author.name,awardee_comment.author.name,data["running_subreddit"],awardee,data["running_subreddit"],data["running_username"])).distinguish()
 		logging.info("Confirmation Message Sent")
-		wiki.start(data,r,token_comment,token_comment.author.name,awardee_comment.author.name,flair_count)
+		wiki.start(data,msg,r,token_comment,token_comment.author.name,awardee_comment.author.name,flair_count)
 		logging.info("Wiki Updates Complete")
 		wait()
 
@@ -170,24 +170,24 @@ def check_awardee_not_author(check_ana,sub_author,awardee):
 		logging.debug("Check Recipient Not Author is disabled.")
 
 # Checks to see if the awarder has already awarded the awardee in this thread
-def check_awarder_to_awardee_history(data,r,awardee_comment,awardee,token_comment,awarder):
+def check_awarder_to_awardee_history(data,msg,r,awardee_comment,awardee,token_comment,awarder):
 	if data["check_history"] == "1":
 		# TREE means it will only search the root comment and all replies
 		logging.debug("Checking Awarder to Awardee History - TREE")
 		root = awardee_comment
 		while not root.is_root: # Move to the top comment
 			root = r.get_info(thing_id=root.parent_id)
-		if iterate_replies(data,r,root,awardee,awarder):
+		if iterate_replies(data,msg,r,root,awardee,awarder):
 			logging.info("Token awarded elsewhere in tree")
 			return True
 	elif data["check_history"] == "0":
 		logging.debug("Check Awarder to Awardee History is disabled.")
 
 # Iterates through the comment tree - VERY expensive
-def iterate_replies(data,r,comment,awardee,awarder):
+def iterate_replies(data,msg,r,comment,awardee,awarder):
 	logging.debug("Iterating Replies")
 	iterate = "Yes"
-	msg_confirmation = data["msg_confirmation"]
+	msg_confirmation = msg["confirmation"]
 	running_username = str(data["running_username"]).lower()
 	try:
 		comments = r.get_submission(comment.permalink).comments
@@ -201,7 +201,7 @@ def iterate_replies(data,r,comment,awardee,awarder):
 						iterate = "No"
 						return iterate
 			for reply in comment.replies:
-				iterate = iterate_replies(data,r,reply,awardee,awarder)
+				iterate = iterate_replies(data,msg,r,reply,awardee,awarder)
 				if iterate == "No":
 					return iterate
 		elif iterate == "No":
