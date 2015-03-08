@@ -18,27 +18,22 @@ import time
 
 # Functions
 
+# Reads in the json for the messages
 def read_msg_json():
 	with open("settings/messages.json","r") as json_msg:
 		msg = json.load(json_msg)
 	return msg
 
-def remind():
-	logging.debug("Not Ready")
-
-def add():
-	logging.debug("Not Ready")
-
-def approve():
-	logging.debug("Not Ready")
-
-def force_add():
-	logging.debug("Not Ready")
-
-def remove():
-	logging.debug("Not Ready")
+# COMMANDS MODULE FUNCTIONS
+def remind(comment):
+	comment.reply(msg["remind"]).distinguish()
 
 def stop(data,msg,r,mail):
 	r.send_message("/r/" + data["running_subreddit"],msg["stop_subject"] % data["running_subreddit"],msg["stop_body"] % (data["running_username"],mail.author.name,mail.body))
+
+# COMMENTS MODULE FUNCTIONS
+def confirm(data,msg,awardee_comment,awardee):
+	confirmation =  msg["confirmation"] % (msg["token"],awardee_comment.author.name,awardee_comment.author.name,msg["token"],data["running_subreddit"],awardee,msg["token"],data["running_subreddit"],data["running_username"])
+	return confirmation
 	
 # EOF
