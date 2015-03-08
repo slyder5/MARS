@@ -11,6 +11,6 @@
   "remove_abuse": "Your comment was removed for abusing the %s system.",
   "stop_body": "%s has been issued a STOP command and is shutting down. Command issued by %s.\n\nReason: %s \u2206", 
   "stop_subject": "%s Status: Offline", 
-  "stop_warning": "%s STOP command received. Shutting down.",
+  "stop_warning": "STOP command received. Shutting down.",
   "token": "delta"
 }
