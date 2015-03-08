@@ -20,25 +20,25 @@ import time
 #############
 
 # Starts the commands module
-def start(data,r):
+def start(data,r,msg):
 	logging.debug("Starting Module: Commands")
-	check_mailbox(data,r)
+	check_mailbox(data,r,msg)
 
 # Checking the mailbox for mail
-def check_mailbox(data,r):
+def check_mailbox(data,r,msg):
 	logging.debug("Checking Mailbox")
 	mailbox = r.get_unread(unset_has_mail=True,update_user=True)
 	for mail in mailbox:
 		if type(mail) == praw.objects.Message: # Bot received mail
 			logging.info("I've got mail.")
-			read_mail(data,r,mail)
+			read_mail(data,r,msg,mail)
 		if type(mail) == praw.objects.Comment: # Someone replied to bot
 			logging.info("Someone replied to me.")
 			read_comment_reply(data,r,mail)
 		mail.mark_as_read() # Marks mail as read
 
 # Reads the mail
-def read_mail(data,r,mail):
+def read_mail(data,r,msg,mail):
 	logging.info("Reading mail from %s" % mail.author.name)
 	command = mail.subject.lower()
 	logging.info("Subject: %s" % command)
@@ -62,7 +62,7 @@ def read_mail(data,r,mail):
 		elif command == "remove abuse": # Removes token from user
 			remove(data,r,mail,data["msg_remove_abuse"])
 		elif command == "stop": # Stops bot
-			stop(data,r,mail)
+			stop(data,r,msg,mail)
 
 # Reminds users how to use the token system
 def remind(data,r,mail):
@@ -188,9 +188,9 @@ def remove(data,r,mail,message):
 	r.send_message("/r/" + data["running_subreddit"],"Remove Detected","Remove from %s detected on:\n\n%s" % (mail.author.name,mail.body))
 
 # Stops bot
-def stop(data,r,mail):
+def stop(data,r,msg,mail):
 	logging.warning(data["stop_warning"])
-	r.send_message("/r/" + data["running_subreddit"],data["stop_subject"],data["stop_body"] % (mail.author.name,mail.body))
+	r.send_message("/r/" + data["running_subreddit"],msg["stop_subject"],msg["stop_body"] % (mail.author.name,mail.body))
 	mail.mark_as_read()
 	raise SystemExit(0)
 
