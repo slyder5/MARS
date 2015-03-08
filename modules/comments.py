@@ -127,7 +127,7 @@ def check_already_replied(data,msg,replies,running_username):
 def optional_checks(data,r,token_comment,awarder,awardee_comment,awardee,token_found):
 	logging.debug("Optional Checks")
 	if check_awardee_not_author(data["check_ana"],token_comment.submission.author,awardee):
-		token_comment.reply(data["error_bad_recipient"] % running_username,token_comment.permalink).distinguish()
+		token_comment.reply(data["error_bad_recipient"] % data["running_username"],token_comment.permalink).distinguish()
 		logging.info("Error Bad Recipient Sent")
 	elif check_awarder_to_awardee_history(data,r,awardee_comment,awardee,token_comment,awarder):
 		token_comment.reply(data["error_submission_history"] % awardee).distinguish()
