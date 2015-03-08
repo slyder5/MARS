@@ -28,7 +28,7 @@
   "stop_subject": "DeltaBot Status: Offline", 
   "stop_warning": "DeltaBot STOP command received. Shutting down.", 
   "test_password": "example", 
-  "test_subreddit": "examnple", 
+  "test_subreddit": "example", 
   "test_username": "example", 
   "token": [
     "\u2206", 
