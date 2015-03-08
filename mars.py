@@ -57,10 +57,10 @@ def mars(data):
 	run = True
 	while run:
 		# Commands Module
-		commands.start(data,r)
+		commands.start(data,msg,r)
 
 		# Comments Module
-		comments.start(data,r)
+		comments.start(data,msg,r)
 		
 		# Wait 10 seconds
 		wait_time = 10
