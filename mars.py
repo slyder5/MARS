@@ -19,7 +19,6 @@ from logging.handlers import TimedRotatingFileHandler
 # Reads in configuration file
 
 data = config.read_config_json()
-msg = config.read_msg_json()
 
 # Logging #
 ###########
@@ -57,10 +56,10 @@ def mars(data):
 	run = True
 	while run:
 		# Commands Module
-		commands.start(data,msg,r)
+		commands.start(data,r)
 
 		# Comments Module
-		comments.start(data,msg,r)
+		comments.start(data,r)
 		
 		# Wait 10 seconds
 		wait_time = 10
