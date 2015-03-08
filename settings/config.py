@@ -17,11 +17,6 @@ def read_config_json():
 		data = json.load(json_data)
 	return data
 
-def read_msg_json():
-	with open("settings/messages.json","r") as json_msg:
-		msg = json.load(json_msg)
-	return msg
-
 # Writes to JSON file
 def write_config_json(data):
 	with open("settings/config.json","w") as outfile:
