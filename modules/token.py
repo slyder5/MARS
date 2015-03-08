@@ -42,14 +42,14 @@ def get_flair(data,r,awardee):
 def increment_flair(flair,old_count):
   logging.debug("Incrementing the flair")
   new_count = old_count + 1
-  flair["flair_text"] = str(new_count) + "∆"
+  flair["flair_text"] = str(new_count) + "\u2206"
   return (flair,new_count)
 
 def decrement_flair(flair,old_count):
   logging.debug("Decrementing the flair")
   if old_count > 0:
     new_count = old_count - 1
-  flair["flair_text"] = str(new_count) + "∆"
+  flair["flair_text"] = str(new_count) + "\u2206"
   return (flair,new_count)
 
 def set_flair(data,r,awardee,awardee_flair):
