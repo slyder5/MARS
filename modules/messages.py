@@ -8,7 +8,13 @@ import json
 import logging
 import time
 
-# Variables
+# VARIABLES LEGEND
+#
+# Use this section to build your messages. You want the information AFTER the equal sign (=) to put in your messages.
+#
+# subreddit = data["running_subreddit"]
+# username = data["running_username"]
+# 
 
 # Functions
 
@@ -32,7 +38,7 @@ def force_add():
 def remove():
 	logging.debug("Not Ready")
 
-def stop():
-	logging.debug("Not Ready")
-
+def stop(data,msg,r,mail):
+	r.send_message("/r/" + data["running_subreddit"],msg["stop_subject"] % data["running_subreddit"],msg["stop_body"] % (mail.author.name,mail.body))
+	
 # EOF
