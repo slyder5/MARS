@@ -14,10 +14,7 @@ import time
 
 def start(data):
 	logging.debug("Starting Module: Account")
-	if data["m_account"] == "1":
-		return login(data)
-	elif data["m_account"] == "0":
-		return readonly(data)
+	return login(data)
 
 def login(data):
 	r = praw.Reddit(user_agent = data["running_username"] + ": Powered by MARS github.com/PixelOrange/MARS")
@@ -32,11 +29,6 @@ def login(data):
 			login_wait = 300
 			logging.info("Login Failed - Trying again in %s seconds" % login_wait)
 			time.sleep(login_wait)
-	return r
-
-def readonly(data):
-	logging.info("Acount Module Disabled - using Read Only mode")
-	r = praw.Reddit(user_agent = data["running_username"] + " Read Only mode")
 	return r
 
 # EOF
