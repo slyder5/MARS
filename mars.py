@@ -18,7 +18,8 @@ from logging.handlers import TimedRotatingFileHandler
 
 # Reads in configuration file
 
-data = config.read_json()
+data = config.read_config_json()
+message = config.read_message_json()
 
 # Logging #
 ###########
