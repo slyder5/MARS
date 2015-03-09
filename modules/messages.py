@@ -35,5 +35,13 @@ def stop(data,msg,r,mail):
 def confirm(data,msg,awardee_comment,awardee):
 	confirmation =  msg["confirmation"] % (msg["token"],awardee_comment.author.name,awardee_comment.author.name,msg["token"],data["running_subreddit"],awardee,msg["token"],data["running_subreddit"],data["running_username"])
 	return confirmation
+
+def error_bad_recipient(data,msg,token_comment):
+	error_bad_recipient = msg["error_bad_recipient"] % (msg["token"],msg["token"],msg["token"],data["running_username"],token_comment.permalink)
+	return error_bad_recipient
+
+def error_submission_history(msg,awardee):
+	error_submission_history = msg["error_submission_history"] % (awardee,msg["token"])
+	return error_submission_history
 	
 # EOF
