@@ -14,6 +14,7 @@ import time
 #
 # subreddit = data["running_subreddit"]
 # username = data["running_username"]
+# token = msg["token"]
 # 
 
 # Functions
@@ -43,5 +44,9 @@ def error_bad_recipient(data,msg,token_comment):
 def error_submission_history(msg,awardee):
 	error_submission_history = msg["error_submission_history"] % (awardee,msg["token"])
 	return error_submission_history
+
+def error_length(data,msg,awardee):
+	error_length = msg["error_length"] % (awardee,msg["token"])
+	return error_length
 	
 # EOF
