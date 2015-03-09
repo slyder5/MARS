@@ -117,7 +117,7 @@ def check_already_replied(data,msg,replies,running_username):
 	for reply in replies:
 		try:
 			if str(reply.author.name).lower() == running_username:
-				if str(msg).lower()[0:15] in str(reply.body).lower():
+				if str(msg).lower()[0:10] in str(reply.body).lower():
 					return True
 		except:
 			logging.debug("Check Failed")
