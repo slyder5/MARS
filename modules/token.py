@@ -45,6 +45,7 @@ def get_flair(data,msg,r,awardee):
 def increment_flair(flair,old_count):
   logging.debug("Incrementing the flair")
   token = "\u0394"
+  token = token.decode('unicode-escape')
   new_count = old_count + 1
   flair["flair_text"] = str(new_count) + token
   return (flair,new_count)
@@ -52,6 +53,7 @@ def increment_flair(flair,old_count):
 def decrement_flair(flair,old_count):
   logging.debug("Decrementing the flair")
   token = "\u0394"
+  token = token.decode('unicode-escape')
   if old_count > 0:
     new_count = old_count - 1
   flair["flair_text"] = str(new_count) + token
