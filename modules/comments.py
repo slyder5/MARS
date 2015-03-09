@@ -126,14 +126,17 @@ def check_already_replied(data,msg,replies,running_username):
 # Optional checks based on configuration
 def optional_checks(data,msg,r,token_comment,awarder,awardee_comment,awardee,token_found):
 	logging.debug("Optional Checks")
-	if check_awardee_not_author(msg["check_ana"],token_comment.submission.author,awardee):
-		token_comment.reply(msg["error_bad_recipient"] % data["running_username"],token_comment.permalink).distinguish()
+	if check_awardee_not_author(data["check_ana"],token_comment.submission.author,awardee):
+		error_bad_recipient = messages.error_bad_recipient(data,msg,token_comment)
+		token_comment.reply(error_bad_recipient).distinguish()
 		logging.info("Error Bad Recipient Sent")
 	elif check_awarder_to_awardee_history(data,msg,r,awardee_comment,awardee,token_comment,awarder):
-		token_comment.reply(msg["error_submission_history"] % awardee).distinguish()
+		error_submission_history = messages.error_submission_history(msg,awardee_comment.author.name)
+		token_comment.reply(error_submission_history).distinguish()
 		logging.info("Error Submission History Sent")
 	elif check_length(data,token_comment.body,token_found):
-		token_comment.reply(msg["error_length"] % awardee).distinguish()
+		error_length = messages.error_length(data,msg,awardee_comment.author.name)
+		token_comment.reply(error_length).distinguish()
 		logging.info("Error Length Sent")
 	else:
 		logging.debug("Token Valid - Beginning Award Process")
@@ -147,14 +150,12 @@ def optional_checks(data,msg,r,token_comment,awarder,awardee_comment,awardee,tok
 				logging.debug("Editing existing comment")
 				if str(reply.author.name).lower() == data["running_username"].lower():
 					confirmation = messages.confirm(data,msg,awardee_comment,awardee)
-					reply.edit(confirmation)
-					#reply.edit(msg["confirmation"] % (awardee_comment.author.name,awardee_comment.author.name,data["running_subreddit"],awardee,data["running_subreddit"],data["running_username"])).distinguish()
+					reply.edit(confirmation).distinguish()
 					edited_reply = True
 		if edited_reply == False:
 			logging.debug("Leaving new comment")
 			confirmation = message.confirm(data,msg,awardee_comment,awardee)
-			token_comment.reply(confirmation)
-			#token_comment.reply(msg["confirmation"] % (awardee_comment.author.name,awardee_comment.author.name,data["running_subreddit"],awardee,data["running_subreddit"],data["running_username"])).distinguish()
+			token_comment.reply(confirmation).distinguish()
 		logging.info("Confirmation Message Sent")
 		wiki.start(data,msg,r,token_comment,token_comment.author.name,awardee_comment.author.name,flair_count)
 		logging.info("Wiki Updates Complete")
