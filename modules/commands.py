@@ -133,7 +133,7 @@ def approve(data,msg,r,mail):
 	logging.debug("Approve Command")
 	lines = separate_mail(mail.body)
 	for line in lines:
-		wiki.remove_queue_line(data,msg,r,line)
+		wiki.remove_queue_line(data,r,line)
 		wait()
 
 # Forces award (skips token check and length check)
