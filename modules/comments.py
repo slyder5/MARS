@@ -146,11 +146,15 @@ def optional_checks(data,msg,r,token_comment,awarder,awardee_comment,awardee,tok
 			if reply.author:
 				logging.debug("Editing existing comment")
 				if str(reply.author.name).lower() == data["running_username"].lower():
-					reply.edit(msg["confirmation"] % (awardee_comment.author.name,awardee_comment.author.name,data["running_subreddit"],awardee,data["running_subreddit"],data["running_username"])).distinguish()
+					confirmation = messages.confirm(data,msg,awardee_comment,awardee)
+					reply.edit(confirmation)
+					#reply.edit(msg["confirmation"] % (awardee_comment.author.name,awardee_comment.author.name,data["running_subreddit"],awardee,data["running_subreddit"],data["running_username"])).distinguish()
 					edited_reply = True
 		if edited_reply == False:
 			logging.debug("Leaving new comment")
-			token_comment.reply(msg["confirmation"] % (awardee_comment.author.name,awardee_comment.author.name,data["running_subreddit"],awardee,data["running_subreddit"],data["running_username"])).distinguish()
+			confirmation = message.confirm(data,msg,awardee_comment,awardee)
+			token_comment.reply(confirmation)
+			#token_comment.reply(msg["confirmation"] % (awardee_comment.author.name,awardee_comment.author.name,data["running_subreddit"],awardee,data["running_subreddit"],data["running_username"])).distinguish()
 		logging.info("Confirmation Message Sent")
 		wiki.start(data,msg,r,token_comment,token_comment.author.name,awardee_comment.author.name,flair_count)
 		logging.info("Wiki Updates Complete")
