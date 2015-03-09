@@ -10,6 +10,7 @@ import re
 import logging
 import token
 import wiki
+import messages
 from pprint import pprint
 import time
 
