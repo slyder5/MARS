@@ -34,7 +34,7 @@ def get_flair(data,msg,r,awardee):
   if awardee_flair["flair_text"] == None:
     flair_count = 0
     congrats_first_subject = messages.congrats_first_subject(msg)
-    congrats_first_body = messages.congrats_first_body(msg)
+    congrats_first_body = messages.congrats_first_body(data,awardee)
     r.send_message(awardee,congrats_first_subject,congrats_first_body)
   else:
     flair_count = re.search('(\d+)', awardee_flair["flair_text"])
