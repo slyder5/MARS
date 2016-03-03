@@ -63,28 +63,28 @@ def new_wiki_page(data,r,token_comment,awarder,awardee,flair_count):
   submission_title = token_comment.submission.title
   submission_url = token_comment.submission.permalink
   today = datetime.date.today()
-  add_header = "| Date | Submission | Delta Comment | Awarded By |\n| --- | :-: | --- | --- |\n"
+  add_header = "| Date | Submission | Lambda Comment | Awarded By |\n| --- | :-: | --- | --- |\n"
   add_content = "|%s/%s/%s|[%s](%s)|[Link](%s)|/u/%s|" % (today.month,today.day,today.year,submission_title,
   submission_url,token_comment.permalink + "?context=2",awarder)
   if int(flair_count) < 2:
-    initial_text = "/u/%s has received %s delta for the following comment:\n\n" % (awardee,flair_count)
+    initial_text = "/u/%s has received %s lambda for the following comment:\n\n" % (awardee,flair_count)
   else:
-    initial_text = "/u/%s has received %s deltas for the following comments:\n\n" % (awardee,flair_count)
+    initial_text = "/u/%s has received %s lambda for the following comments:\n\n" % (awardee,flair_count)
   full_update = initial_text + add_header + add_content
-  r.edit_wiki_page(data["running_subreddit"],"user/" + awardee,full_update,"Created user's delta history page.")
+  r.edit_wiki_page(data["running_subreddit"],"user/" + awardee,full_update,"Created user's lambda history page.")
 
 def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_page):
   submission_title = token_comment.submission.title
   submission_url = token_comment.submission.permalink
   today = datetime.date.today()
   old_content = user_wiki_page.content_md
-  add_header = "| Date | Submission | Delta Comment | Awarded By |\n| --- | :-: | --- | --- |\n"
+  add_header = "| Date | Submission | Lambda Comment | Awarded By |\n| --- | :-: | --- | --- |\n"
   add_content = "|%s/%s/%s|[%s](%s)|[Link](%s)|/u/%s|" % (today.month,today.day,today.year,submission_title,
                 submission_url,token_comment.permalink + "?context=2",awarder)
   if int(flair_count) < 2:
-    initial_text = "/u/%s has received %s delta for the following comment:\n\n" % (awardee,flair_count)
+    initial_text = "/u/%s has received %s lambda for the following comment:\n\n" % (awardee,flair_count)
   else:
-    initial_text = "/u/%s has received %s deltas for the following comments:\n\n" % (awardee,flair_count)
+    initial_text = "/u/%s has received %s lambda for the following comments:\n\n" % (awardee,flair_count)
   lines = old_content.split("\n")
   note = ""
   table = []
@@ -92,22 +92,22 @@ def update_wiki_page(data,r,token_comment,awarder,awardee,flair_count,user_wiki_
     if re.match("(\|)",line):
       if not re.match("(\| Date |\| --- \|)",line):
         table.append(line)
-    elif re.match("Any delta history",line):
+    elif re.match("Any lambda history",line):
       note = line + "\n\n"
   table.append(add_content)
   table.sort(reverse=True)
   new_content = '\n'.join(table)
   full_update = initial_text + note + add_header + new_content
-  r.edit_wiki_page(data["running_subreddit"],"user/" + awardee,full_update,"Updated user's delta history page.")
+  r.edit_wiki_page(data["running_subreddit"],"user/" + awardee,full_update,"Updated user's lambda history page.")
 
 def remove_wiki_line(data,r,wiki_line,awardee,flair_count):
   user_wiki_page = r.get_wiki_page(data["running_subreddit"],"user/" + awardee)
   old_content = user_wiki_page.content_md
-  add_header = "| Date | Submission | Delta Comment | Awarded By |\n| --- | :-: | --- | --- |\n"
+  add_header = "| Date | Submission | Lambda Comment | Awarded By |\n| --- | :-: | --- | --- |\n"
   if int(flair_count) < 2:
-    initial_text = "/u/%s has received %s delta for the following comment:\n\n" % (awardee,flair_count)
+    initial_text = "/u/%s has received %s lambdas for the following comment:\n\n" % (awardee,flair_count)
   else:
-    initial_text = "/u/%s has received %s deltas for the following comments:\n\n" % (awardee,flair_count)
+    initial_text = "/u/%s has received %s lambdas for the following comments:\n\n" % (awardee,flair_count)
   lines = old_content.split("\n")
   note = ""
   table = []
@@ -116,17 +116,17 @@ def remove_wiki_line(data,r,wiki_line,awardee,flair_count):
       if not re.match("(\| Date |\| --- \|)",line):
         if wiki_line not in line:
           table.append(line)
-    elif re.match("Any delta history",line):
+    elif re.match("Any lambda history",line):
       note = line + "\n\n"
   table.sort(reverse=True)
   new_content = '\n'.join(table)
   full_update = initial_text + note + add_header + new_content
-  r.edit_wiki_page(data["running_subreddit"],"user/" + awardee,full_update,"Updated user's delta history page.")
+  r.edit_wiki_page(data["running_subreddit"],"user/" + awardee,full_update,"Updated user's lambda history page.")
 
 def new_tracker_page(data,r,awardee,token_comment):
   today = datetime.date.today()
-  initial_text = "Below is a list of all of the users that have earned deltas.\n\n"
-  add_header = "| User | Delta List | Delta Earned|\n| --- | --- | --- |\n"
+  initial_text = "Below is a list of all of the users that have earned lambdas.\n\n"
+  add_header = "| User | Lambda List | Lambda Earned|\n| --- | --- | --- |\n"
   add_content = "|/u/%s|[Link](/r/%s/wiki/user/%s)|[%s/%s/%s](%s)|" % (awardee,data["running_subreddit"],
                 awardee,today.month,today.day,today.year,token_comment.permalink + "?context=2")
   full_update = initial_text + add_header + add_content
@@ -134,8 +134,8 @@ def new_tracker_page(data,r,awardee,token_comment):
 
 def update_tracker_page(data,r,awardee,token_comment,tracker_page):
   today = datetime.date.today()
-  initial_text = "Below is a list of all of the users that have earned deltas.\n\n"
-  add_header = "| User | Delta List | Last Delta Earned |\n| --- | --- | --- |\n"
+  initial_text = "Below is a list of all of the users that have earned lambdas.\n\n"
+  add_header = "| User | Lambda List | Last Lambda Earned |\n| --- | --- | --- |\n"
   add_content = "|/u/%s|[Link](/r/%s/wiki/user/%s)|[%s/%s/%s](%s)|" % (awardee,data["running_subreddit"],
                 awardee,today.month,today.day,today.year,token_comment.permalink + "?context=2")
   old_content = tracker_page.content_md
@@ -158,7 +158,7 @@ def update_tracker_page(data,r,awardee,token_comment,tracker_page):
   r.edit_wiki_page(data["running_subreddit"],data["running_username"] + "/tracker",full_update,"Updated tracker")
 
 def new_queue_page(data,r,awardee,token_comment):
-  initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\n**Approve:** This will remove the line from this queue. No other action is taken.\n\n**Reject:** Will remove the delta and all related information and then reply to the user with the reason it was removed based on your selection.\n\n"
+  initial_text = "## Lambda Queue\n\nUse this page to moderate Lambdas that Lam-Bot has awarded. After clicking approve/reject you will need to click send to send the message to Lam-Bot.\n\n**Approve:** This will remove the line from this queue. No other action is taken.\n\n**Reject:** Will remove the lambda and all related information and then reply to the user with the reason it was removed based on your selection.\n\n"
   add_header="|Awardee|Comment|Approve|Reject (Low Effort)|Reject (Remind)|Reject (Abuse)|\n|---|---|---|---|---|---|\n"
   token_comment_body = token_comment.body.replace("\n"," ")
   add_content = "|/u/%s|[%s](%s)|[Approve](/message/compose/?to=%s&subject=%s&message=%s)|[Reject for Low Effort](/message/compose/?to=%s&subject=reject low effort&message=%s)|[Reject and Remind](/message/compose/?to=%s&subject=reject remind&message=%s)|[Reject for Abuse](/message/compose/?to=%s&subject=reject abuse&message=%s)|" % \
@@ -168,7 +168,7 @@ def new_queue_page(data,r,awardee,token_comment):
   r.edit_wiki_page(data["running_subreddit"],data["running_username"] + "/queue",full_update,"Updated queue")
 
 def update_queue_page(data,r,awardee,token_comment,queue_page):
-  initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\n**Approve:** This will remove the line from this queue. No other action is taken.\n\n**Reject:** Will remove the delta and all related information and then reply to the user with the reason it was removed based on your selection.\n\n"
+  initial_text = "## Lambda Queue\n\nUse this page to moderate lambdas that Lam-Bot has awarded. After clicking approve/reject you will need to click send to send the message to Lam-Bot.\n\n**Approve:** This will remove the line from this queue. No other action is taken.\n\n**Reject:** Will remove the lambda and all related information and then reply to the user with the reason it was removed based on your selection.\n\n"
   add_header="|Awardee|Comment|Approve|Reject (Low Effort)|Reject (Remind)|Reject (Abuse)|\n|---|---|---|---|---|---|\n"
   token_comment_body = token_comment.body.replace("\n"," ")
   token_comment_body = token_comment_body.replace("amp;amp;","amp;")
@@ -188,7 +188,7 @@ def update_queue_page(data,r,awardee,token_comment,queue_page):
   r.edit_wiki_page(data["running_subreddit"],data["running_username"] + "/queue",full_update,"Updated queue")
 
 def remove_queue_line(data,r,queue_line):
-  initial_text = "## Delta Queue\n\nUse this page to moderate deltas that DeltaBot has awarded. After clicking approve/reject you will need to click send to send the message to DeltaBot.\n\n**Approve:** This will remove the line from this queue. No other action is taken.\n\n**Reject:** Will remove the delta and all related information and then reply to the user with the reason it was removed based on your selection.\n\n"
+  initial_text = "## Lambda Queue\n\nUse this page to moderate lambdas that  Lam-Bot has awarded. After clicking approve/reject you will need to click send to send the message to Lam-Bot.\n\n**Approve:** This will remove the line from this queue. No other action is taken.\n\n**Reject:** Will remove the lambda and all related information and then reply to the user with the reason it was removed based on your selection.\n\n"
   add_header="|Awardee|Comment|Approve|Reject (Low Effort)|Reject (Remind)|Reject (Abuse)|\n|---|---|---|---|---|---|\n"
   queue_page = r.get_wiki_page(data["running_subreddit"],data["running_username"] + "/queue")
   old_content = queue_page.content_md
